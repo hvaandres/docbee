@@ -12,6 +12,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import com.docbee.tealapp.data.getEmailAuth
 import org.jetbrains.compose.resources.painterResource
 import org.jetbrains.compose.ui.tooling.preview.Preview
 
@@ -21,6 +22,10 @@ import docbee.composeapp.generated.resources.compose_multiplatform
 @Composable
 @Preview
 fun App() {
+    LaunchedEffect(Unit) {
+        val userLogged = getEmailAuth().authenticate("freakingbitch@gmail.com", "Qwerty123.")
+        println("User -> $userLogged")
+    }
     MaterialTheme {
         var showContent by remember { mutableStateOf(false) }
         Column(
