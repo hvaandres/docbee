@@ -1,4 +1,4 @@
-package com.docbee.tealapp.data
+package us.docbee.docbeeapp.data
 
 import cocoapods.FirebaseAuth.FIRAuth
 import cocoapods.FirebaseAuth.FIREmailAuthProvider

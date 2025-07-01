@@ -73,11 +73,11 @@ kotlin {
 }
 
 android {
-    namespace = "com.docbee.tealapp"
+    namespace = "us.docbee.docbeeapp"
     compileSdk = libs.versions.android.compileSdk.get().toInt()
 
     defaultConfig {
-        applicationId = "com.docbee.tealapp"
+        applicationId = "us.docbee.docbeeapp"
         minSdk = libs.versions.android.minSdk.get().toInt()
         targetSdk = libs.versions.android.targetSdk.get().toInt()
         versionCode = 1

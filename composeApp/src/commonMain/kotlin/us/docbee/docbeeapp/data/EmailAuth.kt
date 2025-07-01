@@ -1,4 +1,4 @@
-package com.docbee.tealapp.data
+package us.docbee.docbeeapp.data
 
 interface EmailAuth {
     suspend fun authenticate(email: String, password: String): Boolean

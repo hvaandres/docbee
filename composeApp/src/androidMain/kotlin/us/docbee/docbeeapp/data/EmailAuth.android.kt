@@ -1,4 +1,4 @@
-package com.docbee.tealapp.data
+package us.docbee.docbeeapp.data
 
 import com.google.firebase.Firebase
 import com.google.firebase.auth.EmailAuthProvider

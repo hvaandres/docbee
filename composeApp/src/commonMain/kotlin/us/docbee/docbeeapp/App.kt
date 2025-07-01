@@ -1,4 +1,4 @@
-package com.docbee.tealapp
+package us.docbee.docbeeapp
 
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.Image
@@ -12,18 +12,17 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import com.docbee.tealapp.data.getEmailAuth
 import org.jetbrains.compose.resources.painterResource
 import org.jetbrains.compose.ui.tooling.preview.Preview
-
 import docbee.composeapp.generated.resources.Res
 import docbee.composeapp.generated.resources.compose_multiplatform
+import us.docbee.docbeeapp.data.getEmailAuth
 
 @Composable
 @Preview
 fun App() {
     LaunchedEffect(Unit) {
-        val userLogged = getEmailAuth().authenticate("freakingbitch@gmail.com", "Qwerty123.")
+        val userLogged = getEmailAuth().authenticate("test@testing.com", "abcd1234")
         println("User -> $userLogged")
     }
     MaterialTheme {
