@@ -1,4 +1,4 @@
-package com.docbee.tealapp
+package us.docbee.docbeeapp
 
 class Greeting {
     private val platform = getPlatform()

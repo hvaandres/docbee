@@ -1,4 +1,4 @@
-package com.docbee.tealapp
+package us.docbee.docbeeapp
 
 interface Platform {
     val name: String

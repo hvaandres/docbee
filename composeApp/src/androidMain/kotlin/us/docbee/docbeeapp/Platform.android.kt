@@ -1,4 +1,4 @@
-package com.docbee.tealapp
+package us.docbee.docbeeapp
 
 import android.os.Build
 

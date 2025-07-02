@@ -1,4 +1,4 @@
-package com.docbee.tealapp
+package us.docbee.docbeeapp
 
 import androidx.compose.ui.window.ComposeUIViewController
 

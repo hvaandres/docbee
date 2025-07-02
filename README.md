@@ -1,14 +1,53 @@
-This is a Kotlin Multiplatform project targeting Android, iOS.
+# Configuración de Firebase en KMP (Kotlin Multiplatform)
 
-* `/composeApp` is for code that will be shared across your Compose Multiplatform applications.
-  It contains several subfolders:
-  - `commonMain` is for code that’s common for all targets.
-  - Other folders are for Kotlin code that will be compiled for only the platform indicated in the folder name.
-    For example, if you want to use Apple’s CoreCrypto for the iOS part of your Kotlin app,
-    `iosMain` would be the right folder for such calls.
+Este proyecto utiliza Firebase Authentication para las plataformas Android e iOS. A continuación se describen los pasos necesarios para integrar los archivos de configuración de Firebase en la arquitectura multiplataforma.
 
-* `/iosApp` contains iOS applications. Even if you’re sharing your UI with Compose Multiplatform, 
-  you need this entry point for your iOS app. This is also where you should add SwiftUI code for your project.
+---
 
+## Estructura esperada de archivos
 
-Learn more about [Kotlin Multiplatform](https://www.jetbrains.com/help/kotlin-multiplatform-dev/get-started.html)…
+- `composeApp/src/androidMain`  
+  Contiene el código nativo para Android.
+
+- `composeApp/src/iosMain`  
+  Contiene el código nativo para iOS.
+
+- `composeApp/src/commonMain`  
+  Contiene el código común (Kotlin Multiplatform).
+
+- **Archivos de configuración Firebase:**
+  - `google-services.json`: debe colocarse en  
+    `composeApp/src`
+  - `GoogleService-Info.plist`: debe colocarse en  
+    `iosApp/iosApp`
+
+> *Puedes agregar las imágenes de referencia de la estructura de carpetas aquí.*
+
+---
+
+## Pasos para la configuración
+
+1. **Agregar archivos de configuración de Firebase:**
+
+  - Colocar el archivo `google-services.json` en la carpeta:
+    ```
+    composeApp/src
+    ```
+
+  - Colocar el archivo `GoogleService-Info.plist` en la carpeta:
+    ```
+    iosApp/iosApp
+    ```
+
+2. **Sincronizar dependencias de CocoaPods:**
+
+   Desde la raíz del proyecto KMP, ejecutar:
+   ```bash
+   ./gradlew podInstall
+   ```
+
+   Después
+
+   ```bash
+   pod install
+   ```
