@@ -22,12 +22,12 @@ class AndroidEmailAuth : EmailAuth {
                 .await()
 
             authResult.user?.let { user ->
-                UserAuthResponse.Success(uid = user.uid)
-            } ?: UserAuthResponse.Error
+                UserAuthResponse(uid = user.uid)
+            } ?: UserAuthResponse(errorCode = "UNKNOWN_ERROR", errorMessage = "User is null.")
         } catch (ex: FirebaseAuthInvalidCredentialsException) {
-            UserAuthResponse.InvalidCredentials
+            UserAuthResponse(errorCode = "ERROR_INVALID_CREDENTIAL", errorMessage = ex.localizedMessage)
         } catch (ex: Exception) {
-            UserAuthResponse.Error
+            UserAuthResponse(errorCode = "UNKNOWN_ERROR", errorMessage = ex.localizedMessage)
         }
     }
 

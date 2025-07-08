@@ -1,7 +1,7 @@
 package us.docbee.docbeeapp.data.entities
 
-sealed class UserAuthResponse {
-    data class Success(val uid: String): UserAuthResponse()
-    data object InvalidCredentials: UserAuthResponse()
-    data object Error: UserAuthResponse()
-}
+data class UserAuthResponse(
+    val uid: String? = null,
+    val errorCode: String? = null,
+    val errorMessage: String? = null
+)

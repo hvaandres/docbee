@@ -7,6 +7,8 @@ import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.suspendCancellableCoroutine
 import us.docbee.docbeeapp.data.entities.UserAuthResponse
 import us.docbee.docbeeapp.data.entities.UserCreateResponse
+import us.docbee.docbeeapp.domain.mappers.AuthErrorCodesMapper
+import us.docbee.docbeeapp.domain.mappers.CreateErrorCodesMapper
 
 @OptIn(ExperimentalForeignApi::class, ExperimentalCoroutinesApi::class)
 class IosEmailAuth() : EmailAuth {
@@ -20,11 +22,11 @@ class IosEmailAuth() : EmailAuth {
                 )
             ) { result, error ->
                 val authResponse = if (result != null) {
-                    UserAuthResponse.Success(result.user().uid())
+                    UserAuthResponse(uid = result.user().uid())
                 } else {
-                    println(error)
                     val errorCode = error?.userInfo?.get("FIRAuthErrorUserInfoNameKey") as? String
-                    AuthErrorCodesMapper.eval(errorCode)
+                    val errorMessage = error?.userInfo?.get("NSLocalizedDescription") as? String
+                    UserAuthResponse(errorCode = errorCode, errorMessage = errorMessage)
                 }
                 thread.resume(authResponse, null)
             }
