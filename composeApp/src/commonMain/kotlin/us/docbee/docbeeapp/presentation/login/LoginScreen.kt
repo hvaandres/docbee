@@ -49,7 +49,8 @@ fun LoginScreen(viewModel: LoginViewModel) {
         showModalError = showModalError,
         onChangeEmail = { value -> viewModel.onEvent(LoginEvents.OnChangeEmailField(value)) },
         onLoginClick = { viewModel.onEvent(LoginEvents.OnLoginClickButton) },
-        onHideModal = { viewModel.onEvent(LoginEvents.OnDismissModalError) }
+        onHideModal = { viewModel.onEvent(LoginEvents.OnDismissModalError) },
+        onSignupClick = { viewModel.onEvent(LoginEvents.OnSignupClickButton) }
     )
 }
 
@@ -60,7 +61,8 @@ fun LoginScreenContent(
     showModalError: Boolean,
     onChangeEmail: (String) -> Unit,
     onLoginClick: () -> Unit,
-    onHideModal: () -> Unit
+    onHideModal: () -> Unit,
+    onSignupClick: () -> Unit
 ) {
     Column(modifier = Modifier.fillMaxSize(), verticalArrangement = Arrangement.Center) {
         OutlinedTextField(
@@ -70,6 +72,9 @@ fun LoginScreenContent(
         )
         Button(onClick = onLoginClick) {
             Text(text = "Login")
+        }
+        Button(onClick = onSignupClick) {
+            Text(text = "Registrar")
         }
         if (showModalError) {
             Dialog(onDismissRequest = onHideModal) {

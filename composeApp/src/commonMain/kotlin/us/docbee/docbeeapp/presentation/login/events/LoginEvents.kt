@@ -4,4 +4,5 @@ sealed class LoginEvents {
     data class OnChangeEmailField(val email: String): LoginEvents()
     data object OnLoginClickButton: LoginEvents()
     data object OnDismissModalError: LoginEvents()
+    data object OnSignupClickButton: LoginEvents()
 }
