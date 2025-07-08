@@ -8,7 +8,6 @@ import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 import us.docbee.docbeeapp.data.EmailAuth
-import us.docbee.docbeeapp.data.entities.UserAuthResponse
 import us.docbee.docbeeapp.presentation.login.effects.LoginEffect
 import us.docbee.docbeeapp.presentation.login.events.LoginEvents
 import us.docbee.docbeeapp.presentation.login.states.LoginState
@@ -40,10 +39,10 @@ class LoginViewModel(private val loginAuth: EmailAuth) : ViewModel() {
     private fun performLogin() {
         viewModelScope.launch {
             val response = loginAuth.authenticate(email = _state.value.email, password = "abcd1234")
-            when(response) {
-                is UserAuthResponse.Error -> sendEffect(LoginEffect.ShowErrorMessage("Algo salio mal"))
-                is UserAuthResponse.InvalidCredentials -> sendEffect(LoginEffect.ShowErrorMessage("Error en credenciales"))
-                is UserAuthResponse.Success -> sendEffect(LoginEffect.NavigateToDashboard)
+            if (!response.uid.isNullOrEmpty()) {
+                sendEffect(LoginEffect.NavigateToDashboard)
+            } else {
+                sendEffect(LoginEffect.ShowErrorMessage(response.errorMessage ?: ""))
             }
         }
     }
