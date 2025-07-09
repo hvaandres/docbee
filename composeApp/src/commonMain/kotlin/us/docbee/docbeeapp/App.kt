@@ -8,6 +8,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import org.jetbrains.compose.ui.tooling.preview.Preview
+import org.koin.compose.viewmodel.koinViewModel
 import us.docbee.docbeeapp.data.getEmailAuth
 import us.docbee.docbeeapp.presentation.login.LoginScreen
 import us.docbee.docbeeapp.presentation.login.LoginViewModel
@@ -22,7 +23,7 @@ fun App() {
                 .fillMaxSize(),
             horizontalAlignment = Alignment.CenterHorizontally,
         ) {
-            LoginScreen(LoginViewModel(getEmailAuth()))
+            LoginScreen(koinViewModel())
         }
     }
 }

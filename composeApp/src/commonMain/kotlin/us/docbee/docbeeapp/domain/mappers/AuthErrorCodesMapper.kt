@@ -1,7 +1,7 @@
 package us.docbee.docbeeapp.domain.mappers
 
-import us.docbee.docbeeapp.data.entities.UserCreateResponse
 import us.docbee.docbeeapp.domain.models.UserAuthResult
+import us.docbee.docbeeapp.domain.models.UserSignupResult
 
 object AuthErrorCodesMapper {
     fun eval(error: String?): UserAuthResult {
@@ -14,12 +14,12 @@ object AuthErrorCodesMapper {
 }
 
 object CreateErrorCodesMapper {
-    fun eval(error: String?): UserCreateResponse {
+    fun eval(error: String?): UserSignupResult {
         val errorMap = mapOf(
-            "ERROR_EMAIL_ALREADY_IN_USE" to UserCreateResponse.AlreadyUsed,
-            "ERROR_WEAK_PASSWORD" to UserCreateResponse.WeakPassword,
-            "ERROR_INTERNAL_ERROR" to UserCreateResponse.WeakPassword
+            "ERROR_EMAIL_ALREADY_IN_USE" to UserSignupResult.AlreadyUsed,
+            "ERROR_WEAK_PASSWORD" to UserSignupResult.WeakPassword,
+            "ERROR_INTERNAL_ERROR" to UserSignupResult.WeakPassword
         )
-        return errorMap.getOrElse(error.orEmpty()) { UserCreateResponse.Error }
+        return errorMap.getOrElse(error.orEmpty()) { UserSignupResult.Error }
     }
 }

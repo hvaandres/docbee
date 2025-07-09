@@ -38,16 +38,16 @@ class AndroidEmailAuth : EmailAuth {
                 .await()
 
             creationResult.user?.let { user ->
-                UserCreateResponse.Success(user.uid)
-            } ?: UserCreateResponse.Error
+                UserCreateResponse(uid = user.uid)
+            } ?: UserCreateResponse(errorCode = "UNKNOWN_ERROR", errorMessage = "User is null.")
         } catch (ex: FirebaseAuthUserCollisionException) {
-            UserCreateResponse.AlreadyUsed
+            UserCreateResponse(errorCode = "ERROR_EMAIL_ALREADY_IN_USE", errorMessage = ex.localizedMessage)
         } catch (ex: FirebaseAuthWeakPasswordException) {
-            UserCreateResponse.WeakPassword
+            UserCreateResponse(errorCode = "ERROR_WEAK_PASSWORD", errorMessage = ex.localizedMessage)
         } catch (ex: FirebaseException) {
-            UserCreateResponse.WeakPassword
+            UserCreateResponse(errorCode = "ERROR_WEAK_PASSWORD", errorMessage = ex.localizedMessage)
         } catch (ex: Exception) {
-            UserCreateResponse.Error
+            UserCreateResponse(errorCode = "UNKNOWN_ERROR", errorMessage = ex.localizedMessage)
         }
     }
 }
