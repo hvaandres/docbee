@@ -18,9 +18,7 @@ import us.docbee.docbeeapp.presentation.login.LoginViewModel
 fun App() {
     MaterialTheme {
         Column(
-            modifier = Modifier
-                .safeContentPadding()
-                .fillMaxSize(),
+            modifier = Modifier.fillMaxSize(),
             horizontalAlignment = Alignment.CenterHorizontally,
         ) {
             LoginScreen(koinViewModel())

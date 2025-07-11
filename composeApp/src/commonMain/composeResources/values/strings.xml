@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="login_header_label">We are here to save lives</string>
+    <string name="login_title_label">Get Started now</string>
+    <string name="login_description_label">Create an account or log in to explore about our app</string>
+    <string name="login_tabs_login_label">Log In </string>
+    <string name="login_tabs_signup_label">Sign Up</string>
+
+    <string name="login_form_email_field">Email</string>
+    <string name="login_form_password_field">Password</string>
+    <string name="login_form_remember_check">Remember me</string>
+    <string name="login_form_forgot_password">Forgot Password?</string>
+    <string name="login_form_login_label">Login</string>
+    <string name="login_form_apple_login">Continue with Apple</string>
+    <string name="login_form_google_login">Continue with Google</string>
+
+    <string name="signup_form_name_field">First Name</string>
+    <string name="signup_form_lastname_field">Last Name</string>
+    <string name="signup_form_email_field">Email</string>
+    <string name="signup_form_birth_date_field">Birth of date</string>
+    <string name="signup_form_phone_field">Phone Number</string>
+    <string name="signup_form_password_field">Set Password</string>
+    <string name="signup_form_register_label">Register</string>
+
+    <string name="general_label_or">Or</string>
+</resources>
