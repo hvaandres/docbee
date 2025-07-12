@@ -10,6 +10,7 @@ import us.docbee.docbeeapp.domain.repositories.EmailAuthRepository
 import us.docbee.docbeeapp.domain.usecases.EmailAuthUseCase
 import us.docbee.docbeeapp.domain.usecases.EmailSignupUseCase
 import us.docbee.docbeeapp.presentation.login.LoginViewModel
+import us.docbee.docbeeapp.presentation.login.SignupViewModel
 
 val dataSourcesModule = module {
     factory<EmailAuth> { getEmailAuth() }
@@ -26,6 +27,7 @@ val usesCasesModule = module {
 
 val viewModelsModule = module {
     viewModelOf(::LoginViewModel)
+    viewModelOf(::SignupViewModel)
 }
 
 fun initKoin() {
