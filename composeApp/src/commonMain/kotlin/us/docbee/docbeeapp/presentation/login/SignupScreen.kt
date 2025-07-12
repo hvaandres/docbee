@@ -32,8 +32,9 @@ import us.docbee.docbeeapp.presentation.components.inputs.InputFieldText
 import us.docbee.docbeeapp.presentation.components.inputs.InputPasswordFieldText
 
 @Composable
-fun SignupForm(
+fun SignupScreen(
     modifier: Modifier = Modifier,
+    isSignupTabbed: Boolean,
     onClick: () -> Unit = { }
 ) {
     var nameField by remember { mutableStateOf("") }
@@ -42,6 +43,7 @@ fun SignupForm(
     var dateOfBirthField by remember { mutableStateOf("") }
     var phoneNumberField by remember { mutableStateOf("") }
     var passwordField by remember { mutableStateOf("") }
+    if (!isSignupTabbed) return
     Column(modifier = modifier) {
         Row(
             verticalAlignment = Alignment.CenterVertically,

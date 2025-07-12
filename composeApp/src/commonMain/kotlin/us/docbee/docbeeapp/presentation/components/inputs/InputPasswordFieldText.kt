@@ -24,7 +24,9 @@ fun InputPasswordFieldText(
     value: String,
     onValueChange: (String) -> Unit,
     imeAction: ImeAction = ImeAction.Next,
-    focusDirection: FocusDirection = FocusDirection.Down
+    focusDirection: FocusDirection = FocusDirection.Down,
+    isError: Boolean = false,
+    errorLabel: String = ""
 ) {
     var isPasswordVisible by remember { mutableStateOf(false) }
     InputFieldText(
@@ -46,6 +48,8 @@ fun InputPasswordFieldText(
         focusDirection = focusDirection,
         imeAction = imeAction,
         keyboardCapitalization = KeyboardCapitalization.None,
-        keyboardType = KeyboardType.Password
+        keyboardType = KeyboardType.Password,
+        isError = isError,
+        errorLabel = errorLabel
     )
 }

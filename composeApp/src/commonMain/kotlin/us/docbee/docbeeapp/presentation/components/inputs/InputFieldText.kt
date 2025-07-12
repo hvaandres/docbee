@@ -41,6 +41,8 @@ fun InputFieldText(
     keyboardType: KeyboardType = KeyboardType.Text,
     keyboardCapitalization: KeyboardCapitalization = KeyboardCapitalization.None,
     trailingIcon: ImageVector? = null,
+    isError: Boolean = false,
+    errorLabel: String = "",
     onValueChange: (String) -> Unit,
     onTrailingIconClick: () -> Unit = { }
 ) {
@@ -51,13 +53,14 @@ fun InputFieldText(
             modifier = Modifier.padding(vertical = 4.dp),
             text = inputLabel,
             style = MaterialTheme.typography.labelMedium,
-            color = Gray
+            color = if (isError) MaterialTheme.colorScheme.error else Gray
         )
         OutlinedTextField(
             modifier = Modifier.fillMaxWidth(),
             value = value,
             onValueChange = onValueChange,
             singleLine = true,
+            isError = isError,
             visualTransformation = visualTransformation,
             textStyle = MaterialTheme.typography.bodyMedium,
             shape = RoundedCornerShape(10.dp),
@@ -83,6 +86,15 @@ fun InputFieldText(
                         imageVector = trailingIcon,
                         colorFilter = ColorFilter.tint(color = Gray400),
                         contentDescription = null
+                    )
+                }
+            },
+            supportingText = {
+                if (isError && errorLabel.isNotEmpty()) {
+                    Text(
+                        text = errorLabel,
+                        color = MaterialTheme.colorScheme.error,
+                        style = MaterialTheme.typography.bodySmall
                     )
                 }
             }
