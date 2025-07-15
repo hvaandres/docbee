@@ -130,8 +130,8 @@ fun AuthScreenContent(
             )
             SignupScreen(
                 modifier = Modifier.fillMaxWidth().padding(horizontal = 42.dp),
-                isSignupTabbed = !isLoginTab,
-                onClick = { }
+                snackbarState = snackbarState,
+                isSignupTabbed = !isLoginTab
             )
             LoginSocialButtons(modifier = Modifier.fillMaxWidth().padding(horizontal = 42.dp))
         }

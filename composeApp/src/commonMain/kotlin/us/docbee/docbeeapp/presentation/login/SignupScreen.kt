@@ -5,11 +5,13 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.height
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.SnackbarDuration
+import androidx.compose.material3.SnackbarHostState
+import androidx.compose.material3.rememberDatePickerState
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusDirection
@@ -17,7 +19,6 @@ import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardCapitalization
 import androidx.compose.ui.unit.dp
 import docbee.composeapp.generated.resources.Res
-import docbee.composeapp.generated.resources.ic_calendar
 import docbee.composeapp.generated.resources.signup_form_birth_date_field
 import docbee.composeapp.generated.resources.signup_form_email_field
 import docbee.composeapp.generated.resources.signup_form_lastname_field
@@ -25,25 +26,87 @@ import docbee.composeapp.generated.resources.signup_form_name_field
 import docbee.composeapp.generated.resources.signup_form_password_field
 import docbee.composeapp.generated.resources.signup_form_phone_field
 import docbee.composeapp.generated.resources.signup_form_register_label
+import kotlinx.coroutines.flow.collectLatest
 import org.jetbrains.compose.resources.stringResource
-import org.jetbrains.compose.resources.vectorResource
+import org.koin.compose.viewmodel.koinViewModel
 import us.docbee.docbeeapp.presentation.components.PrimaryButton
+import us.docbee.docbeeapp.presentation.components.inputs.InputDateFieldText
 import us.docbee.docbeeapp.presentation.components.inputs.InputFieldText
 import us.docbee.docbeeapp.presentation.components.inputs.InputPasswordFieldText
+import us.docbee.docbeeapp.presentation.login.effects.SignupEffect
+import us.docbee.docbeeapp.presentation.login.events.SignupEvents
+import us.docbee.docbeeapp.presentation.login.states.SignupState
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun SignupScreen(
     modifier: Modifier = Modifier,
+    snackbarState: SnackbarHostState,
     isSignupTabbed: Boolean,
-    onClick: () -> Unit = { }
+    viewModel: SignupViewModel = koinViewModel()
 ) {
-    var nameField by remember { mutableStateOf("") }
-    var lastNameField by remember { mutableStateOf("") }
-    var emailField by remember { mutableStateOf("") }
-    var dateOfBirthField by remember { mutableStateOf("") }
-    var phoneNumberField by remember { mutableStateOf("") }
-    var passwordField by remember { mutableStateOf("") }
-    if (!isSignupTabbed) return
+    val state = viewModel.state.collectAsState()
+
+    LaunchedEffect(!isSignupTabbed) {
+        viewModel.onEvent(SignupEvents.OnResetEvent)
+    }
+
+    LaunchedEffect(Unit) {
+        viewModel.effect.collectLatest { effect ->
+            when (effect) {
+                is SignupEffect.ShowErrorMessage -> {
+                    snackbarState.showSnackbar(
+                        message = effect.error,
+                        duration = SnackbarDuration.Short
+                    )
+                }
+
+                is SignupEffect.NavigateToDashboard -> Unit
+            }
+        }
+    }
+    if (isSignupTabbed) {
+        SignupContainer(
+            modifier = modifier,
+            uiState = state.value,
+            onChangeName = { name ->
+                viewModel.onEvent(SignupEvents.OnChangeNameField(name))
+            },
+            onChangeLastName = { lastname ->
+                viewModel.onEvent(SignupEvents.OnChangeLastNameField(lastname))
+            },
+            onChangeEmail = { email ->
+                viewModel.onEvent(SignupEvents.OnChangeEmailField(email))
+            },
+            onChangeDateOfBirth = { dateOfBirth ->
+                viewModel.onEvent(SignupEvents.OnChangeDateOfBirthField(dateOfBirth))
+            },
+            onChangePhoneNumber = { phoneNumber ->
+                viewModel.onEvent(SignupEvents.OnChangePhoneNumberField(phoneNumber))
+            },
+            onChangePassword = { password ->
+                viewModel.onEvent(SignupEvents.OnChangePasswordField(password))
+            },
+            onSignupClick = {
+                viewModel.onEvent(SignupEvents.OnSignupClickButton)
+            },
+        )
+    }
+}
+
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+fun SignupContainer(
+    modifier: Modifier = Modifier,
+    uiState: SignupState,
+    onChangeName: (String) -> Unit,
+    onChangeLastName: (String) -> Unit,
+    onChangeEmail: (String) -> Unit,
+    onChangeDateOfBirth: (Long) -> Unit,
+    onChangePhoneNumber: (String) -> Unit,
+    onChangePassword: (String) -> Unit,
+    onSignupClick: () -> Unit,
+) {
     Column(modifier = modifier) {
         Row(
             verticalAlignment = Alignment.CenterVertically,
@@ -55,8 +118,8 @@ fun SignupScreen(
                 keyboardCapitalization = KeyboardCapitalization.Words,
                 focusDirection = FocusDirection.Right,
                 imeAction = ImeAction.Next,
-                value = nameField,
-                onValueChange = { nameField = it }
+                value = uiState.name,
+                onValueChange = onChangeName
             )
             InputFieldText(
                 modifier = Modifier.weight(1f),
@@ -64,8 +127,8 @@ fun SignupScreen(
                 keyboardCapitalization = KeyboardCapitalization.Words,
                 focusDirection = FocusDirection.Down,
                 imeAction = ImeAction.Next,
-                value = lastNameField,
-                onValueChange = { lastNameField = it }
+                value = uiState.lastName,
+                onValueChange = onChangeLastName
             )
         }
         Spacer(modifier = Modifier.height(16.dp))
@@ -73,37 +136,35 @@ fun SignupScreen(
             inputLabel = stringResource(Res.string.signup_form_email_field),
             focusDirection = FocusDirection.Down,
             imeAction = ImeAction.Next,
-            value = emailField,
-            onValueChange = { emailField = it }
+            value = uiState.email,
+            onValueChange = onChangeEmail
         )
         Spacer(modifier = Modifier.height(16.dp))
-        InputFieldText(
+        InputDateFieldText(
+            value = uiState.dateOfBirth,
             inputLabel = stringResource(Res.string.signup_form_birth_date_field),
-            trailingIcon = vectorResource(Res.drawable.ic_calendar),
-            focusDirection = FocusDirection.Down,
-            imeAction = ImeAction.Next,
-            value = dateOfBirthField,
-            onValueChange = { dateOfBirthField = it }
+            datePickerState = rememberDatePickerState(),
+            onSelectedDate = onChangeDateOfBirth
         )
         Spacer(modifier = Modifier.height(16.dp))
         InputFieldText(
             inputLabel = stringResource(Res.string.signup_form_phone_field),
             focusDirection = FocusDirection.Down,
             imeAction = ImeAction.Next,
-            value = phoneNumberField,
-            onValueChange = { phoneNumberField = it }
+            value = uiState.phoneNumber,
+            onValueChange = onChangePhoneNumber
         )
         Spacer(modifier = Modifier.height(16.dp))
         InputPasswordFieldText(
             inputLabel = stringResource(Res.string.signup_form_password_field),
-            value = passwordField,
-            onValueChange = { passwordField = it },
+            value = uiState.password,
+            onValueChange = onChangePassword,
             imeAction = ImeAction.Done
         )
         Spacer(modifier = Modifier.height(24.dp))
         PrimaryButton(
             text = stringResource(Res.string.signup_form_register_label),
-            onClick = onClick
+            onClick = onSignupClick
         )
     }
 }
