@@ -8,13 +8,16 @@ import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 import us.docbee.docbeeapp.domain.usecases.EmailSignupUseCase
+import us.docbee.docbeeapp.domain.usecases.GetCountriesUseCase
 import us.docbee.docbeeapp.presentation.login.effects.SignupEffect
 import us.docbee.docbeeapp.presentation.login.events.SignupEvents
 import us.docbee.docbeeapp.presentation.login.states.SignupState
+import us.docbee.docbeeapp.utils.COUNTRY_DEFAULT
 import us.docbee.docbeeapp.utils.convertMillisWithoutTimeZone
 
 class SignupViewModel(
-    private val signupUseCase: EmailSignupUseCase
+    private val signupUseCase: EmailSignupUseCase,
+    private val getCountriesUseCase: GetCountriesUseCase
 ) : ViewModel() {
 
     private var _state: MutableStateFlow<SignupState> = MutableStateFlow(SignupState())
@@ -23,8 +26,13 @@ class SignupViewModel(
     private var _effect: MutableSharedFlow<SignupEffect> = MutableSharedFlow()
     val effect: SharedFlow<SignupEffect> = _effect
 
+    init {
+        onEvent(SignupEvents.OnInit)
+    }
+
     fun onEvent(event: SignupEvents) {
         when (event) {
+            is SignupEvents.OnInit -> initData()
             is SignupEvents.OnChangeNameField -> onChangeName(event.name)
             is SignupEvents.OnChangeLastNameField -> onChangeLastName(event.lastName)
             is SignupEvents.OnChangeEmailField -> onChangeEmail(event.email)
@@ -33,6 +41,18 @@ class SignupViewModel(
             is SignupEvents.OnChangePasswordField -> onChangePassword(event.password)
             is SignupEvents.OnResetEvent -> onResetData()
             is SignupEvents.OnSignupClickButton -> performSignup()
+        }
+    }
+
+    private fun initData() {
+        viewModelScope.launch {
+            val response = getCountriesUseCase.fetchCountries()
+            _state.value = _state.value.copy(
+                phoneState = _state.value.phoneState.copy(
+                    countries = response,
+                    selectedCountry = response.find { it.isoCode == COUNTRY_DEFAULT }
+                )
+            )
         }
     }
 
@@ -54,7 +74,11 @@ class SignupViewModel(
     }
 
     private fun onChangePhoneNumber(phoneNumber: String) {
-        _state.value = _state.value.copy(phoneNumber = phoneNumber)
+        _state.value = _state.value.copy(
+            phoneState = _state.value.phoneState.copy(
+                phoneNumber = phoneNumber
+            )
+        )
     }
 
     private fun onChangePassword(password: String) {
@@ -62,7 +86,13 @@ class SignupViewModel(
     }
 
     private fun onResetData() {
-        _state.value = SignupState()
+        _state.value = _state.value.copy(
+            name = "",
+            lastName = "",
+            email = "",
+            dateOfBirth = "",
+            password = ""
+        )
     }
 
     private fun performSignup() {
