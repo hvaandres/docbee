@@ -30,6 +30,7 @@ import kotlinx.coroutines.flow.collectLatest
 import org.jetbrains.compose.resources.stringResource
 import org.koin.compose.viewmodel.koinViewModel
 import us.docbee.docbeeapp.presentation.components.PrimaryButton
+import us.docbee.docbeeapp.presentation.components.inputs.countrycodefield.InputCountryCodeFieldText
 import us.docbee.docbeeapp.presentation.components.inputs.InputDateFieldText
 import us.docbee.docbeeapp.presentation.components.inputs.InputFieldText
 import us.docbee.docbeeapp.presentation.components.inputs.InputPasswordFieldText
@@ -147,12 +148,13 @@ fun SignupContainer(
             onSelectedDate = onChangeDateOfBirth
         )
         Spacer(modifier = Modifier.height(16.dp))
-        InputFieldText(
+        InputCountryCodeFieldText(
+            state = uiState.phoneState,
             inputLabel = stringResource(Res.string.signup_form_phone_field),
             focusDirection = FocusDirection.Down,
             imeAction = ImeAction.Next,
-            value = uiState.phoneNumber,
-            onValueChange = onChangePhoneNumber
+            onChangePhoneNumber = onChangePhoneNumber,
+            onCountryCodeClicked = { /* TODO Implement Country Picker */ }
         )
         Spacer(modifier = Modifier.height(16.dp))
         InputPasswordFieldText(

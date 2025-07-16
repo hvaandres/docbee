@@ -1,6 +1,7 @@
 package us.docbee.docbeeapp.presentation.login.events
 
 sealed class SignupEvents {
+    data object OnInit: SignupEvents()
     data class OnChangeNameField(val name: String): SignupEvents()
     data class OnChangeLastNameField(val lastName: String): SignupEvents()
     data class OnChangeEmailField(val email: String): SignupEvents()
