@@ -7,6 +7,7 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
+import us.docbee.docbeeapp.domain.models.Country
 import us.docbee.docbeeapp.domain.usecases.EmailSignupUseCase
 import us.docbee.docbeeapp.domain.usecases.GetCountriesUseCase
 import us.docbee.docbeeapp.presentation.login.effects.SignupEffect
@@ -26,6 +27,8 @@ class SignupViewModel(
     private var _effect: MutableSharedFlow<SignupEffect> = MutableSharedFlow()
     val effect: SharedFlow<SignupEffect> = _effect
 
+    private var _fullCountries: MutableStateFlow<List<Country>> = MutableStateFlow(emptyList())
+
     init {
         onEvent(SignupEvents.OnInit)
     }
@@ -38,9 +41,13 @@ class SignupViewModel(
             is SignupEvents.OnChangeEmailField -> onChangeEmail(event.email)
             is SignupEvents.OnChangeDateOfBirthField -> onChangeDateOfBirth(event.dateOfBirth)
             is SignupEvents.OnChangePhoneNumberField -> onChangePhoneNumber(event.phoneNumber)
+            is SignupEvents.OnCountryCodeField -> onChangeCountryCode(event.country)
             is SignupEvents.OnChangePasswordField -> onChangePassword(event.password)
             is SignupEvents.OnResetEvent -> onResetData()
             is SignupEvents.OnSignupClickButton -> performSignup()
+            is SignupEvents.CountryCodeEvent -> sendEffect(SignupEffect.OpenCountrySelector)
+            is SignupEvents.CloseCountryCodeEvent -> onResetCountryCodeSelector()
+            is SignupEvents.OnChangeSearchField -> onSearchCountry(event.search)
         }
     }
 
@@ -53,6 +60,7 @@ class SignupViewModel(
                     selectedCountry = response.find { it.isoCode == COUNTRY_DEFAULT }
                 )
             )
+            _fullCountries.value = response
         }
     }
 
@@ -81,6 +89,40 @@ class SignupViewModel(
         )
     }
 
+    private fun onChangeCountryCode(country: Country) {
+        _state.value = _state.value.copy(
+            phoneState = _state.value.phoneState.copy(
+                selectedCountry = country
+            )
+        )
+        onSearchCountry("")
+        sendEffect(SignupEffect.CloseCountrySelector)
+    }
+
+    private fun onSearchCountry(search: String) {
+        val filteredList = if (search.isEmpty()) {
+            _fullCountries.value
+        } else {
+            _fullCountries.value
+                .filter {
+                    it.callingCode.contains(search, ignoreCase = true)
+                            || it.name.contains(search, ignoreCase = true)
+                }
+        }
+
+        _state.value = _state.value.copy(
+            phoneState = _state.value.phoneState.copy(
+                countries = filteredList,
+                searchCountryValue = search
+            )
+        )
+    }
+
+    private fun onResetCountryCodeSelector() {
+        onSearchCountry("")
+        sendEffect(SignupEffect.CloseCountrySelector)
+    }
+
     private fun onChangePassword(password: String) {
         _state.value = _state.value.copy(password = password)
     }
@@ -91,7 +133,13 @@ class SignupViewModel(
             lastName = "",
             email = "",
             dateOfBirth = "",
-            password = ""
+            password = "",
+            phoneState = _state.value.phoneState.copy(
+                countries = _fullCountries.value,
+                searchCountryValue = "",
+                selectedCountry = _fullCountries.value.find { it.isoCode == COUNTRY_DEFAULT },
+                phoneNumber = ""
+            )
         )
     }
 

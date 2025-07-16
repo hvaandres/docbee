@@ -12,6 +12,10 @@ import androidx.compose.material3.rememberDatePickerState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusDirection
@@ -19,6 +23,8 @@ import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardCapitalization
 import androidx.compose.ui.unit.dp
 import docbee.composeapp.generated.resources.Res
+import docbee.composeapp.generated.resources.modal_country_code_search_title
+import docbee.composeapp.generated.resources.modal_country_code_title
 import docbee.composeapp.generated.resources.signup_form_birth_date_field
 import docbee.composeapp.generated.resources.signup_form_email_field
 import docbee.composeapp.generated.resources.signup_form_lastname_field
@@ -30,10 +36,11 @@ import kotlinx.coroutines.flow.collectLatest
 import org.jetbrains.compose.resources.stringResource
 import org.koin.compose.viewmodel.koinViewModel
 import us.docbee.docbeeapp.presentation.components.PrimaryButton
-import us.docbee.docbeeapp.presentation.components.inputs.countrycodefield.InputCountryCodeFieldText
 import us.docbee.docbeeapp.presentation.components.inputs.InputDateFieldText
 import us.docbee.docbeeapp.presentation.components.inputs.InputFieldText
 import us.docbee.docbeeapp.presentation.components.inputs.InputPasswordFieldText
+import us.docbee.docbeeapp.presentation.components.inputs.countrycodefield.CountrySelectorPicker
+import us.docbee.docbeeapp.presentation.components.inputs.countrycodefield.InputCountryCodeFieldText
 import us.docbee.docbeeapp.presentation.login.effects.SignupEffect
 import us.docbee.docbeeapp.presentation.login.events.SignupEvents
 import us.docbee.docbeeapp.presentation.login.states.SignupState
@@ -47,6 +54,8 @@ fun SignupScreen(
     viewModel: SignupViewModel = koinViewModel()
 ) {
     val state = viewModel.state.collectAsState()
+
+    var isCountrySelectorVisible by remember { mutableStateOf(false) }
 
     LaunchedEffect(!isSignupTabbed) {
         viewModel.onEvent(SignupEvents.OnResetEvent)
@@ -62,6 +71,8 @@ fun SignupScreen(
                     )
                 }
 
+                is SignupEffect.OpenCountrySelector -> isCountrySelectorVisible = true
+                is SignupEffect.CloseCountrySelector -> isCountrySelectorVisible = false
                 is SignupEffect.NavigateToDashboard -> Unit
             }
         }
@@ -91,6 +102,21 @@ fun SignupScreen(
             onSignupClick = {
                 viewModel.onEvent(SignupEvents.OnSignupClickButton)
             },
+            onCountryCodeClicked = {
+                viewModel.onEvent(SignupEvents.CountryCodeEvent)
+            }
+        )
+        CountrySelectorPicker(
+            isVisible = isCountrySelectorVisible,
+            searchValue = state.value.phoneState.searchCountryValue,
+            title = stringResource(Res.string.modal_country_code_title),
+            placeholder = stringResource(Res.string.modal_country_code_search_title),
+            countries = state.value.phoneState.countries,
+            onSearchValueChange = { search ->
+                viewModel.onEvent(SignupEvents.OnChangeSearchField(search))
+            },
+            onDismiss = { viewModel.onEvent(SignupEvents.CloseCountryCodeEvent) },
+            onCountrySelect = { country -> viewModel.onEvent(SignupEvents.OnCountryCodeField(country)) }
         )
     }
 }
@@ -107,6 +133,7 @@ fun SignupContainer(
     onChangePhoneNumber: (String) -> Unit,
     onChangePassword: (String) -> Unit,
     onSignupClick: () -> Unit,
+    onCountryCodeClicked: () -> Unit
 ) {
     Column(modifier = modifier) {
         Row(
@@ -154,7 +181,7 @@ fun SignupContainer(
             focusDirection = FocusDirection.Down,
             imeAction = ImeAction.Next,
             onChangePhoneNumber = onChangePhoneNumber,
-            onCountryCodeClicked = { /* TODO Implement Country Picker */ }
+            onCountryCodeClicked = onCountryCodeClicked
         )
         Spacer(modifier = Modifier.height(16.dp))
         InputPasswordFieldText(

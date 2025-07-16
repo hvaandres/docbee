@@ -16,7 +16,8 @@ class JsonCountryRepository(
             deserializer = ListSerializer(Country.serializer())
         ).map {
             it.copy(
-                flagAssetPath = COUNTRY_BASE_LOCATION_ICON.replace("ISO", it.isoCode.lowercase())
+                flagAssetPath = COUNTRY_BASE_LOCATION_ICON.replace("ISO", it.isoCode.lowercase()),
+                callingCode = it.callingCode.replaceAfter("-", "").replace("-", "")
             )
         }
     }
