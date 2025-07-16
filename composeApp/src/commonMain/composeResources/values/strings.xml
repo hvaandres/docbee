@@ -26,6 +26,11 @@
     <string name="signup_form_password_field">Set Password</string>
     <string name="signup_form_register_label">Register</string>
 
+    <string name="modal_country_code_title">Select a country</string>
+    <string name="modal_country_code_search_title">Search country</string>
+    <string name="modal_country_code_search_not_found">No results found</string>
+    <string name="modal_country_code_search_not_found_description">Try searching with different keywords or check your spelling to find what you’re looking for.</string>
+
     <string name="general_label_or">Or</string>
     <string name="general_label_ok">Ok</string>
     <string name="general_label_cancel">Cancel</string>

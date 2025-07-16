@@ -36,7 +36,7 @@
     "continent_code": "NA",
     "capital_name": "St. John's",
     "currency_code": "XCD",
-    "phone_code": "+1-268",
+    "phone_code": "1-268",
     "three_letter_country_code": "ATG"
   },
   {
@@ -46,7 +46,7 @@
     "continent_code": "NA",
     "capital_name": "The Valley",
     "currency_code": "XCD",
-    "phone_code": "+1-264",
+    "phone_code": "1-264",
     "three_letter_country_code": "AIA"
   },
   {
@@ -86,7 +86,7 @@
     "continent_code": "AN",
     "capital_name": "",
     "currency_code": "",
-    "phone_code": "",
+    "phone_code": "672",
     "three_letter_country_code": "ATA"
   },
   {
@@ -106,7 +106,7 @@
     "continent_code": "OC",
     "capital_name": "Pago Pago",
     "currency_code": "USD",
-    "phone_code": "+1-684",
+    "phone_code": "1-684",
     "three_letter_country_code": "ASM"
   },
   {
@@ -146,7 +146,7 @@
     "continent_code": "EU",
     "capital_name": "Mariehamn",
     "currency_code": "EUR",
-    "phone_code": "+358-18",
+    "phone_code": "358-18",
     "three_letter_country_code": "ALA"
   },
   {
@@ -176,7 +176,7 @@
     "continent_code": "NA",
     "capital_name": "Bridgetown",
     "currency_code": "BBD",
-    "phone_code": "+1-246",
+    "phone_code": "1-246",
     "three_letter_country_code": "BRB"
   },
   {
@@ -266,7 +266,7 @@
     "continent_code": "NA",
     "capital_name": "Hamilton",
     "currency_code": "BMD",
-    "phone_code": "+1-441",
+    "phone_code": "1-441",
     "three_letter_country_code": "BMU"
   },
   {
@@ -316,7 +316,7 @@
     "continent_code": "NA",
     "capital_name": "Nassau",
     "currency_code": "BSD",
-    "phone_code": "+1-242",
+    "phone_code": "1-242",
     "three_letter_country_code": "BHS"
   },
   {
@@ -596,7 +596,7 @@
     "continent_code": "NA",
     "capital_name": "Roseau",
     "currency_code": "XCD",
-    "phone_code": "+1-767",
+    "phone_code": "1-767",
     "three_letter_country_code": "DMA"
   },
   {
@@ -606,7 +606,7 @@
     "continent_code": "NA",
     "capital_name": "Santo Domingo",
     "currency_code": "DOP",
-    "phone_code": "+1-809 and 1-829",
+    "phone_code": "1-809 and 1-829",
     "three_letter_country_code": "DOM"
   },
   {
@@ -776,7 +776,7 @@
     "continent_code": "NA",
     "capital_name": "St. George's",
     "currency_code": "XCD",
-    "phone_code": "+1-473",
+    "phone_code": "1-473",
     "three_letter_country_code": "GRD"
   },
   {
@@ -806,7 +806,7 @@
     "continent_code": "EU",
     "capital_name": "St Peter Port",
     "currency_code": "GBP",
-    "phone_code": "+44-1481",
+    "phone_code": "44-1481",
     "three_letter_country_code": "GGY"
   },
   {
@@ -916,7 +916,7 @@
     "continent_code": "OC",
     "capital_name": "Hagatna",
     "currency_code": "USD",
-    "phone_code": "+1-671",
+    "phone_code": "1-671",
     "three_letter_country_code": "GUM"
   },
   {
@@ -1036,7 +1036,7 @@
     "continent_code": "EU",
     "capital_name": "Douglas, Isle of Man",
     "currency_code": "GBP",
-    "phone_code": "+44-1624",
+    "phone_code": "44-1624",
     "three_letter_country_code": "IMN"
   },
   {
@@ -1106,7 +1106,7 @@
     "continent_code": "EU",
     "capital_name": "Saint Helier",
     "currency_code": "GBP",
-    "phone_code": "+44-1534",
+    "phone_code": "44-1534",
     "three_letter_country_code": "JEY"
   },
   {
@@ -1116,7 +1116,7 @@
     "continent_code": "NA",
     "capital_name": "Kingston",
     "currency_code": "JMD",
-    "phone_code": "+1-876",
+    "phone_code": "1-876",
     "three_letter_country_code": "JAM"
   },
   {
@@ -1196,7 +1196,7 @@
     "continent_code": "NA",
     "capital_name": "Basseterre",
     "currency_code": "XCD",
-    "phone_code": "+1-869",
+    "phone_code": "1-869",
     "three_letter_country_code": "KNA"
   },
   {
@@ -1236,7 +1236,7 @@
     "continent_code": "NA",
     "capital_name": "George Town",
     "currency_code": "KYD",
-    "phone_code": "+1-345",
+    "phone_code": "1-345",
     "three_letter_country_code": "CYM"
   },
   {
@@ -1276,7 +1276,7 @@
     "continent_code": "NA",
     "capital_name": "Castries",
     "currency_code": "XCD",
-    "phone_code": "+1-758",
+    "phone_code": "1-758",
     "three_letter_country_code": "LCA"
   },
   {
@@ -1486,7 +1486,7 @@
     "continent_code": "OC",
     "capital_name": "Saipan",
     "currency_code": "USD",
-    "phone_code": "+1-670",
+    "phone_code": "1-670",
     "three_letter_country_code": "MNP"
   },
   {
@@ -1516,7 +1516,7 @@
     "continent_code": "NA",
     "capital_name": "Plymouth",
     "currency_code": "XCD",
-    "phone_code": "+1-664",
+    "phone_code": "1-664",
     "three_letter_country_code": "MSR"
   },
   {
@@ -1816,7 +1816,7 @@
     "continent_code": "NA",
     "capital_name": "San Juan",
     "currency_code": "USD",
-    "phone_code": "+1-787 and 1-939",
+    "phone_code": "1-787 and 1-939",
     "three_letter_country_code": "PRI"
   },
   {
@@ -2136,7 +2136,7 @@
     "continent_code": "NA",
     "capital_name": "Cockburn Town",
     "currency_code": "USD",
-    "phone_code": "+1-649",
+    "phone_code": "1-649",
     "three_letter_country_code": "TCA"
   },
   {
@@ -2256,7 +2256,7 @@
     "continent_code": "NA",
     "capital_name": "Port of Spain",
     "currency_code": "TTD",
-    "phone_code": "+1-868",
+    "phone_code": "1-868",
     "three_letter_country_code": "TTO"
   },
   {
@@ -2366,7 +2366,7 @@
     "continent_code": "NA",
     "capital_name": "Kingstown",
     "currency_code": "XCD",
-    "phone_code": "+1-784",
+    "phone_code": "1-784",
     "three_letter_country_code": "VCT"
   },
   {
@@ -2386,7 +2386,7 @@
     "continent_code": "NA",
     "capital_name": "Road Town",
     "currency_code": "USD",
-    "phone_code": "+1-284",
+    "phone_code": "1-284",
     "three_letter_country_code": "VGB"
   },
   {
@@ -2396,7 +2396,7 @@
     "continent_code": "NA",
     "capital_name": "Charlotte Amalie",
     "currency_code": "USD",
-    "phone_code": "+1-340",
+    "phone_code": "1-340",
     "three_letter_country_code": "VIR"
   },
   {
