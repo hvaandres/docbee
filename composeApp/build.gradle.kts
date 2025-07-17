@@ -76,6 +76,7 @@ kotlin {
             implementation(libs.coil.compose.network)
             implementation(libs.ktor.client.core)
             implementation(libs.ktor.client.serialization)
+            implementation(libs.androidx.navigation)
         }
         iosMain.dependencies {
             implementation(libs.ktor.client.darwin)
