@@ -7,7 +7,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import org.jetbrains.compose.ui.tooling.preview.Preview
-import us.docbee.docbeeapp.presentation.login.AuthScreen
+import us.docbee.docbeeapp.presentation.navigation.AppNavigator
 
 @Composable
 @Preview
@@ -17,7 +17,7 @@ fun App() {
             modifier = Modifier.fillMaxSize(),
             horizontalAlignment = Alignment.CenterHorizontally,
         ) {
-            AuthScreen()
+            AppNavigator()
         }
     }
 }
