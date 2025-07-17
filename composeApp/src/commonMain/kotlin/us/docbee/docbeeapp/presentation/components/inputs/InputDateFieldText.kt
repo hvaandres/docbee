@@ -94,6 +94,7 @@ fun InputDateFieldText(
                         }
                     },
                 value = value,
+                isError = isError,
                 onValueChange = { },
                 colors = OutlinedTextFieldDefaults.colors(
                     unfocusedBorderColor = Gray300,

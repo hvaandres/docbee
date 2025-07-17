@@ -6,5 +6,6 @@ data class PhoneInputState(
     val countries: List<Country> = emptyList(),
     val searchCountryValue: String = "",
     val selectedCountry: Country? = null,
-    val phoneNumber: String = ""
+    val phoneNumber: String = "",
+    val error: String = ""
 )

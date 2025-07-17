@@ -1,8 +1,6 @@
 package us.docbee.docbeeapp.presentation.login
 
-import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.height
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -16,7 +14,6 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusDirection
 import androidx.compose.ui.text.input.ImeAction
@@ -53,7 +50,7 @@ fun SignupScreen(
     isSignupTabbed: Boolean,
     viewModel: SignupViewModel = koinViewModel()
 ) {
-    val state = viewModel.state.collectAsState()
+    val state = viewModel.uiState.collectAsState()
 
     var isCountrySelectorVisible by remember { mutableStateOf(false) }
 
@@ -136,41 +133,43 @@ fun SignupContainer(
     onCountryCodeClicked: () -> Unit
 ) {
     Column(modifier = modifier) {
-        Row(
-            verticalAlignment = Alignment.CenterVertically,
-            horizontalArrangement = Arrangement.spacedBy(16.dp)
-        ) {
-            InputFieldText(
-                modifier = Modifier.weight(1f),
-                inputLabel = stringResource(Res.string.signup_form_name_field),
-                keyboardCapitalization = KeyboardCapitalization.Words,
-                focusDirection = FocusDirection.Right,
-                imeAction = ImeAction.Next,
-                value = uiState.name,
-                onValueChange = onChangeName
-            )
-            InputFieldText(
-                modifier = Modifier.weight(1f),
-                inputLabel = stringResource(Res.string.signup_form_lastname_field),
-                keyboardCapitalization = KeyboardCapitalization.Words,
-                focusDirection = FocusDirection.Down,
-                imeAction = ImeAction.Next,
-                value = uiState.lastName,
-                onValueChange = onChangeLastName
-            )
-        }
+        InputFieldText(
+            inputLabel = stringResource(Res.string.signup_form_name_field),
+            keyboardCapitalization = KeyboardCapitalization.Words,
+            focusDirection = FocusDirection.Right,
+            imeAction = ImeAction.Next,
+            value = uiState.name,
+            isError = uiState.nameError.isNotEmpty(),
+            errorLabel = uiState.nameError,
+            onValueChange = onChangeName
+        )
+        Spacer(modifier = Modifier.height(16.dp))
+        InputFieldText(
+            inputLabel = stringResource(Res.string.signup_form_lastname_field),
+            keyboardCapitalization = KeyboardCapitalization.Words,
+            focusDirection = FocusDirection.Down,
+            imeAction = ImeAction.Next,
+            value = uiState.lastName,
+            isError = uiState.lastNameError.isNotEmpty(),
+            errorLabel = uiState.lastNameError,
+            onValueChange = onChangeLastName
+        )
         Spacer(modifier = Modifier.height(16.dp))
         InputFieldText(
             inputLabel = stringResource(Res.string.signup_form_email_field),
             focusDirection = FocusDirection.Down,
             imeAction = ImeAction.Next,
             value = uiState.email,
+            isError = uiState.emailError.isNotEmpty(),
+            errorLabel = uiState.emailError,
             onValueChange = onChangeEmail
         )
         Spacer(modifier = Modifier.height(16.dp))
         InputDateFieldText(
             value = uiState.dateOfBirth,
             inputLabel = stringResource(Res.string.signup_form_birth_date_field),
+            isError = uiState.dateOfBirthError.isNotEmpty(),
+            errorLabel = uiState.dateOfBirthError,
             datePickerState = rememberDatePickerState(),
             onSelectedDate = onChangeDateOfBirth
         )
@@ -180,6 +179,8 @@ fun SignupContainer(
             inputLabel = stringResource(Res.string.signup_form_phone_field),
             focusDirection = FocusDirection.Down,
             imeAction = ImeAction.Next,
+            isError = uiState.phoneState.error.isNotEmpty(),
+            errorLabel = uiState.phoneState.error,
             onChangePhoneNumber = onChangePhoneNumber,
             onCountryCodeClicked = onCountryCodeClicked
         )
@@ -187,6 +188,8 @@ fun SignupContainer(
         InputPasswordFieldText(
             inputLabel = stringResource(Res.string.signup_form_password_field),
             value = uiState.password,
+            isError = uiState.passwordError.isNotEmpty(),
+            errorLabel = uiState.passwordError,
             onValueChange = onChangePassword,
             imeAction = ImeAction.Done
         )

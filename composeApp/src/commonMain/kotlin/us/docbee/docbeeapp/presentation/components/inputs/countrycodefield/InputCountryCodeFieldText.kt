@@ -88,6 +88,7 @@ fun InputCountryCodeFieldText(
                 },
             value = state.phoneNumber,
             onValueChange = onChangePhoneNumber,
+            isError = isError,
             colors = OutlinedTextFieldDefaults.colors(
                 unfocusedBorderColor = Gray300,
                 focusedBorderColor = Blue100,
@@ -114,6 +115,7 @@ fun InputCountryCodeFieldText(
                         .fillMaxHeight()
                         .padding(start = 12.dp),
                     hasFocus = hasFocus,
+                    isError = isError,
                     icon = state.selectedCountry?.flagAssetPath ?: COUNTRY_DEFAULT_ICON
                 )
             },
@@ -134,7 +136,8 @@ fun InputCountryCodeFieldText(
 fun CountryCodeIcon(
     modifier: Modifier = Modifier,
     icon: String,
-    hasFocus: Boolean
+    hasFocus: Boolean,
+    isError: Boolean
 ) {
     Box(modifier = modifier) {
         Row(
@@ -159,7 +162,11 @@ fun CountryCodeIcon(
         VerticalDivider(
             modifier = Modifier.height(56.dp).align(Alignment.CenterEnd),
             thickness = if (!hasFocus) 1.dp else 2.dp,
-            color = if (!hasFocus) Gray300 else Blue100
+            color = when {
+                isError -> MaterialTheme.colorScheme.error
+                !hasFocus -> Gray300
+                else -> Blue100
+            }
         )
     }
 }

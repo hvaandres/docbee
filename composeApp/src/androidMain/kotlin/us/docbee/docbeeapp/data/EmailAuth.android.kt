@@ -45,7 +45,7 @@ class AndroidEmailAuth : EmailAuth {
         } catch (ex: FirebaseAuthWeakPasswordException) {
             UserCreateResponse(errorCode = "ERROR_WEAK_PASSWORD", errorMessage = ex.localizedMessage)
         } catch (ex: FirebaseException) {
-            UserCreateResponse(errorCode = "ERROR_WEAK_PASSWORD", errorMessage = ex.localizedMessage)
+            UserCreateResponse(errorCode = "UNKNOWN_ERROR", errorMessage = ex.localizedMessage)
         } catch (ex: Exception) {
             UserCreateResponse(errorCode = "UNKNOWN_ERROR", errorMessage = ex.localizedMessage)
         }
