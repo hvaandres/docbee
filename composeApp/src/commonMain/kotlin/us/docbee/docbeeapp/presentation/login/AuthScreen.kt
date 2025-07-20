@@ -72,7 +72,7 @@ fun AuthScreen(navController: NavController) {
             hostState = snackbarHostState,
             modifier = Modifier
                 .align(Alignment.BottomCenter)
-                .padding(16.dp)
+                .windowInsetsPadding(WindowInsets.navigationBars)
         )
     }
 }

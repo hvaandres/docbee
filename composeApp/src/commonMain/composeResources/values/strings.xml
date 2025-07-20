@@ -25,6 +25,19 @@
     <string name="signup_form_phone_field">Phone Number</string>
     <string name="signup_form_password_field">Set Password</string>
     <string name="signup_form_register_label">Register</string>
+    <string name="signup_form_register_name_error">Please enter your name.</string>
+    <string name="signup_form_register_lastname_error">Please enter your lastname.</string>
+    <string name="signup_form_register_email_error">Please enter a valid email address.</string>
+    <string name="signup_form_register_date_birth_error">Please enter a date of birth.</string>
+    <string name="signup_form_register_password_empty_error">Please enter your password.</string>
+    <string name="signup_form_register_password_length_error">Password must be at least 8 characters long.</string>
+    <string name="signup_form_register_password_no_number_error">Password must include at least one number.</string>
+    <string name="signup_form_register_password_no_uppercase_lowercase_error">Password must include both uppercase and lowercase letters.</string>
+    <string name="signup_form_register_password_no_special_chars_error">Password must include at least one special character.</string>
+    <string name="signup_form_register_phone_number_empty_error">Please enter your phone number.</string>
+    <string name="signup_form_register_phone_number_invalid_number_error">Please enter a valid phone number.</string>
+    <string name="signup_form_register_email_already_used_error">This email is already registered. Please use a different email or log in.</string>
+
 
     <string name="modal_country_code_title">Select a country</string>
     <string name="modal_country_code_search_title">Search country</string>
@@ -34,4 +47,5 @@
     <string name="general_label_or">Or</string>
     <string name="general_label_ok">Ok</string>
     <string name="general_label_cancel">Cancel</string>
+    <string name="general_unknown_error_label">An unexpected error occurred. Please try again.</string>
 </resources>
