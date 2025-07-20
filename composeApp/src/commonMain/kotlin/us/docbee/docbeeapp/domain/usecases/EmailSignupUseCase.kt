@@ -7,6 +7,9 @@ import us.docbee.docbeeapp.domain.models.SimpleTextValidation
 import us.docbee.docbeeapp.domain.models.UserSignupResult
 import us.docbee.docbeeapp.domain.models.signup.SignUpParams
 import us.docbee.docbeeapp.domain.repositories.EmailAuthRepository
+import us.docbee.docbeeapp.utils.PASSWORD_MINIMUM_LENGTH
+import us.docbee.docbeeapp.utils.PHONE_MAXIMUM_LENGTH
+import us.docbee.docbeeapp.utils.PHONE_MINIMUM_LENGTH
 import us.docbee.docbeeapp.utils.hasSpecialChars
 import us.docbee.docbeeapp.utils.isValidEmail
 
@@ -65,7 +68,7 @@ class EmailSignupUseCase(
     private fun validatePhoneNumber(phone: String): SimpleTextValidation {
         return when {
             phone.isEmpty() -> SimpleTextValidation.EmptyValue
-            phone.length < 8 || phone.length > 13 -> SimpleTextValidation.InvalidLength
+            phone.length < PHONE_MINIMUM_LENGTH || phone.length > PHONE_MAXIMUM_LENGTH -> SimpleTextValidation.InvalidLength
             else -> SimpleTextValidation.Valid
         }
     }
@@ -73,7 +76,7 @@ class EmailSignupUseCase(
     private fun validatePassword(password: String): PasswordValidation {
         return when {
             password.isEmpty() -> PasswordValidation.EmptyValue
-            password.length < 8 -> PasswordValidation.InvalidLength
+            password.length < PASSWORD_MINIMUM_LENGTH -> PasswordValidation.InvalidLength
             !password.any { it.isLowerCase() } || !password.any { it.isUpperCase() } -> PasswordValidation.NoLowercaseAndUppercase
             !password.any { it.isDigit() } -> PasswordValidation.NoNumber
             !hasSpecialChars(password) -> PasswordValidation.NoSpecialCharacter
