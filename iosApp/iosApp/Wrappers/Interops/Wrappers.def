@@ -1,0 +1,3 @@
+language = Objective-C
+headers = UserRemoteAuthentication.h
+package = us.docbee.docbeeapp.wrappers
