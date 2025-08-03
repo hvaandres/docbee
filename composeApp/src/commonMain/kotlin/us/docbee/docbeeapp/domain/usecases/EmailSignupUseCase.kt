@@ -1,5 +1,7 @@
 package us.docbee.docbeeapp.domain.usecases
 
+import kotlinx.datetime.Clock
+import us.docbee.docbeeapp.domain.mappers.toUserProfile
 import us.docbee.docbeeapp.domain.models.DateOfBirthValidation
 import us.docbee.docbeeapp.domain.models.EmailTextValidation
 import us.docbee.docbeeapp.domain.models.PasswordValidation
@@ -7,6 +9,7 @@ import us.docbee.docbeeapp.domain.models.SimpleTextValidation
 import us.docbee.docbeeapp.domain.models.UserSignupResult
 import us.docbee.docbeeapp.domain.models.signup.SignUpParams
 import us.docbee.docbeeapp.domain.repositories.EmailAuthRepository
+import us.docbee.docbeeapp.domain.repositories.UserRepository
 import us.docbee.docbeeapp.utils.PASSWORD_MINIMUM_LENGTH
 import us.docbee.docbeeapp.utils.PHONE_MAXIMUM_LENGTH
 import us.docbee.docbeeapp.utils.PHONE_MINIMUM_LENGTH
@@ -14,7 +17,8 @@ import us.docbee.docbeeapp.utils.hasSpecialChars
 import us.docbee.docbeeapp.utils.isValidEmail
 
 class EmailSignupUseCase(
-    private val emailAuthRepository: EmailAuthRepository
+    private val emailAuthRepository: EmailAuthRepository,
+    private val userDataRepository: UserRepository
 ) {
     suspend fun createUser(userInformation: SignUpParams): UserSignupResult {
         val nameValidation = validateNames(userInformation.name)
@@ -38,7 +42,19 @@ class EmailSignupUseCase(
             )
         }
 
-        return emailAuthRepository.signup(userInformation.email, userInformation.password)
+        val signupResult =
+            emailAuthRepository.signup(userInformation.email, userInformation.password)
+
+        if (signupResult is UserSignupResult.Success) {
+            userDataRepository.saveUserProfile(
+                userInformation.toUserProfile(
+                    uid = signupResult.uid,
+                    createdAd = Clock.System.now().toEpochMilliseconds()
+                )
+            )
+        }
+
+        return signupResult
     }
 
     private fun validateNames(name: String): SimpleTextValidation {
