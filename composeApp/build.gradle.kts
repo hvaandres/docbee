@@ -8,29 +8,11 @@ plugins {
     alias(libs.plugins.androidApplication)
     alias(libs.plugins.composeMultiplatform)
     alias(libs.plugins.composeCompiler)
-    alias(libs.plugins.kotlinCocoapods)
     alias(libs.plugins.googleServices)
     alias(libs.plugins.kotlinSerializable)
 }
 
 kotlin {
-    cocoapods {
-        version = "1.0.0"
-        name = "TealAppPod"
-        homepage = "https://github.com/hvaandres/docbee"
-        summary = "Shared business logic for MyApp, built with Kotlin Multiplatform."
-        ios.deploymentTarget = "16.0"
-
-        pod("FirebaseAuth") {
-            extraOpts += listOf("-compiler-option", "-fmodules")
-        }
-
-        pod("FirebaseCore")
-
-        xcodeConfigurationToNativeBuildType["DEBUG"] = NativeBuildType.DEBUG
-        xcodeConfigurationToNativeBuildType["RELEASE"] = NativeBuildType.RELEASE
-    }
-
     androidTarget {
         @OptIn(ExperimentalKotlinGradlePluginApi::class)
         compilerOptions {
@@ -43,9 +25,17 @@ kotlin {
         iosArm64(),
         iosSimulatorArm64()
     ).forEach { iosTarget ->
+        iosTarget.compilations.getByName("main") {
+            cinterops.create("Wrappers") {
+                definitionFile.set(file("${rootDir.absolutePath}/iosApp/iosApp/Wrappers/Interops/Wrappers.def"))
+                includeDirs.allHeaders("${rootDir.absolutePath}/iosApp/iosApp/Wrappers/Interops/")
+            }
+
+        }
         iosTarget.binaries.framework {
             baseName = "ComposeApp"
             isStatic = true
+            linkerOpts("-ObjC")
         }
     }
     
