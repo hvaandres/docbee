@@ -7,3 +7,4 @@ const val COUNTRY_DEFAULT_ICON: String = "files/flags/us.png"
 const val PHONE_MINIMUM_LENGTH = 8
 const val PHONE_MAXIMUM_LENGTH = 13
 const val PASSWORD_MINIMUM_LENGTH = 8
+const val FIRESTORE_COLLECTION_USER = "users"
