@@ -3,6 +3,7 @@ package us.docbee.docbeeapp.presentation.theme
 import androidx.compose.ui.graphics.Color
 
 val White = Color(0xFFFFFFFF)
+val white100 = Color(0xFFDDDDDD)
 val Black = Color(0xFF000000)
 val Black100 = Color(0xFF1A1C1E)
 val Gray = Color(0xFF6C7278)
@@ -13,4 +14,5 @@ val Gray400 = Color(0xFFACB5BB)
 val Gray600 = Color(0xFF4F7A96)
 val Blue100 = Color(0xFF232447)
 val Blue200 = Color(0xFF4D81E7)
+val Green100 = Color(0xFF2BCCB9)
 val Transparent = Color(0x00FFFFFF)

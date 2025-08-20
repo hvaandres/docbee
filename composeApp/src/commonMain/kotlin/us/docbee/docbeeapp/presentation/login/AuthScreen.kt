@@ -25,20 +25,23 @@ import androidx.compose.material3.SnackbarHost
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
+import androidx.compose.runtime.snapshotFlow
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import docbee.composeapp.generated.resources.Res
-import docbee.composeapp.generated.resources.compose_multiplatform
 import docbee.composeapp.generated.resources.general_label_or
 import docbee.composeapp.generated.resources.ic_apple
 import docbee.composeapp.generated.resources.ic_google
+import docbee.composeapp.generated.resources.ic_logo
 import docbee.composeapp.generated.resources.login_description_label
 import docbee.composeapp.generated.resources.login_form_apple_login
 import docbee.composeapp.generated.resources.login_form_google_login
@@ -46,6 +49,7 @@ import docbee.composeapp.generated.resources.login_header_label
 import docbee.composeapp.generated.resources.login_tabs_login_label
 import docbee.composeapp.generated.resources.login_tabs_signup_label
 import docbee.composeapp.generated.resources.login_title_label
+import org.jetbrains.compose.resources.painterResource
 import org.jetbrains.compose.resources.stringResource
 import org.jetbrains.compose.resources.vectorResource
 import us.docbee.docbeeapp.presentation.components.PrimaryButton
@@ -57,6 +61,7 @@ import us.docbee.docbeeapp.presentation.theme.Gray
 import us.docbee.docbeeapp.presentation.theme.Gray100
 import us.docbee.docbeeapp.presentation.theme.Gray200
 import us.docbee.docbeeapp.presentation.theme.White
+import us.docbee.docbeeapp.utils.ui.SetStatusBar
 
 @Composable
 fun AuthScreen(navController: NavController) {
@@ -68,7 +73,12 @@ fun AuthScreen(navController: NavController) {
             isLoginTab = isLoginTabSelected,
             onTabClicked = { isLoginTab -> isLoginTabSelected = isLoginTab },
             snackbarState = snackbarHostState,
-            onAuthenticationSuccess = { navController.navigate(DashboardRoute) }
+            onAuthenticationSuccess = {
+                navController.navigate(DashboardRoute) {
+                    popUpTo(0) { inclusive = true }
+                    launchSingleTop = true
+                }
+            }
         )
         SnackbarHost(
             hostState = snackbarHostState,
@@ -86,10 +96,21 @@ fun AuthScreenContent(
     snackbarState: SnackbarHostState,
     onAuthenticationSuccess: () -> Unit
 ) {
+    val scrollState = rememberScrollState()
+    val headerHeight by remember { mutableStateOf(364.dp) }
+    val headerHeightPx = with(LocalDensity.current) { headerHeight.toPx() }
+    var isDarkMode by remember { mutableStateOf(true) }
+
+    LaunchedEffect(scrollState) {
+        snapshotFlow { scrollState.value }
+            .collect { offset -> isDarkMode = offset < headerHeightPx }
+    }
+
+    SetStatusBar(isDarkMode = isDarkMode)
     Column(
         modifier = Modifier.fillMaxSize()
             .windowInsetsPadding(WindowInsets.navigationBars)
-            .verticalScroll(rememberScrollState()),
+            .verticalScroll(scrollState),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         LoginHeader(
@@ -152,7 +173,7 @@ fun LoginHeader(modifier: Modifier = Modifier) {
     ) {
         Image(
             modifier = Modifier.size(209.dp),
-            imageVector = vectorResource(Res.drawable.compose_multiplatform),
+            painter = painterResource(Res.drawable.ic_logo),
             contentDescription = null
         )
         Text(

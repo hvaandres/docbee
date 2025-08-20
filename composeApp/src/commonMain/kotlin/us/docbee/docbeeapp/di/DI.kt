@@ -18,6 +18,7 @@ import us.docbee.docbeeapp.domain.repositories.UserRepository
 import us.docbee.docbeeapp.domain.usecases.EmailAuthUseCase
 import us.docbee.docbeeapp.domain.usecases.EmailSignupUseCase
 import us.docbee.docbeeapp.domain.usecases.GetCountriesUseCase
+import us.docbee.docbeeapp.presentation.dashboard.DashboardViewModel
 import us.docbee.docbeeapp.presentation.login.LoginViewModel
 import us.docbee.docbeeapp.presentation.login.SignupViewModel
 
@@ -42,6 +43,7 @@ val usesCasesModule = module {
 val viewModelsModule = module {
     viewModelOf(::LoginViewModel)
     viewModelOf(::SignupViewModel)
+    viewModelOf(::DashboardViewModel)
 }
 
 fun initKoin() {
