@@ -49,6 +49,7 @@ import docbee.composeapp.generated.resources.login_title_label
 import org.jetbrains.compose.resources.stringResource
 import org.jetbrains.compose.resources.vectorResource
 import us.docbee.docbeeapp.presentation.components.PrimaryButton
+import us.docbee.docbeeapp.presentation.navigation.DashboardRoute
 import us.docbee.docbeeapp.presentation.theme.Black
 import us.docbee.docbeeapp.presentation.theme.Black100
 import us.docbee.docbeeapp.presentation.theme.Blue100
@@ -66,7 +67,8 @@ fun AuthScreen(navController: NavController) {
         AuthScreenContent(
             isLoginTab = isLoginTabSelected,
             onTabClicked = { isLoginTab -> isLoginTabSelected = isLoginTab },
-            snackbarState = snackbarHostState
+            snackbarState = snackbarHostState,
+            onAuthenticationSuccess = { navController.navigate(DashboardRoute) }
         )
         SnackbarHost(
             hostState = snackbarHostState,
@@ -81,7 +83,8 @@ fun AuthScreen(navController: NavController) {
 fun AuthScreenContent(
     isLoginTab: Boolean,
     onTabClicked: (isLoginSelected: Boolean) -> Unit,
-    snackbarState: SnackbarHostState
+    snackbarState: SnackbarHostState,
+    onAuthenticationSuccess: () -> Unit
 ) {
     Column(
         modifier = Modifier.fillMaxSize()
@@ -127,12 +130,14 @@ fun AuthScreenContent(
             LoginScreen(
                 modifier = Modifier.fillMaxWidth().padding(horizontal = 42.dp),
                 snackbarState = snackbarState,
-                isLoginTabbed = isLoginTab
+                isLoginTabbed = isLoginTab,
+                onAuthenticationSuccess = onAuthenticationSuccess
             )
             SignupScreen(
                 modifier = Modifier.fillMaxWidth().padding(horizontal = 42.dp),
                 snackbarState = snackbarState,
-                isSignupTabbed = !isLoginTab
+                isSignupTabbed = !isLoginTab,
+                onAuthenticationSuccess = onAuthenticationSuccess
             )
             LoginSocialButtons(modifier = Modifier.fillMaxWidth().padding(horizontal = 42.dp))
         }

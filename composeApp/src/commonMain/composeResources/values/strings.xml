@@ -44,6 +44,23 @@
     <string name="modal_country_code_search_not_found">No results found</string>
     <string name="modal_country_code_search_not_found_description">Try searching with different keywords or check your spelling to find what you’re looking for.</string>
 
+    <string name="dashboard_home_title">Home</string>
+    <string name="dashboard_directory_title">Directory</string>
+    <string name="dashboard_history_title">History</string>
+    <string name="dashboard_settings_title">Settings</string>
+
+    <string name="home_emergency_app_bar_title">Emergency</string>
+    <string name="home_emergency_app_bar_subtitle">Please inform your family members about your emergency</string>
+
+    <string name="home_directory_app_bar_title">Directory</string>
+    <string name="home_directory_app_bar_subtitle">Please check and review your emergency contacts</string>
+
+    <string name="home_history_app_bar_title">History</string>
+    <string name="home_history_app_bar_subtitle">History check</string>
+
+    <string name="home_settings_app_bar_title">Settings</string>
+    <string name="home_settings_app_bar_subtitle">Modify your perfil and settings</string>
+
     <string name="general_label_or">Or</string>
     <string name="general_label_ok">Ok</string>
     <string name="general_label_cancel">Cancel</string>

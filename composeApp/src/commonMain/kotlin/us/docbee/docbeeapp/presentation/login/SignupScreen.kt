@@ -48,6 +48,7 @@ fun SignupScreen(
     modifier: Modifier = Modifier,
     snackbarState: SnackbarHostState,
     isSignupTabbed: Boolean,
+    onAuthenticationSuccess: () -> Unit,
     viewModel: SignupViewModel = koinViewModel()
 ) {
     val state = viewModel.uiState.collectAsState()
@@ -70,7 +71,7 @@ fun SignupScreen(
 
                 is SignupEffect.OpenCountrySelector -> isCountrySelectorVisible = true
                 is SignupEffect.CloseCountrySelector -> isCountrySelectorVisible = false
-                is SignupEffect.NavigateToDashboard -> Unit
+                is SignupEffect.NavigateToDashboard -> onAuthenticationSuccess()
             }
         }
     }

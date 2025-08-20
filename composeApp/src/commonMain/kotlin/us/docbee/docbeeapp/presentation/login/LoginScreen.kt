@@ -45,6 +45,7 @@ fun LoginScreen(
     modifier: Modifier = Modifier,
     snackbarState: SnackbarHostState,
     isLoginTabbed: Boolean,
+    onAuthenticationSuccess: () -> Unit,
     viewModel: LoginViewModel = koinViewModel()
 ) {
     val state by viewModel.state.collectAsState()
@@ -64,7 +65,7 @@ fun LoginScreen(
                 }
 
                 is LoginEffect.NavigateToForgotPassword -> Unit
-                is LoginEffect.NavigateToDashboard -> Unit
+                is LoginEffect.NavigateToDashboard -> onAuthenticationSuccess()
             }
         }
     }
