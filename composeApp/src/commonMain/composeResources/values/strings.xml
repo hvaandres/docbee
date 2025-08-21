@@ -51,6 +51,8 @@
 
     <string name="home_emergency_app_bar_title">Emergency</string>
     <string name="home_emergency_app_bar_subtitle">Please inform your family members about your emergency</string>
+    <string name="home_emergency_button_title">Tap 3 times on screen to alert</string>
+    <string name="home_emergency_button_description">Your 5 contacts will have your current location, and medications</string>
 
     <string name="home_directory_app_bar_title">Directory</string>
     <string name="home_directory_app_bar_subtitle">Please check and review your emergency contacts</string>

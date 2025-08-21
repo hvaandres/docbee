@@ -29,6 +29,7 @@ import us.docbee.docbeeapp.presentation.theme.White
 fun Toolbar(
     title: StringResource,
     subtitle: StringResource,
+    isBackVisible: Boolean,
     onBackClicked: () -> Unit
 ) {
     Box(
@@ -36,15 +37,17 @@ fun Toolbar(
             .padding(top = 32.dp, bottom = 24.dp)
             .fillMaxWidth()
     ) {
-        Icon(
-            modifier = Modifier
-                .padding(start = 42.dp)
-                .size(24.dp)
-                .clickable { onBackClicked() },
-            imageVector = Icons.AutoMirrored.Filled.ArrowBack,
-            contentDescription = null,
-            tint = White
-        )
+        if (isBackVisible) {
+            Icon(
+                modifier = Modifier
+                    .padding(start = 42.dp)
+                    .size(24.dp)
+                    .clickable { onBackClicked() },
+                imageVector = Icons.AutoMirrored.Filled.ArrowBack,
+                contentDescription = null,
+                tint = White
+            )
+        }
         Column(
             modifier = Modifier.align(Alignment.Center).padding(horizontal = 64.dp),
             horizontalAlignment = Alignment.CenterHorizontally
