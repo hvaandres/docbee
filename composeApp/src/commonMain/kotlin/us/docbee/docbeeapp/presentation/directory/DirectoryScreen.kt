@@ -1,78 +1,53 @@
 package us.docbee.docbeeapp.presentation.directory
 
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.items
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.automirrored.filled.List
-import androidx.compose.material3.Card
-import androidx.compose.material3.CardDefaults
-import androidx.compose.material3.Icon
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Text
+import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.Alignment
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
+import docbee.composeapp.generated.resources.Res
+import docbee.composeapp.generated.resources.general_label_search
+import org.jetbrains.compose.resources.stringResource
+import us.docbee.docbeeapp.presentation.components.ContactCard
+import us.docbee.docbeeapp.presentation.components.inputs.InputSearchField
+import us.docbee.docbeeapp.presentation.directory.events.DirectoryEvents
 
 @Composable
-fun DirectoryScreen(navController: NavHostController) {
-    val sampleFolders = listOf(
-        "Documents",
-        "Images",
-        "Projects",
-        "Archive",
-        "Templates",
-        "Shared"
-    )
-
-    LazyColumn(
-        modifier = Modifier.fillMaxSize(),
-        verticalArrangement = Arrangement.spacedBy(8.dp)
+fun DirectoryScreen(navController: NavHostController, viewModel: DirectoryViewModel) {
+    val state by viewModel.uiState.collectAsState()
+    Column(
+        modifier = Modifier.fillMaxSize()
+            .padding(vertical = 24.dp, horizontal = 48.dp)
     ) {
-        item {
-            Text(
-                text = "Directory",
-                style = MaterialTheme.typography.headlineMedium,
-                color = MaterialTheme.colorScheme.onBackground,
-                modifier = Modifier.padding(bottom = 16.dp)
-            )
-        }
-
-        items(sampleFolders) { folder ->
-            Card(
-                modifier = Modifier.fillMaxWidth(),
-                colors = CardDefaults.cardColors(
-                    containerColor = MaterialTheme.colorScheme.surfaceVariant
+        InputSearchField(
+            modifier = Modifier.fillMaxWidth(),
+            placeholder = stringResource(Res.string.general_label_search),
+            value = state.contactSearch,
+            onValueChange = { search -> viewModel.onEvent(DirectoryEvents.OnSearchEvent(search)) }
+        )
+        Spacer(modifier = Modifier.height(24.dp))
+        LazyColumn {
+            itemsIndexed(items = state.contacts) { index, item ->
+                ContactCard(
+                    gender = item.contact.gender,
+                    fullName = "${item.contact.firstName} ${item.contact.lastName}",
+                    address = item.contact.address,
+                    position = index + 1,
+                    swipeState = item.swipeState,
+                    onArchive = { viewModel.onEvent(DirectoryEvents.OnArchiveContactEvent(item.contact.uid)) },
+                    onDelete = { viewModel.onEvent(DirectoryEvents.OnDeleteContactEvent(item.contact.uid)) },
+                    onClick = { viewModel.onEvent(DirectoryEvents.OnClickContactEvent(item.contact.uid)) },
+                    onSwipeChanged = { swipe -> viewModel.onEvent(DirectoryEvents.OnSwipeContactEvent(item.contact.uid, swipe)) }
                 )
-            ) {
-                Row(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(16.dp),
-                    verticalAlignment = Alignment.CenterVertically
-                ) {
-                    Icon(
-                        imageVector = Icons.AutoMirrored.Filled.List,
-                        contentDescription = "Folder",
-                        tint = MaterialTheme.colorScheme.primary,
-                        modifier = Modifier.size(24.dp)
-                    )
-                    Spacer(modifier = Modifier.width(12.dp))
-                    Text(
-                        text = folder,
-                        style = MaterialTheme.typography.bodyLarge,
-                        color = MaterialTheme.colorScheme.onSurfaceVariant
-                    )
-                }
             }
         }
     }

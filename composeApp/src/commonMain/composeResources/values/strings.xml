@@ -66,5 +66,8 @@
     <string name="general_label_or">Or</string>
     <string name="general_label_ok">Ok</string>
     <string name="general_label_cancel">Cancel</string>
+    <string name="general_label_search">Search</string>
     <string name="general_unknown_error_label">An unexpected error occurred. Please try again.</string>
+    <string name="general_label_delete">Delete</string>
+    <string name="general_label_archive">Archive</string>
 </resources>
