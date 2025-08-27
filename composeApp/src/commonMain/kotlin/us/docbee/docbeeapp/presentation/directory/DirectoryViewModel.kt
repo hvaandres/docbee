@@ -79,7 +79,17 @@ class DirectoryViewModel :
     }
 
     private fun clickContact(uid: String) {
-
+        updateState {
+            copy(
+                contacts = contacts.map { item ->
+                    if (item.uid == uid) {
+                        item.copy(swipeState = SwipeState.Closed)
+                    } else {
+                        item
+                    }
+                }
+            )
+        }
     }
 
     private fun dummyContacts(): List<ContactState> {
