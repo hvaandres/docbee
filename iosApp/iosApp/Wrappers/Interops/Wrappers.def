@@ -1,3 +1,3 @@
 language = Objective-C
-headers = UserRemoteAuthentication.h UserRemoteStorage.h
+headers = UserRemoteAuthentication.h UserRemoteStorage.h ContactRemoteStorage.h
 package = us.docbee.docbeeapp.wrappers

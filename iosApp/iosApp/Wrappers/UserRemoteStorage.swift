@@ -7,6 +7,7 @@
 
 import Foundation
 import FirebaseFirestore
+import FirebaseAuth
 
 @objc(UserRemoteStorage)
 public class UserRemoteStorage: NSObject {
@@ -26,5 +27,9 @@ public class UserRemoteStorage: NSObject {
             .setData(data) { error in
                 completion(error as NSError?)
             }
+    }
+    
+    @objc public func fetchUserUid() -> String? {
+        return Auth.auth().currentUser?.uid
     }
 }
