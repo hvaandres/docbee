@@ -3,6 +3,7 @@ package us.docbee.docbeeapp.data.datasources
 import kotlinx.cinterop.ExperimentalForeignApi
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.suspendCancellableCoroutine
+import us.docbee.docbeeapp.data.entities.UserUidResponse
 import us.docbee.docbeeapp.domain.mappers.toMap
 import us.docbee.docbeeapp.domain.models.user.UserProfile
 import us.docbee.docbeeapp.utils.FIRESTORE_COLLECTION_USER
@@ -21,6 +22,15 @@ class IosUserRemoteDataSource : UserRemoteDataSource {
             ) { error ->
                 thread.resume(Unit, null)
             }
+        }
+    }
+
+    override suspend fun fetchUserUid(): UserUidResponse {
+        val uid = remote.fetchUserUid()
+        return if (uid != null) {
+            UserUidResponse(uid = uid)
+        } else {
+            UserUidResponse(errorCode = "Unauthorized")
         }
     }
 }

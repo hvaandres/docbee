@@ -15,6 +15,8 @@ NS_ASSUME_NONNULL_BEGIN
                        profile:(NSDictionary *)profile
                     completion:(void (^)(NSError * _Nullable error))completion;
 
+- (NSString * _Nullable)fetchUserUid;
+
 @end
 
 NS_ASSUME_NONNULL_END

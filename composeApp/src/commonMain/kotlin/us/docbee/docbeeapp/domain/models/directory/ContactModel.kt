@@ -1,7 +1,7 @@
 package us.docbee.docbeeapp.domain.models.directory
 
 data class ContactModel(
-    val uid: String = "",
+    var uid: String = "",
     val firstName: String = "",
     val lastName: String = "",
     val email: String = "",

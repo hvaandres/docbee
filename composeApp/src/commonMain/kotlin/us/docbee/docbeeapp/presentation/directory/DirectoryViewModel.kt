@@ -1,6 +1,9 @@
 package us.docbee.docbeeapp.presentation.directory
 
-import us.docbee.docbeeapp.domain.models.directory.ContactModel
+import androidx.lifecycle.viewModelScope
+import kotlinx.coroutines.launch
+import us.docbee.docbeeapp.domain.models.directory.ContactResult
+import us.docbee.docbeeapp.domain.usecases.GetUserContactsUseCase
 import us.docbee.docbeeapp.presentation.components.SwipeState
 import us.docbee.docbeeapp.presentation.core.BaseViewModel
 import us.docbee.docbeeapp.presentation.directory.effects.DirectoryEffects
@@ -8,8 +11,9 @@ import us.docbee.docbeeapp.presentation.directory.events.DirectoryEvents
 import us.docbee.docbeeapp.presentation.directory.states.ContactState
 import us.docbee.docbeeapp.presentation.directory.states.DirectoryState
 
-class DirectoryViewModel :
-    BaseViewModel<DirectoryState, DirectoryEvents, DirectoryEffects>(DirectoryState()) {
+class DirectoryViewModel(
+    private val userContacts: GetUserContactsUseCase
+) : BaseViewModel<DirectoryState, DirectoryEvents, DirectoryEffects>(DirectoryState()) {
 
     init {
         onEvent(DirectoryEvents.OnInitEvent)
@@ -41,8 +45,23 @@ class DirectoryViewModel :
     }
 
     private fun initDirectory() {
-        updateState {
-            copy(contacts = dummyContacts())
+        viewModelScope.launch {
+            when(val response = userContacts.fetchUserContacts()) {
+                is ContactResult.Success -> {
+                    updateState {
+                        copy(
+                            contacts = response.list.map { ContactState(uid = it.uid, contact = it) },
+                            isError = false
+                        )
+                    }
+                }
+                is ContactResult.Empty -> {
+                    updateState { copy(contacts = emptyList(), isError = false) }
+                }
+                is ContactResult.Error, ContactResult.Unauthorized -> {
+                    updateState { copy(isError = true) }
+                }
+            }
         }
     }
 
@@ -90,70 +109,5 @@ class DirectoryViewModel :
                 }
             )
         }
-    }
-
-    private fun dummyContacts(): List<ContactState> {
-        return listOf(
-            ContactState(
-                uid = "1",
-                contact = ContactModel(
-                    uid = "1",
-                    firstName = "Alice",
-                    lastName = "Johnson",
-                    email = "alice.johnson@example.com",
-                    phoneNumber = "+1 555-1234",
-                    address = "123 Maple Street, Springfield",
-                    gender = "F"
-                )
-            ),
-            ContactState(
-                uid = "2",
-                contact = ContactModel(
-                    uid = "2",
-                    firstName = "Bob",
-                    lastName = "Smith",
-                    email = "bob.smith@example.com",
-                    phoneNumber = "+1 555-5678",
-                    address = "456 Oak Avenue, Shelbyville",
-                    gender = "M"
-                )
-            ),
-            ContactState(
-                uid = "3",
-                contact = ContactModel(
-                    uid = "3",
-                    firstName = "Carla",
-                    lastName = "Mendoza",
-                    email = "carla.mendoza@example.com",
-                    phoneNumber = "+1 555-2468",
-                    address = "789 Pine Road, Ogdenville",
-                    gender = "F"
-                )
-            ),
-            ContactState(
-                uid = "4",
-                contact = ContactModel(
-                    uid = "4",
-                    firstName = "David",
-                    lastName = "Lee",
-                    email = "david.lee@example.com",
-                    phoneNumber = "+1 555-1357",
-                    address = "321 Cedar Blvd, North Haverbrook",
-                    gender = "M"
-                )
-            ),
-            ContactState(
-                uid = "5",
-                contact = ContactModel(
-                    uid = "5",
-                    firstName = "Elena",
-                    lastName = "Garcia",
-                    email = "elena.garcia@example.com",
-                    phoneNumber = "+1 555-9876",
-                    address = "654 Birch Lane, Springfield",
-                    gender = "F"
-                )
-            )
-        )
     }
 }
