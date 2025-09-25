@@ -7,3 +7,6 @@ data object AuthenticationRoute
 
 @Serializable
 data object DashboardRoute
+
+@Serializable
+data object AddContactRoute

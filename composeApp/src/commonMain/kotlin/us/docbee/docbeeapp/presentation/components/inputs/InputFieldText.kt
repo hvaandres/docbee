@@ -29,6 +29,7 @@ import us.docbee.docbeeapp.presentation.theme.Blue100
 import us.docbee.docbeeapp.presentation.theme.Gray
 import us.docbee.docbeeapp.presentation.theme.Gray300
 import us.docbee.docbeeapp.presentation.theme.Gray400
+import us.docbee.docbeeapp.presentation.theme.White
 
 @Composable
 fun InputFieldText(
@@ -68,7 +69,9 @@ fun InputFieldText(
                 unfocusedBorderColor = Gray300,
                 focusedBorderColor = Blue100,
                 focusedTextColor = Black100,
-                unfocusedTextColor = Black100
+                unfocusedTextColor = Black100,
+                focusedContainerColor = White,
+                unfocusedContainerColor = White
             ),
             keyboardOptions = KeyboardOptions(
                 capitalization = keyboardCapitalization,

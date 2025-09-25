@@ -44,6 +44,7 @@ import us.docbee.docbeeapp.presentation.theme.Blue100
 import us.docbee.docbeeapp.presentation.theme.Gray
 import us.docbee.docbeeapp.presentation.theme.Gray300
 import us.docbee.docbeeapp.presentation.theme.Gray400
+import us.docbee.docbeeapp.presentation.theme.White
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -100,7 +101,9 @@ fun InputDateFieldText(
                     unfocusedBorderColor = Gray300,
                     focusedBorderColor = Blue100,
                     focusedTextColor = Black100,
-                    unfocusedTextColor = Black100
+                    unfocusedTextColor = Black100,
+                    focusedContainerColor = White,
+                    unfocusedContainerColor = White
                 ),
                 textStyle = MaterialTheme.typography.bodyMedium,
                 shape = RoundedCornerShape(10.dp),

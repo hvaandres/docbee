@@ -48,6 +48,7 @@ import us.docbee.docbeeapp.presentation.theme.Black100
 import us.docbee.docbeeapp.presentation.theme.Blue100
 import us.docbee.docbeeapp.presentation.theme.Gray
 import us.docbee.docbeeapp.presentation.theme.Gray300
+import us.docbee.docbeeapp.presentation.theme.White
 import us.docbee.docbeeapp.utils.COUNTRY_DEFAULT_ICON
 
 @Composable
@@ -93,7 +94,9 @@ fun InputCountryCodeFieldText(
                 unfocusedBorderColor = Gray300,
                 focusedBorderColor = Blue100,
                 focusedTextColor = Black100,
-                unfocusedTextColor = Black100
+                unfocusedTextColor = Black100,
+                focusedContainerColor = White,
+                unfocusedContainerColor = White
             ),
             textStyle = MaterialTheme.typography.bodyMedium,
             shape = RoundedCornerShape(10.dp),
