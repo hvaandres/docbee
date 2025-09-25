@@ -6,6 +6,7 @@ data class ContactModel(
     val lastName: String = "",
     val email: String = "",
     val phoneNumber: String = "",
+    val dateOfBirth: String = "",
     val address: String = "",
     val gender: String = ""
 )

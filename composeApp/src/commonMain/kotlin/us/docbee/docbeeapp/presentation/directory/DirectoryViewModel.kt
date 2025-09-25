@@ -15,10 +15,6 @@ class DirectoryViewModel(
     private val userContacts: GetUserContactsUseCase
 ) : BaseViewModel<DirectoryState, DirectoryEvents, DirectoryEffects>(DirectoryState()) {
 
-    init {
-        onEvent(DirectoryEvents.OnInitEvent)
-    }
-
     override fun onEvent(event: DirectoryEvents) {
         when (event) {
             is DirectoryEvents.OnInitEvent -> initDirectory()
@@ -27,6 +23,7 @@ class DirectoryViewModel(
             is DirectoryEvents.OnArchiveContactEvent -> archiveContact(event.uid)
             is DirectoryEvents.OnDeleteContactEvent -> deleteContact(event.uid)
             is DirectoryEvents.OnClickContactEvent -> clickContact(event.uid)
+            is DirectoryEvents.OnAddContactEvent -> emitEffect(DirectoryEffects.NavigateToAddContact)
         }
     }
 

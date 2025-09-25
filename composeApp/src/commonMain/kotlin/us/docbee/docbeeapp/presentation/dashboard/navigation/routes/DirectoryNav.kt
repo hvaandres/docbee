@@ -7,8 +7,15 @@ import org.koin.compose.viewmodel.koinViewModel
 import us.docbee.docbeeapp.presentation.dashboard.navigation.DashboardRoutes
 import us.docbee.docbeeapp.presentation.directory.DirectoryScreen
 
-fun NavGraphBuilder.addDirectoryNav(navHostController: NavHostController) {
+fun NavGraphBuilder.addDirectoryNav(
+    parentNavController: NavHostController,
+    navController: NavHostController
+) {
     composable<DashboardRoutes.DirectoryRoute> {
-        DirectoryScreen(navController = navHostController, viewModel = koinViewModel())
+        DirectoryScreen(
+            parentNavController = parentNavController,
+            navController = navController,
+            viewModel = koinViewModel()
+        )
     }
 }

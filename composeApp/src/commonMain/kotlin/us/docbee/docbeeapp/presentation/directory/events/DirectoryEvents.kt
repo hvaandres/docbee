@@ -9,4 +9,5 @@ sealed class DirectoryEvents {
     data class OnArchiveContactEvent(val uid: String): DirectoryEvents()
     data class OnDeleteContactEvent(val uid: String): DirectoryEvents()
     data class OnClickContactEvent(val uid: String): DirectoryEvents()
+    data object OnAddContactEvent: DirectoryEvents()
 }

@@ -1,6 +1,7 @@
 package us.docbee.docbeeapp.domain.mappers
 
 import us.docbee.docbeeapp.domain.models.directory.ContactModel
+import us.docbee.docbeeapp.domain.models.signup.ContactParams
 
 fun ContactModel.toMap(): Map<Any?, *> = mapOf(
     "firstName" to firstName,
@@ -27,4 +28,13 @@ fun MutableMap<String, Any>.toContactDomain() = ContactModel(
     phoneNumber = this["phoneNumber"] as String,
     gender = this["gender"] as String,
     address = this["address"] as String
+)
+
+fun ContactParams.toContactModel(): ContactModel = ContactModel(
+    firstName = name,
+    lastName = lastName,
+    email = email,
+    dateOfBirth = dateOfBirth,
+    phoneNumber = phoneNumber,
+    address = address,
 )

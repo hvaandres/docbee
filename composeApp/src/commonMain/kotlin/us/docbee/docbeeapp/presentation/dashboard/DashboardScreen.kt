@@ -97,7 +97,7 @@ fun DashboardScreen(
         DashboardNavigation(
             modifier = Modifier.padding(parentPadding),
             navController = dashboardNavController,
-            parentNavController = dashboardNavController
+            parentNavController = parentNavController
         )
     }
 }

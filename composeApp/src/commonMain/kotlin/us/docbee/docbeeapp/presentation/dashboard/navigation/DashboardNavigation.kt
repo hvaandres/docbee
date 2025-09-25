@@ -21,7 +21,7 @@ fun DashboardNavigation(
         modifier = modifier
     ) {
         addHomeNav(navController)
-        addDirectoryNav(navController)
+        addDirectoryNav(parentNavController = parentNavController, navController = navController)
         addSettingsNav(navController)
         addHistoryNav(navController)
     }

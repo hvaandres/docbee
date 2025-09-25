@@ -63,6 +63,16 @@
     <string name="home_settings_app_bar_title">Settings</string>
     <string name="home_settings_app_bar_subtitle">Modify your perfil and settings</string>
 
+    <string name="add_contact_app_bar_title">New Contact</string>
+    <string name="add_contact_app_bar_subtitle">Let’s create a new user</string>
+    <string name="add_contact_form_name_field">First Name</string>
+    <string name="add_contact_form_lastname_field">Last Name</string>
+    <string name="add_contact_form_email_field">Email</string>
+    <string name="add_contact_form_birth_date_field">Birth of date</string>
+    <string name="add_contact_form_phone_field">Phone Number</string>
+    <string name="add_contact_form_address_field">Address</string>
+    <string name="add_contact_form_register_label">Save</string>
+
     <string name="general_label_or">Or</string>
     <string name="general_label_ok">Ok</string>
     <string name="general_label_cancel">Cancel</string>
