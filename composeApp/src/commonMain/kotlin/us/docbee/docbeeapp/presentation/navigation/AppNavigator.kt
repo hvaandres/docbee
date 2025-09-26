@@ -6,14 +6,16 @@ import androidx.navigation.compose.rememberNavController
 import us.docbee.docbeeapp.presentation.navigation.routes.addContactNav
 import us.docbee.docbeeapp.presentation.navigation.routes.addDashboardNav
 import us.docbee.docbeeapp.presentation.navigation.routes.addLoginNav
+import us.docbee.docbeeapp.presentation.navigation.routes.addSplashNav
 
 @Composable
 fun AppNavigator() {
     val navController = rememberNavController()
     NavHost(
         navController = navController,
-        startDestination = AuthenticationRoute
+        startDestination = SplashRoute
     ) {
+        addSplashNav(navController)
         addLoginNav(navController)
         addDashboardNav(navController)
         addContactNav(navController)
