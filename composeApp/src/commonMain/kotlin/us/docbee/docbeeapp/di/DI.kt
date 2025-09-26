@@ -24,6 +24,7 @@ import us.docbee.docbeeapp.domain.usecases.EmailSignupUseCase
 import us.docbee.docbeeapp.domain.usecases.GetCountriesUseCase
 import us.docbee.docbeeapp.domain.usecases.GetUserContactsUseCase
 import us.docbee.docbeeapp.domain.usecases.SaveUserContactUseCase
+import us.docbee.docbeeapp.domain.usecases.directory.DeleteUserContactUseCase
 import us.docbee.docbeeapp.presentation.dashboard.DashboardViewModel
 import us.docbee.docbeeapp.presentation.directory.AddContactViewModel
 import us.docbee.docbeeapp.presentation.directory.DirectoryViewModel
@@ -50,6 +51,7 @@ val usesCasesModule = module {
     factory { GetCountriesUseCase(get()) }
     factory { GetUserContactsUseCase(get(), get()) }
     factory { SaveUserContactUseCase(get(), get()) }
+    factory { DeleteUserContactUseCase(get(), get()) }
 }
 
 val viewModelsModule = module {

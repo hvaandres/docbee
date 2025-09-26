@@ -59,4 +59,25 @@ public class ContactRemoteStorage: NSObject {
             }
         }
     }
+    
+    @objc public func deleteContact(
+        collection: String,
+        collectionContact: String,
+        uid: String,
+        contactUid: String,
+        completion: @escaping (Bool, NSError?) -> Void
+    ) {
+        Task {
+            do {
+              try await db.collection(collection)
+                    .document(uid)
+                    .collection(collectionContact)
+                    .document(contactUid)
+                    .delete()
+                completion(true, nil)
+            } catch {
+                completion(false, error as NSError?)
+            }
+        }
+    }
 }

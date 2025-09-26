@@ -22,6 +22,12 @@ NS_ASSUME_NONNULL_BEGIN
                                uid:(NSString *)uid
                         completion:(void (^)(NSArray<NSDictionary *> * _Nullable result, NSError * _Nullable error))completion;
 
+- (void)deleteContactWithCollection:(NSString *)collection
+                 collectionContact:(NSString *)collectionContact
+                               uid:(NSString *)uid
+                        contactUid:(NSString *)contactUid
+                         completion:(void (^)(BOOL success, NSError * _Nullable error))completion;
+
 @end
 
 NS_ASSUME_NONNULL_END
