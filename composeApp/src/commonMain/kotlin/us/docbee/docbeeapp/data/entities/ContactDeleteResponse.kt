@@ -1,0 +1,7 @@
+package us.docbee.docbeeapp.data.entities
+
+data class ContactDeleteResponse(
+    val successDeleted: Boolean? = null,
+    val errorCode: String? = null,
+    val errorMessage: String? = null
+)

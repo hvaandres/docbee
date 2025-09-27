@@ -2,6 +2,7 @@ package us.docbee.docbeeapp.data.datasources
 
 import kotlinx.cinterop.ExperimentalForeignApi
 import kotlinx.coroutines.suspendCancellableCoroutine
+import us.docbee.docbeeapp.data.entities.ContactDeleteResponse
 import us.docbee.docbeeapp.data.entities.ContactFetchResponse
 import us.docbee.docbeeapp.domain.mappers.toMap
 import us.docbee.docbeeapp.domain.mappers.toMutableStringMap
@@ -43,6 +44,28 @@ class IosContactRemoteDataSource: ContactRemoteDataSource {
                     ContactFetchResponse(errorCode = errorCode, errorMessage = errorMessage)
                 }
                 thread.resume(contactResponse, null)
+            }
+        }
+    }
+
+    override suspend fun deleteContact(
+        uid: String,
+        contactUid: String
+    ): ContactDeleteResponse {
+        return suspendCancellableCoroutine { thread ->
+            remote.deleteContactWithCollection(
+                collection = FIRESTORE_COLLECTION_USER,
+                collectionContact = FIRESTORE_COLLECTION_CONTACTS,
+                uid = uid,
+                contactUid = contactUid
+            ) { success, error ->
+                val deleteResponse = if (success) {
+                    ContactDeleteResponse(success)
+                } else {
+                    val errorMessage = error?.userInfo?.get("NSLocalizedDescription") as? String
+                    ContactDeleteResponse(errorCode = "UNKNOWN_ERROR", errorMessage = errorMessage)
+                }
+                thread.resume(deleteResponse, null)
             }
         }
     }

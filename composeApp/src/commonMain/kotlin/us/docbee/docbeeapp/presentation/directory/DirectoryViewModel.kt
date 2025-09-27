@@ -3,7 +3,9 @@ package us.docbee.docbeeapp.presentation.directory
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.launch
 import us.docbee.docbeeapp.domain.models.directory.ContactResult
+import us.docbee.docbeeapp.domain.models.directory.DeleteContactResult
 import us.docbee.docbeeapp.domain.usecases.GetUserContactsUseCase
+import us.docbee.docbeeapp.domain.usecases.directory.DeleteUserContactUseCase
 import us.docbee.docbeeapp.presentation.components.SwipeState
 import us.docbee.docbeeapp.presentation.core.BaseViewModel
 import us.docbee.docbeeapp.presentation.directory.effects.DirectoryEffects
@@ -12,7 +14,8 @@ import us.docbee.docbeeapp.presentation.directory.states.ContactState
 import us.docbee.docbeeapp.presentation.directory.states.DirectoryState
 
 class DirectoryViewModel(
-    private val userContacts: GetUserContactsUseCase
+    private val userContacts: GetUserContactsUseCase,
+    private val deleteContact: DeleteUserContactUseCase
 ) : BaseViewModel<DirectoryState, DirectoryEvents, DirectoryEffects>(DirectoryState()) {
 
     override fun onEvent(event: DirectoryEvents) {
@@ -81,16 +84,24 @@ class DirectoryViewModel(
     }
 
     private fun deleteContact(uid: String) {
-        updateState {
-            copy(
-                contacts = contacts.map { item ->
-                    if (item.uid == uid) {
-                        item.copy(swipeState = SwipeState.Closed)
-                    } else {
-                        item
-                    }
+        viewModelScope.launch {
+            when (deleteContact.deleteUserContact(uid)) {
+                is DeleteContactResult.Success -> updateState {
+                    copy(contacts = contacts.filter { it.uid != uid })
                 }
-            )
+                is DeleteContactResult.Error, DeleteContactResult.Unauthorized -> updateState {
+                    copy(
+                        contacts = contacts.map { item ->
+                            if (item.uid == uid) {
+                                item.copy(swipeState = SwipeState.Closed)
+                            } else {
+                                item
+                            }
+                        }
+                    )
+                }
+
+            }
         }
     }
 

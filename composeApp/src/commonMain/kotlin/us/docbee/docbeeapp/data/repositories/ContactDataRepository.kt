@@ -4,6 +4,7 @@ import us.docbee.docbeeapp.data.datasources.ContactRemoteDataSource
 import us.docbee.docbeeapp.domain.mappers.toContactDomain
 import us.docbee.docbeeapp.domain.models.directory.ContactModel
 import us.docbee.docbeeapp.domain.models.directory.ContactResult
+import us.docbee.docbeeapp.domain.models.directory.DeleteContactResult
 import us.docbee.docbeeapp.domain.repositories.ContactsRepository
 
 class ContactDataRepository(val contactDataSource: ContactRemoteDataSource): ContactsRepository {
@@ -18,6 +19,14 @@ class ContactDataRepository(val contactDataSource: ContactRemoteDataSource): Con
             response.errorCode != null -> ContactResult.Error
             response.data.isNullOrEmpty() -> ContactResult.Empty
             else -> ContactResult.Success(list = response.data.mapNotNull { it?.toContactDomain() })
+        }
+    }
+
+    override suspend fun deleteUserContact(uid: String, contactUid: String): DeleteContactResult {
+        val response = contactDataSource.deleteContact(uid, contactUid)
+        return when {
+            response.errorCode != null -> DeleteContactResult.Success
+            else -> DeleteContactResult.Success
         }
     }
 }

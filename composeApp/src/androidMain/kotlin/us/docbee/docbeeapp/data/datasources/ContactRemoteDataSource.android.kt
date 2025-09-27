@@ -2,6 +2,7 @@ package us.docbee.docbeeapp.data.datasources
 
 import com.google.firebase.firestore.FirebaseFirestore
 import kotlinx.coroutines.tasks.await
+import us.docbee.docbeeapp.data.entities.ContactDeleteResponse
 import us.docbee.docbeeapp.data.entities.ContactFetchResponse
 import us.docbee.docbeeapp.domain.models.directory.ContactModel
 import us.docbee.docbeeapp.utils.FIRESTORE_COLLECTION_CONTACTS
@@ -35,7 +36,21 @@ class AndroidContactRemoteDataSource : ContactRemoteDataSource {
             ContactFetchResponse(data = query.documents.map { it.data })
 
         } catch (ex: Exception) {
-            ContactFetchResponse(errorCode = "UNKNOWN ERROR", errorMessage = ex.localizedMessage)
+            ContactFetchResponse(errorCode = "UNKNOWN_ERROR", errorMessage = ex.localizedMessage)
+        }
+    }
+
+    override suspend fun deleteContact(uid: String, contactUid: String): ContactDeleteResponse {
+        return try {
+            db.collection(FIRESTORE_COLLECTION_USER)
+                .document(uid)
+                .collection(FIRESTORE_COLLECTION_CONTACTS)
+                .document(contactUid)
+                .delete()
+
+            ContactDeleteResponse(successDeleted = true)
+        } catch (ex: Exception) {
+            ContactDeleteResponse(errorCode = "UNKNOWN_ERROR", errorMessage = ex.localizedMessage)
         }
     }
 }
