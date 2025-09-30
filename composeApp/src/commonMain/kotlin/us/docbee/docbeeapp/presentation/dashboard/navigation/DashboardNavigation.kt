@@ -22,7 +22,7 @@ fun DashboardNavigation(
     ) {
         addHomeNav(navController)
         addDirectoryNav(parentNavController = parentNavController, navController = navController)
-        addSettingsNav(navController)
+        addSettingsNav(parentNavController)
         addHistoryNav(navController)
     }
 }

@@ -19,6 +19,8 @@ NS_ASSUME_NONNULL_BEGIN
                password:(NSString *)password
              completion:(void (^)(NSDictionary * _Nullable userInfo, NSError * _Nullable error))completion;
 
+- (void)logoutWithCompletion:(void (^)(NSError * _Nullable))completion;
+
 @end
 
 NS_ASSUME_NONNULL_END

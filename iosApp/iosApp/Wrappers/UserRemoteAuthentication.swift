@@ -41,4 +41,13 @@ public class UserRemoteAuthentication: NSObject {
         }
     }
     
+    @objc public func logout(completion: @escaping (NSError?) -> Void) {
+        do {
+            try Auth.auth().signOut()
+            completion(nil)
+        } catch let signOutError as NSError {
+            completion(signOutError)
+        }
+    }
+    
 }

@@ -73,6 +73,16 @@
     <string name="add_contact_form_address_field">Address</string>
     <string name="add_contact_form_register_label">Save</string>
 
+    <string name="settings_update_profile_title">Update Profile</string>
+    <string name="settings_update_profile_description">Change your personal profile</string>
+    <string name="settings_contacts_title">Contacts</string>
+    <string name="settings_contacts_description">Modify the information that will be send to the contacts</string>
+    <string name="settings_emergency_notification_title">Emergency Notification</string>
+    <string name="settings_emergency_notification_description">Options to send private data to emergency contacts</string>
+    <string name="settings_location_title">Location</string>
+    <string name="settings_location_description">Allow others to visualize your current location</string>
+    <string name="settings_logout_title">Logout</string>
+
     <string name="general_label_or">Or</string>
     <string name="general_label_ok">Ok</string>
     <string name="general_label_cancel">Cancel</string>
