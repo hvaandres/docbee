@@ -12,6 +12,7 @@ import us.docbee.docbeeapp.presentation.directory.effects.DirectoryEffects
 import us.docbee.docbeeapp.presentation.directory.events.DirectoryEvents
 import us.docbee.docbeeapp.presentation.directory.states.ContactState
 import us.docbee.docbeeapp.presentation.directory.states.DirectoryState
+import us.docbee.docbeeapp.utils.MAX_CONTACTS_ALLOWED
 
 class DirectoryViewModel(
     private val userContacts: GetUserContactsUseCase,
@@ -51,6 +52,7 @@ class DirectoryViewModel(
                     updateState {
                         copy(
                             contacts = response.list.map { ContactState(uid = it.uid, contact = it) },
+                            isMaxContactsReached = response.list.size >= MAX_CONTACTS_ALLOWED,
                             isError = false
                         )
                     }
@@ -87,7 +89,11 @@ class DirectoryViewModel(
         viewModelScope.launch {
             when (deleteContact.deleteUserContact(uid)) {
                 is DeleteContactResult.Success -> updateState {
-                    copy(contacts = contacts.filter { it.uid != uid })
+                    val updatedList = contacts.filter { it.uid != uid }
+                    copy(
+                        contacts = updatedList,
+                        isMaxContactsReached = updatedList.size >= MAX_CONTACTS_ALLOWED
+                    )
                 }
                 is DeleteContactResult.Error, DeleteContactResult.Unauthorized -> updateState {
                     copy(

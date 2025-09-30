@@ -6,6 +6,7 @@ import us.docbee.docbeeapp.presentation.components.SwipeState
 data class DirectoryState(
     val contacts: List<ContactState> = emptyList<ContactState>(),
     val contactSearch: String = "",
+    val isMaxContactsReached: Boolean = false,
     val isError: Boolean = false
 )
 

@@ -83,15 +83,17 @@ fun DirectoryScreen(
                 }
             }
         }
-        Image(
-            modifier = Modifier.align(Alignment.BottomEnd)
-                .padding(end = 28.dp, bottom = 28.dp)
-                .size(42.dp)
-                .clickable { viewModel.onEvent(DirectoryEvents.OnAddContactEvent) },
-            imageVector = Icons.Outlined.AddCircleOutline,
-            colorFilter = ColorFilter.tint(color = White),
-            contentDescription = null
-        )
+        if (!state.isMaxContactsReached && !state.isError) {
+            Image(
+                modifier = Modifier.align(Alignment.BottomEnd)
+                    .padding(end = 28.dp, bottom = 28.dp)
+                    .size(42.dp)
+                    .clickable { viewModel.onEvent(DirectoryEvents.OnAddContactEvent) },
+                imageVector = Icons.Outlined.AddCircleOutline,
+                colorFilter = ColorFilter.tint(color = White),
+                contentDescription = null
+            )
+        }
     }
 }
 
