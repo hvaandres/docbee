@@ -30,6 +30,7 @@ import us.docbee.docbeeapp.domain.usecases.EmailSignupUseCase
 import us.docbee.docbeeapp.domain.usecases.GetCountriesUseCase
 import us.docbee.docbeeapp.domain.usecases.GetUserContactsUseCase
 import us.docbee.docbeeapp.domain.usecases.GetUserSessionStatus
+import us.docbee.docbeeapp.domain.usecases.LogoutUseCase
 import us.docbee.docbeeapp.domain.usecases.SaveUserContactUseCase
 import us.docbee.docbeeapp.domain.usecases.directory.DeleteUserContactUseCase
 import us.docbee.docbeeapp.presentation.dashboard.DashboardViewModel
@@ -37,6 +38,7 @@ import us.docbee.docbeeapp.presentation.directory.AddContactViewModel
 import us.docbee.docbeeapp.presentation.directory.DirectoryViewModel
 import us.docbee.docbeeapp.presentation.login.LoginViewModel
 import us.docbee.docbeeapp.presentation.login.SignupViewModel
+import us.docbee.docbeeapp.presentation.settings.SettingsViewModel
 import us.docbee.docbeeapp.presentation.splash.SplashViewModel
 
 expect val nativeModules: Module
@@ -54,7 +56,7 @@ val repositoryModule = module {
     factory<CountryRepository> { JsonCountryRepository(get()) }
     factory<UserRepository> { UserDataRepository(get()) }
     factory<ContactsRepository> { ContactDataRepository(get()) }
-    factory<SessionRepository> { SessionDataRepository(get()) }
+    factory<SessionRepository> { SessionDataRepository(get(), get()) }
 }
 
 val usesCasesModule = module {
@@ -65,6 +67,7 @@ val usesCasesModule = module {
     factory { SaveUserContactUseCase(get(), get()) }
     factory { DeleteUserContactUseCase(get(), get()) }
     factory { GetUserSessionStatus(get(), get()) }
+    factory { LogoutUseCase(get()) }
 }
 
 val viewModelsModule = module {
@@ -74,6 +77,7 @@ val viewModelsModule = module {
     viewModelOf(::DashboardViewModel)
     viewModelOf(::DirectoryViewModel)
     viewModelOf(::AddContactViewModel)
+    viewModelOf(::SettingsViewModel)
 }
 
 fun initKoin(config: KoinAppDeclaration? = null) {

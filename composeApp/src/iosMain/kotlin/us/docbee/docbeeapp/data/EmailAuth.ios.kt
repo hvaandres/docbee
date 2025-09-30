@@ -3,6 +3,7 @@ package us.docbee.docbeeapp.data
 import kotlinx.cinterop.ExperimentalForeignApi
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.suspendCancellableCoroutine
+import us.docbee.docbeeapp.data.entities.LogoutResponse
 import us.docbee.docbeeapp.data.entities.UserAuthResponse
 import us.docbee.docbeeapp.data.entities.UserCreateResponse
 import us.docbee.docbeeapp.wrappers.UserRemoteAuthentication
@@ -42,6 +43,19 @@ class IosEmailAuth() : EmailAuth {
                     UserCreateResponse(errorCode = errorCode, errorMessage = errorMessage)
                 }
                 thread.resume(authResponse, null)
+            }
+        }
+    }
+
+    override suspend fun logout(): LogoutResponse {
+        return suspendCancellableCoroutine<LogoutResponse> { thread ->
+            userAuthentication.logoutWithCompletion { error ->
+                val response = if (error == null) {
+                    LogoutResponse.Success
+                } else {
+                    LogoutResponse.Error
+                }
+                thread.resume(response, null)
             }
         }
     }

@@ -9,6 +9,7 @@ import com.google.firebase.auth.FirebaseAuthWeakPasswordException
 import com.google.firebase.auth.auth
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.tasks.await
+import us.docbee.docbeeapp.data.entities.LogoutResponse
 import us.docbee.docbeeapp.data.entities.UserAuthResponse
 import us.docbee.docbeeapp.data.entities.UserCreateResponse
 
@@ -49,6 +50,11 @@ class AndroidEmailAuth : EmailAuth {
         } catch (ex: Exception) {
             UserCreateResponse(errorCode = "UNKNOWN_ERROR", errorMessage = ex.localizedMessage)
         }
+    }
+
+    override suspend fun logout(): LogoutResponse {
+        Firebase.auth.signOut()
+        return LogoutResponse.Success
     }
 }
 
