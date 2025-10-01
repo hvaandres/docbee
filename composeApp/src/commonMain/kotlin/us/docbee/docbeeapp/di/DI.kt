@@ -36,10 +36,12 @@ import us.docbee.docbeeapp.domain.usecases.directory.DeleteUserContactUseCase
 import us.docbee.docbeeapp.presentation.dashboard.DashboardViewModel
 import us.docbee.docbeeapp.presentation.directory.AddContactViewModel
 import us.docbee.docbeeapp.presentation.directory.DirectoryViewModel
+import us.docbee.docbeeapp.presentation.home.HomeViewModel
 import us.docbee.docbeeapp.presentation.login.LoginViewModel
 import us.docbee.docbeeapp.presentation.login.SignupViewModel
 import us.docbee.docbeeapp.presentation.settings.SettingsViewModel
 import us.docbee.docbeeapp.presentation.splash.SplashViewModel
+import us.docbee.docbeeapp.utils.ui.permissions.provideLocationPermissionManager
 
 expect val nativeModules: Module
 
@@ -70,6 +72,11 @@ val usesCasesModule = module {
     factory { LogoutUseCase(get()) }
 }
 
+
+val managersModule = module {
+    single { provideLocationPermissionManager() }
+}
+
 val viewModelsModule = module {
     viewModelOf(::SplashViewModel)
     viewModelOf(::LoginViewModel)
@@ -78,12 +85,14 @@ val viewModelsModule = module {
     viewModelOf(::DirectoryViewModel)
     viewModelOf(::AddContactViewModel)
     viewModelOf(::SettingsViewModel)
+    viewModelOf(::HomeViewModel)
 }
 
 fun initKoin(config: KoinAppDeclaration? = null) {
     startKoin {
         config?.invoke(this)
         modules(
+            managersModule,
             nativeModules,
             dataSourcesModule,
             repositoryModule,
