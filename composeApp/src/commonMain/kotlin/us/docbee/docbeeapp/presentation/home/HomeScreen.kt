@@ -41,6 +41,7 @@ import org.jetbrains.compose.resources.vectorResource
 import us.docbee.docbeeapp.presentation.components.PrimaryButton
 import us.docbee.docbeeapp.presentation.home.effects.HomeEffects
 import us.docbee.docbeeapp.presentation.home.events.HomeEvents
+import us.docbee.docbeeapp.presentation.navigation.EmergencyRoute
 import us.docbee.docbeeapp.presentation.theme.Green100
 import us.docbee.docbeeapp.presentation.theme.White
 import us.docbee.docbeeapp.presentation.theme.white100
@@ -57,7 +58,7 @@ fun HomeScreen(
     LaunchedEffect(Unit) {
         viewModel.effect.collectLatest { effect ->
             when (effect) {
-                is HomeEffects.NavigateToEmergency -> Unit // TODO: Navigate to Emergency
+                is HomeEffects.NavigateToEmergency -> parentNavController.navigate(EmergencyRoute)
                 is HomeEffects.NavigateToSettings -> providePermissionSettingsManager().openAppSettings()
             }
         }

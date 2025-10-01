@@ -87,6 +87,8 @@
     <string name="settings_location_description">Allow others to visualize your current location</string>
     <string name="settings_logout_title">Logout</string>
 
+    <string name="emergency_toolbar_title">Sharing My Location</string>
+
     <string name="general_label_or">Or</string>
     <string name="general_label_ok">Ok</string>
     <string name="general_label_cancel">Cancel</string>

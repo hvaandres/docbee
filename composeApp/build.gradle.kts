@@ -48,6 +48,7 @@ kotlin {
             implementation(libs.firebase.auth)
             implementation(libs.firebase.firestore)
             implementation(libs.ktor.client.okhttp)
+            implementation(libs.google.services.location)
         }
         commonMain.dependencies {
             implementation(compose.runtime)

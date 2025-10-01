@@ -5,6 +5,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.rememberNavController
 import us.docbee.docbeeapp.presentation.navigation.routes.addContactNav
 import us.docbee.docbeeapp.presentation.navigation.routes.addDashboardNav
+import us.docbee.docbeeapp.presentation.navigation.routes.addEmergencyNav
 import us.docbee.docbeeapp.presentation.navigation.routes.addLoginNav
 import us.docbee.docbeeapp.presentation.navigation.routes.addSplashNav
 
@@ -19,5 +20,6 @@ fun AppNavigator() {
         addLoginNav(navController)
         addDashboardNav(navController)
         addContactNav(navController)
+        addEmergencyNav(navController)
     }
 }
