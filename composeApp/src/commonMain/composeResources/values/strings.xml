@@ -53,6 +53,10 @@
     <string name="home_emergency_app_bar_subtitle">Please inform your family members about your emergency</string>
     <string name="home_emergency_button_title">Tap 3 times on screen to alert</string>
     <string name="home_emergency_button_description">Your 5 contacts will have your current location, and medications</string>
+    <string name="home_emergency_permission_required_title">Location Permission Required</string>
+    <string name="home_emergency_permission_required_description">This feature needs access to your location to work correctly. Please enable location permissions in your device settings. Without granting this permission, you won’t be able to continue.</string>
+    <string name="home_emergency_permission_required_button_accept">Go to Settings</string>
+    <string name="home_emergency_permission_required_button_deny">Cancel</string>
 
     <string name="home_directory_app_bar_title">Directory</string>
     <string name="home_directory_app_bar_subtitle">Please check and review your emergency contacts</string>
