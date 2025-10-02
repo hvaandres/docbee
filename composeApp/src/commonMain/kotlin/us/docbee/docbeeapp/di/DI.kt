@@ -19,13 +19,16 @@ import us.docbee.docbeeapp.data.datasources.provideLocationDataSource
 import us.docbee.docbeeapp.data.getEmailAuth
 import us.docbee.docbeeapp.data.repositories.ContactDataRepository
 import us.docbee.docbeeapp.data.repositories.EmailAuthDataRepository
+import us.docbee.docbeeapp.data.repositories.EmergencyDataRepository
 import us.docbee.docbeeapp.data.repositories.JsonCountryRepository
 import us.docbee.docbeeapp.data.repositories.LocationDataRepository
 import us.docbee.docbeeapp.data.repositories.SessionDataRepository
 import us.docbee.docbeeapp.data.repositories.UserDataRepository
+import us.docbee.docbeeapp.data.services.EmergencyNotificationApiService
 import us.docbee.docbeeapp.domain.repositories.ContactsRepository
 import us.docbee.docbeeapp.domain.repositories.CountryRepository
 import us.docbee.docbeeapp.domain.repositories.EmailAuthRepository
+import us.docbee.docbeeapp.domain.repositories.EmergenciesRepository
 import us.docbee.docbeeapp.domain.repositories.LocationRepository
 import us.docbee.docbeeapp.domain.repositories.SessionRepository
 import us.docbee.docbeeapp.domain.repositories.UserRepository
@@ -36,7 +39,9 @@ import us.docbee.docbeeapp.domain.usecases.GetCountriesUseCase
 import us.docbee.docbeeapp.domain.usecases.GetUserContactsUseCase
 import us.docbee.docbeeapp.domain.usecases.GetUserSessionStatus
 import us.docbee.docbeeapp.domain.usecases.LogoutUseCase
+import us.docbee.docbeeapp.domain.usecases.NotifyEmergencyUseCase
 import us.docbee.docbeeapp.domain.usecases.SaveUserContactUseCase
+import us.docbee.docbeeapp.domain.usecases.SendEmergencyUseCase
 import us.docbee.docbeeapp.domain.usecases.directory.DeleteUserContactUseCase
 import us.docbee.docbeeapp.presentation.dashboard.DashboardViewModel
 import us.docbee.docbeeapp.presentation.directory.AddContactViewModel
@@ -58,6 +63,7 @@ val dataSourcesModule = module {
     factory<ContactRemoteDataSource> { getContactDataSource() }
     factory<UserSessionDataSource> { UserSessionLocalDataSource(get()) }
     factory<LocationDataSource> { provideLocationDataSource() }
+    factory { EmergencyNotificationApiService() }
 }
 
 val repositoryModule = module {
@@ -67,6 +73,7 @@ val repositoryModule = module {
     factory<ContactsRepository> { ContactDataRepository(get()) }
     factory<SessionRepository> { SessionDataRepository(get(), get()) }
     factory<LocationRepository> { LocationDataRepository(get()) }
+    factory<EmergenciesRepository> { EmergencyDataRepository(get()) }
 }
 
 val usesCasesModule = module {
@@ -79,6 +86,8 @@ val usesCasesModule = module {
     factory { GetUserSessionStatus(get(), get()) }
     factory { LogoutUseCase(get()) }
     factory { FetchLocationUseCase(get(), get()) }
+    factory { SendEmergencyUseCase(get()) }
+    factory { NotifyEmergencyUseCase(get(), get(), get()) }
 }
 
 

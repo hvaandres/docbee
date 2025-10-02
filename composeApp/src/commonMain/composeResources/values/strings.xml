@@ -88,6 +88,9 @@
     <string name="settings_logout_title">Logout</string>
 
     <string name="emergency_toolbar_title">Sharing My Location</string>
+    <string name="emergency_bottom_sheet_title">Emergency Calling</string>
+    <string name="emergency_bottom_sheet_description">Your contacts have been informed about your accident &amp; we are currently informing emergency services.</string>
+    <string name="emergency_bottom_sheet_button_safe">I Am Safe</string>
 
     <string name="general_label_or">Or</string>
     <string name="general_label_ok">Ok</string>

@@ -2,15 +2,15 @@ package us.docbee.docbeeapp.presentation.emergency
 
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.launch
-import us.docbee.docbeeapp.domain.models.location.LocationResult
-import us.docbee.docbeeapp.domain.usecases.FetchLocationUseCase
+import us.docbee.docbeeapp.domain.models.EmergencyNotificationResult
+import us.docbee.docbeeapp.domain.usecases.NotifyEmergencyUseCase
 import us.docbee.docbeeapp.presentation.core.BaseViewModel
 import us.docbee.docbeeapp.presentation.emergency.effects.EmergencyEffects
 import us.docbee.docbeeapp.presentation.emergency.events.EmergencyEvents
 import us.docbee.docbeeapp.presentation.emergency.states.UiState
 
 class EmergencyViewModel(
-    private val locationUseCase: FetchLocationUseCase
+    private val notifyEmergencyUseCase: NotifyEmergencyUseCase
 ): BaseViewModel<UiState, EmergencyEvents, EmergencyEffects>(UiState()) {
 
     init {
@@ -27,9 +27,9 @@ class EmergencyViewModel(
 
     private fun onInitEmergency() {
         viewModelScope.launch {
-            when (val result = locationUseCase.fetchCurrentLocation()) {
-                is LocationResult.Success -> println("Location ${result.location}")
-                is LocationResult.Error, is LocationResult.MissingPermission -> emitEffect(EmergencyEffects.NavigateBack)
+            when (val result = notifyEmergencyUseCase.sendNotification()) {
+                is EmergencyNotificationResult.Sent -> updateState { copy(contacts = result.contacts) }
+                is EmergencyNotificationResult.Error -> emitEffect(EmergencyEffects.NavigateBack)
             }
         }
     }
