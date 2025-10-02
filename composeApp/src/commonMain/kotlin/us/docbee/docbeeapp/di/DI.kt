@@ -8,25 +8,30 @@ import org.koin.dsl.module
 import us.docbee.docbeeapp.data.EmailAuth
 import us.docbee.docbeeapp.data.datasources.ContactRemoteDataSource
 import us.docbee.docbeeapp.data.datasources.JsonResourceLoader
+import us.docbee.docbeeapp.data.datasources.LocationDataSource
 import us.docbee.docbeeapp.data.datasources.UserRemoteDataSource
 import us.docbee.docbeeapp.data.datasources.UserSessionLocalDataSource
 import us.docbee.docbeeapp.data.datasources.getContactDataSource
 import us.docbee.docbeeapp.data.datasources.getUserDataSource
 import us.docbee.docbeeapp.data.datasources.interfaces.ResourcesLoader
 import us.docbee.docbeeapp.data.datasources.interfaces.UserSessionDataSource
+import us.docbee.docbeeapp.data.datasources.provideLocationDataSource
 import us.docbee.docbeeapp.data.getEmailAuth
 import us.docbee.docbeeapp.data.repositories.ContactDataRepository
 import us.docbee.docbeeapp.data.repositories.EmailAuthDataRepository
 import us.docbee.docbeeapp.data.repositories.JsonCountryRepository
+import us.docbee.docbeeapp.data.repositories.LocationDataRepository
 import us.docbee.docbeeapp.data.repositories.SessionDataRepository
 import us.docbee.docbeeapp.data.repositories.UserDataRepository
 import us.docbee.docbeeapp.domain.repositories.ContactsRepository
 import us.docbee.docbeeapp.domain.repositories.CountryRepository
 import us.docbee.docbeeapp.domain.repositories.EmailAuthRepository
+import us.docbee.docbeeapp.domain.repositories.LocationRepository
 import us.docbee.docbeeapp.domain.repositories.SessionRepository
 import us.docbee.docbeeapp.domain.repositories.UserRepository
 import us.docbee.docbeeapp.domain.usecases.EmailAuthUseCase
 import us.docbee.docbeeapp.domain.usecases.EmailSignupUseCase
+import us.docbee.docbeeapp.domain.usecases.FetchLocationUseCase
 import us.docbee.docbeeapp.domain.usecases.GetCountriesUseCase
 import us.docbee.docbeeapp.domain.usecases.GetUserContactsUseCase
 import us.docbee.docbeeapp.domain.usecases.GetUserSessionStatus
@@ -36,6 +41,7 @@ import us.docbee.docbeeapp.domain.usecases.directory.DeleteUserContactUseCase
 import us.docbee.docbeeapp.presentation.dashboard.DashboardViewModel
 import us.docbee.docbeeapp.presentation.directory.AddContactViewModel
 import us.docbee.docbeeapp.presentation.directory.DirectoryViewModel
+import us.docbee.docbeeapp.presentation.emergency.EmergencyViewModel
 import us.docbee.docbeeapp.presentation.home.HomeViewModel
 import us.docbee.docbeeapp.presentation.login.LoginViewModel
 import us.docbee.docbeeapp.presentation.login.SignupViewModel
@@ -51,6 +57,7 @@ val dataSourcesModule = module {
     factory<UserRemoteDataSource> { getUserDataSource() }
     factory<ContactRemoteDataSource> { getContactDataSource() }
     factory<UserSessionDataSource> { UserSessionLocalDataSource(get()) }
+    factory<LocationDataSource> { provideLocationDataSource() }
 }
 
 val repositoryModule = module {
@@ -59,6 +66,7 @@ val repositoryModule = module {
     factory<UserRepository> { UserDataRepository(get()) }
     factory<ContactsRepository> { ContactDataRepository(get()) }
     factory<SessionRepository> { SessionDataRepository(get(), get()) }
+    factory<LocationRepository> { LocationDataRepository(get()) }
 }
 
 val usesCasesModule = module {
@@ -70,6 +78,7 @@ val usesCasesModule = module {
     factory { DeleteUserContactUseCase(get(), get()) }
     factory { GetUserSessionStatus(get(), get()) }
     factory { LogoutUseCase(get()) }
+    factory { FetchLocationUseCase(get(), get()) }
 }
 
 
@@ -86,6 +95,7 @@ val viewModelsModule = module {
     viewModelOf(::AddContactViewModel)
     viewModelOf(::SettingsViewModel)
     viewModelOf(::HomeViewModel)
+    viewModelOf(::EmergencyViewModel)
 }
 
 fun initKoin(config: KoinAppDeclaration? = null) {

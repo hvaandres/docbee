@@ -21,7 +21,10 @@ class HomeViewModel(
 
     private fun onClickEmergency() {
         when {
-            permissionManager.isPermissionGranted() -> updateState { copy(shouldShowPermissionRequestModal = false) }
+            permissionManager.isPermissionGranted() -> {
+                updateState { copy(shouldShowPermissionRequestModal = false) }
+                emitEffect(HomeEffects.NavigateToEmergency)
+            }
             else -> {
                 permissionManager.requestPermission { permissionResult ->
                     updateState { copy(shouldShowPermissionRequestModal = permissionResult !is PermissionResult.Granted) }

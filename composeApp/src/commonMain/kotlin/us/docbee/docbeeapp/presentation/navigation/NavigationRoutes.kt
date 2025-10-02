@@ -13,3 +13,6 @@ data object DashboardRoute
 
 @Serializable
 data object AddContactRoute
+
+@Serializable
+data object EmergencyRoute

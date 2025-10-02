@@ -1,6 +1,7 @@
 package us.docbee.docbeeapp.presentation.components.toolbar
 
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -19,6 +20,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import org.jetbrains.compose.resources.StringResource
@@ -66,5 +68,32 @@ fun Toolbar(
                 color = White
             )
         }
+    }
+}
+
+@Composable
+fun ToolbarSecondary(
+    title: StringResource,
+    onBackClicked: () -> Unit
+) {
+    Column(
+        modifier = Modifier.windowInsetsPadding(WindowInsets.statusBars).padding(start = 32.dp, top = 32.dp),
+        verticalArrangement = Arrangement.spacedBy(8.dp)
+    ) {
+        Icon(
+            modifier = Modifier
+                .size(24.dp)
+                .clickable { onBackClicked() },
+            imageVector = Icons.AutoMirrored.Filled.ArrowBack,
+            contentDescription = null,
+            tint = White
+        )
+        Text(
+            text = stringResource(title),
+            style = MaterialTheme.typography.headlineSmall,
+            fontWeight = FontWeight.Bold,
+            textAlign = TextAlign.Center,
+            color = White
+        )
     }
 }
