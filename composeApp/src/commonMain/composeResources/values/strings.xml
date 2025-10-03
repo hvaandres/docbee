@@ -58,6 +58,11 @@
     <string name="home_emergency_permission_required_button_accept">Go to Settings</string>
     <string name="home_emergency_permission_required_button_deny">Cancel</string>
 
+    <string name="home_emergency_contact_required_title">Emergency Contact Required</string>
+    <string name="home_emergency_contact_required_description">To continue, you need to add at least one emergency contact to your directory. This ensures we can notify someone on your behalf in case of an emergency.</string>
+    <string name="home_emergency_contact_required_confirm">Add Contact</string>
+    <string name="home_emergency_contact_required_cancel">Cancel</string>
+
     <string name="home_directory_app_bar_title">Directory</string>
     <string name="home_directory_app_bar_subtitle">Please check and review your emergency contacts</string>
 

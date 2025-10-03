@@ -4,4 +4,6 @@ sealed class HomeEvents {
     data object OnClickEmergency: HomeEvents()
     data object OnOpenSettings: HomeEvents()
     data object OnDismissSettings: HomeEvents()
+    data object OnClickContacts: HomeEvents()
+    data object OnCancelContacts: HomeEvents()
 }

@@ -20,7 +20,7 @@ fun DashboardNavigation(
         startDestination = DashboardRoutes.HomeRoute,
         modifier = modifier
     ) {
-        addHomeNav(parentNavController)
+        addHomeNav(parentNavController = parentNavController, navController = navController)
         addDirectoryNav(parentNavController = parentNavController, navController = navController)
         addSettingsNav(parentNavController)
         addHistoryNav(navController)
