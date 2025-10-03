@@ -11,7 +11,7 @@ sealed class DashboardRoutes {
     data object DirectoryRoute: DashboardRoutes()
 
     @Serializable
-    data object HistoryRoute: DashboardRoutes()
+    data object AlertsRoute: DashboardRoutes()
 
     @Serializable
     data object SettingsRoute: DashboardRoutes()

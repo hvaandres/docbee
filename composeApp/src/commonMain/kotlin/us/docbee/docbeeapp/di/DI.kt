@@ -17,6 +17,7 @@ import us.docbee.docbeeapp.data.datasources.interfaces.ResourcesLoader
 import us.docbee.docbeeapp.data.datasources.interfaces.UserSessionDataSource
 import us.docbee.docbeeapp.data.datasources.provideLocationDataSource
 import us.docbee.docbeeapp.data.getEmailAuth
+import us.docbee.docbeeapp.data.repositories.AlertsDataRepository
 import us.docbee.docbeeapp.data.repositories.ContactDataRepository
 import us.docbee.docbeeapp.data.repositories.EmailAuthDataRepository
 import us.docbee.docbeeapp.data.repositories.EmergencyDataRepository
@@ -25,6 +26,8 @@ import us.docbee.docbeeapp.data.repositories.LocationDataRepository
 import us.docbee.docbeeapp.data.repositories.SessionDataRepository
 import us.docbee.docbeeapp.data.repositories.UserDataRepository
 import us.docbee.docbeeapp.data.services.EmergencyNotificationApiService
+import us.docbee.docbeeapp.domain.managers.AlertsStringsManager
+import us.docbee.docbeeapp.domain.repositories.AlertsRepository
 import us.docbee.docbeeapp.domain.repositories.ContactsRepository
 import us.docbee.docbeeapp.domain.repositories.CountryRepository
 import us.docbee.docbeeapp.domain.repositories.EmailAuthRepository
@@ -35,6 +38,7 @@ import us.docbee.docbeeapp.domain.repositories.UserRepository
 import us.docbee.docbeeapp.domain.usecases.EmailAuthUseCase
 import us.docbee.docbeeapp.domain.usecases.EmailSignupUseCase
 import us.docbee.docbeeapp.domain.usecases.FetchLocationUseCase
+import us.docbee.docbeeapp.domain.usecases.GetAlertsUseCase
 import us.docbee.docbeeapp.domain.usecases.GetCountriesUseCase
 import us.docbee.docbeeapp.domain.usecases.GetUserContactsUseCase
 import us.docbee.docbeeapp.domain.usecases.GetUserSessionStatus
@@ -43,6 +47,7 @@ import us.docbee.docbeeapp.domain.usecases.NotifyEmergencyUseCase
 import us.docbee.docbeeapp.domain.usecases.SaveUserContactUseCase
 import us.docbee.docbeeapp.domain.usecases.SendEmergencyUseCase
 import us.docbee.docbeeapp.domain.usecases.directory.DeleteUserContactUseCase
+import us.docbee.docbeeapp.presentation.alerts.AlertsViewModel
 import us.docbee.docbeeapp.presentation.dashboard.DashboardViewModel
 import us.docbee.docbeeapp.presentation.directory.AddContactViewModel
 import us.docbee.docbeeapp.presentation.directory.DirectoryViewModel
@@ -52,6 +57,7 @@ import us.docbee.docbeeapp.presentation.login.LoginViewModel
 import us.docbee.docbeeapp.presentation.login.SignupViewModel
 import us.docbee.docbeeapp.presentation.settings.SettingsViewModel
 import us.docbee.docbeeapp.presentation.splash.SplashViewModel
+import us.docbee.docbeeapp.utils.ui.managers.AlertsStringDataManager
 import us.docbee.docbeeapp.utils.ui.permissions.provideLocationPermissionManager
 
 expect val nativeModules: Module
@@ -74,6 +80,7 @@ val repositoryModule = module {
     factory<SessionRepository> { SessionDataRepository(get(), get()) }
     factory<LocationRepository> { LocationDataRepository(get()) }
     factory<EmergenciesRepository> { EmergencyDataRepository(get()) }
+    factory<AlertsRepository> { AlertsDataRepository(get()) }
 }
 
 val usesCasesModule = module {
@@ -88,11 +95,13 @@ val usesCasesModule = module {
     factory { FetchLocationUseCase(get(), get()) }
     factory { SendEmergencyUseCase(get()) }
     factory { NotifyEmergencyUseCase(get(), get(), get()) }
+    factory { GetAlertsUseCase(get(), get()) }
 }
 
 
 val managersModule = module {
     single { provideLocationPermissionManager() }
+    single<AlertsStringsManager> { AlertsStringDataManager() }
 }
 
 val viewModelsModule = module {
@@ -105,6 +114,7 @@ val viewModelsModule = module {
     viewModelOf(::SettingsViewModel)
     viewModelOf(::HomeViewModel)
     viewModelOf(::EmergencyViewModel)
+    viewModelOf(::AlertsViewModel)
 }
 
 fun initKoin(config: KoinAppDeclaration? = null) {

@@ -5,8 +5,8 @@ import docbee.composeapp.generated.resources.home_directory_app_bar_subtitle
 import docbee.composeapp.generated.resources.home_directory_app_bar_title
 import docbee.composeapp.generated.resources.home_emergency_app_bar_subtitle
 import docbee.composeapp.generated.resources.home_emergency_app_bar_title
-import docbee.composeapp.generated.resources.home_history_app_bar_subtitle
-import docbee.composeapp.generated.resources.home_history_app_bar_title
+import docbee.composeapp.generated.resources.home_alerts_app_bar_subtitle
+import docbee.composeapp.generated.resources.home_alerts_app_bar_title
 import docbee.composeapp.generated.resources.home_settings_app_bar_subtitle
 import docbee.composeapp.generated.resources.home_settings_app_bar_title
 import org.jetbrains.compose.resources.StringResource
@@ -27,9 +27,9 @@ fun fetchToolbarContent(item: MenuBarItem): ToolbarContent {
             title = Res.string.home_directory_app_bar_title,
             description = Res.string.home_directory_app_bar_subtitle
         )
-        MenuBarItem.HISTORY -> ToolbarContent(
-            title = Res.string.home_history_app_bar_title,
-            description = Res.string.home_history_app_bar_subtitle
+        MenuBarItem.ALERTS -> ToolbarContent(
+            title = Res.string.home_alerts_app_bar_title,
+            description = Res.string.home_alerts_app_bar_subtitle
         )
         MenuBarItem.SETTINGS -> ToolbarContent(
             title = Res.string.home_settings_app_bar_title,
