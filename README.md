@@ -1,53 +1,61 @@
-# Configuración de Firebase en KMP (Kotlin Multiplatform)
+# DocBee - Alert family members about your emergency
 
-Este proyecto utiliza Firebase Authentication para las plataformas Android e iOS. A continuación se describen los pasos necesarios para integrar los archivos de configuración de Firebase en la arquitectura multiplataforma.
+## Project Description
+This project has been created with the main idea of helping people report **incidents** or **accidents** to their family members.  
+Users can share details about their **current situation**, the **type of problem**, and their **location**.  
+
+For example, if someone falls and is in danger, the app allows them to send their location so others can quickly find them and provide better assistance.
 
 ---
 
-## Estructura esperada de archivos
+## Firebase Configuration in KMP
+
+This project uses **Firebase Authentication** for both Android and iOS platforms.  
+Below are the steps required to integrate the Firebase configuration files into the multiplatform architecture.
+
+---
+
+## Expected File Structure
 
 - `composeApp/src/androidMain`  
-  Contiene el código nativo para Android.
+  Contains native code for Android.
 
 - `composeApp/src/iosMain`  
-  Contiene el código nativo para iOS.
+  Contains native code for iOS.
 
 - `composeApp/src/commonMain`  
-  Contiene el código común (Kotlin Multiplatform).
+  Contains the shared (Kotlin Multiplatform) code.
 
-- **Archivos de configuración Firebase:**
-  - `google-services.json`: debe colocarse en  
+- **Firebase Configuration Files:**
+  - `google-services.json`: should be placed in  
     `composeApp/src`
-  - `GoogleService-Info.plist`: debe colocarse en  
+  - `GoogleService-Info.plist`: should be placed in  
     `iosApp/iosApp`
 
-> *Puedes agregar las imágenes de referencia de la estructura de carpetas aquí.*
+> *You can add reference images of the folder structure here.*
 
 ---
 
-## Pasos para la configuración
+## Configuration Steps
 
-1. **Agregar archivos de configuración de Firebase:**
+1. **Add Firebase Configuration Files:**
 
-  - Colocar el archivo `google-services.json` en la carpeta:
-    ```
-    composeApp/src
-    ```
+   - Place the `google-services.json` file in:
+     ```
+     composeApp/src
+     ```
 
-  - Colocar el archivo `GoogleService-Info.plist` en la carpeta:
-    ```
-    iosApp/iosApp
-    ```
+   - Place the `GoogleService-Info.plist` file in:
+     ```
+     iosApp/iosApp
+     ```
 
-2. **Sincronizar dependencias de CocoaPods:**
+2. **Sync CocoaPods Dependencies:**
 
-   Desde la raíz del proyecto KMP, ejecutar:
+   From the root of the KMP project, run:
    ```bash
    ./gradlew podInstall
-   ```
-
-   Después
-
-   ```bash
    pod install
-   ```
+  ```
+
+
