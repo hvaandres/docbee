@@ -53,9 +53,44 @@ Below are the steps required to integrate the Firebase configuration files into 
 2. **Sync CocoaPods Dependencies:**
 
    From the root of the KMP project, run:
-   ```bash
-   ./gradlew podInstall
+   ```
+    ./gradlew podInstall
    pod install
-  ```
+   ```
+
+## App Screenshots
+
+<table>
+  <tr>
+    <td align="center">
+      <img src="https://github.com/user-attachments/assets/088fc16c-e0ca-4787-b555-8dc2354ab832" alt="Login Page" width="250"/>
+      <br/>Login Page
+    </td>
+    <td align="center">
+      <img src="https://github.com/user-attachments/assets/44547e78-940b-4335-b739-c296cf4a3d24" alt="Settings" width="250"/>
+      <br/>Settings
+    </td>
+  </tr>
+  <tr>
+    <td align="center">
+      <img src="https://github.com/user-attachments/assets/6a9813e7-c6a9-4747-93e4-147cb339d166" alt="New User" width="250"/>
+      <br/>New User
+    </td>
+    <td align="center">
+      <img src="https://github.com/user-attachments/assets/1aab59dd-62df-4acf-87df-491f426a8ce4" alt="Directory" width="250"/>
+      <br/>Directory
+    </td>
+  </tr>
+  <tr>
+    <td align="center" colspan="2">
+      <img src="https://github.com/user-attachments/assets/8db98f11-229d-4ad2-9ad7-66e03c8080bd" alt="Main Menu" width="250"/>
+      <br/>Main Menu
+    </td>
+  </tr>
+</table>
+
+
+  
+   
 
 
