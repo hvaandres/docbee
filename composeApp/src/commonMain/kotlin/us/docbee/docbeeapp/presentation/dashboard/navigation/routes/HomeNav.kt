@@ -7,10 +7,14 @@ import org.koin.compose.viewmodel.koinViewModel
 import us.docbee.docbeeapp.presentation.dashboard.navigation.DashboardRoutes
 import us.docbee.docbeeapp.presentation.home.HomeScreen
 
-fun NavGraphBuilder.addHomeNav(parentNavController: NavHostController) {
+fun NavGraphBuilder.addHomeNav(
+    parentNavController: NavHostController,
+    navController: NavHostController
+) {
     composable<DashboardRoutes.HomeRoute> {
         HomeScreen(
             parentNavController = parentNavController,
+            navController = navController,
             viewModel = koinViewModel()
         )
     }
