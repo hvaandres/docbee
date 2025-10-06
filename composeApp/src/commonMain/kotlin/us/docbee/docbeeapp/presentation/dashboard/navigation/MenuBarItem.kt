@@ -12,7 +12,7 @@ import androidx.compose.material.icons.outlined.Settings
 import androidx.compose.ui.graphics.vector.ImageVector
 import docbee.composeapp.generated.resources.Res
 import docbee.composeapp.generated.resources.dashboard_directory_title
-import docbee.composeapp.generated.resources.dashboard_history_title
+import docbee.composeapp.generated.resources.dashboard_alerts_title
 import docbee.composeapp.generated.resources.dashboard_home_title
 import docbee.composeapp.generated.resources.dashboard_settings_title
 import org.jetbrains.compose.resources.StringResource
@@ -35,11 +35,11 @@ enum class MenuBarItem(
         Res.string.dashboard_directory_title,
         DashboardRoutes.DirectoryRoute
     ),
-    HISTORY(
+    ALERTS(
         Icons.Default.Info,
         Icons.Outlined.Info,
-        Res.string.dashboard_history_title,
-        DashboardRoutes.HistoryRoute
+        Res.string.dashboard_alerts_title,
+        DashboardRoutes.AlertsRoute
     ),
     SETTINGS(
         Icons.Default.Settings,

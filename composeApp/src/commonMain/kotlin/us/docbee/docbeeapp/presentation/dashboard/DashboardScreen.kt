@@ -45,8 +45,8 @@ fun DashboardScreen(
                 DashboardRoutes.DirectoryRoute::class.qualifiedName ->
                     dashboardViewModel.onEvent(DashboardEvents.OnUpdateTab(MenuBarItem.DIRECTORY))
 
-                DashboardRoutes.HistoryRoute::class.qualifiedName ->
-                    dashboardViewModel.onEvent(DashboardEvents.OnUpdateTab(MenuBarItem.HISTORY))
+                DashboardRoutes.AlertsRoute::class.qualifiedName ->
+                    dashboardViewModel.onEvent(DashboardEvents.OnUpdateTab(MenuBarItem.ALERTS))
 
                 DashboardRoutes.SettingsRoute::class.qualifiedName ->
                     dashboardViewModel.onEvent(DashboardEvents.OnUpdateTab(MenuBarItem.SETTINGS))

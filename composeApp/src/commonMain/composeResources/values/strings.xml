@@ -46,7 +46,7 @@
 
     <string name="dashboard_home_title">Home</string>
     <string name="dashboard_directory_title">Directory</string>
-    <string name="dashboard_history_title">History</string>
+    <string name="dashboard_alerts_title">Alerts</string>
     <string name="dashboard_settings_title">Settings</string>
 
     <string name="home_emergency_app_bar_title">Emergency</string>
@@ -66,8 +66,17 @@
     <string name="home_directory_app_bar_title">Directory</string>
     <string name="home_directory_app_bar_subtitle">Please check and review your emergency contacts</string>
 
-    <string name="home_history_app_bar_title">History</string>
-    <string name="home_history_app_bar_subtitle">History check</string>
+    <string name="home_alerts_app_bar_title">Alerts</string>
+    <string name="home_alerts_app_bar_subtitle">Options to send alerts to my contacts</string>
+
+    <string name="alerts_item_lost_title">Lost</string>
+    <string name="alerts_item_lost_description">I don’t know where I’m currently located</string>
+    <string name="alerts_item_fall_title">Fall</string>
+    <string name="alerts_item_fall_description">I hit myself and I’m currently on the floor</string>
+    <string name="alerts_item_dizzy_title">Dizzy</string>
+    <string name="alerts_item_dizzy_description">I’m currently not feeling well and I have a lot of pain</string>
+    <string name="alerts_item_accident_title">Accident</string>
+    <string name="alerts_item_accident_description">I’m driving and I hit someone</string>
 
     <string name="home_settings_app_bar_title">Settings</string>
     <string name="home_settings_app_bar_subtitle">Modify your perfil and settings</string>
