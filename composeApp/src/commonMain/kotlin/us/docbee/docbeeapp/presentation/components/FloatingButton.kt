@@ -18,7 +18,7 @@ fun FloatingButton(modifier: Modifier = Modifier, onClick: () -> Unit) {
         modifier = modifier
             .padding(end = 28.dp, bottom = 28.dp)
             .size(42.dp)
-            .clickable { onClick },
+            .clickable { onClick() },
         imageVector = Icons.Outlined.AddCircleOutline,
         colorFilter = ColorFilter.tint(color = White),
         contentDescription = null

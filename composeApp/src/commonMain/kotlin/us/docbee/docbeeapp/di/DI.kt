@@ -6,11 +6,13 @@ import org.koin.core.module.dsl.viewModelOf
 import org.koin.dsl.KoinAppDeclaration
 import org.koin.dsl.module
 import us.docbee.docbeeapp.data.EmailAuth
+import us.docbee.docbeeapp.data.datasources.AlertsRemoteDataSource
 import us.docbee.docbeeapp.data.datasources.ContactRemoteDataSource
 import us.docbee.docbeeapp.data.datasources.JsonResourceLoader
 import us.docbee.docbeeapp.data.datasources.LocationDataSource
 import us.docbee.docbeeapp.data.datasources.UserRemoteDataSource
 import us.docbee.docbeeapp.data.datasources.UserSessionLocalDataSource
+import us.docbee.docbeeapp.data.datasources.getAlertsDataSource
 import us.docbee.docbeeapp.data.datasources.getContactDataSource
 import us.docbee.docbeeapp.data.datasources.getUserDataSource
 import us.docbee.docbeeapp.data.datasources.interfaces.ResourcesLoader
@@ -38,7 +40,7 @@ import us.docbee.docbeeapp.domain.repositories.UserRepository
 import us.docbee.docbeeapp.domain.usecases.EmailAuthUseCase
 import us.docbee.docbeeapp.domain.usecases.EmailSignupUseCase
 import us.docbee.docbeeapp.domain.usecases.FetchLocationUseCase
-import us.docbee.docbeeapp.domain.usecases.GetAlertsUseCase
+import us.docbee.docbeeapp.domain.usecases.alerts.GetAlertsUseCase
 import us.docbee.docbeeapp.domain.usecases.GetCountriesUseCase
 import us.docbee.docbeeapp.domain.usecases.GetUserContactsUseCase
 import us.docbee.docbeeapp.domain.usecases.GetUserSessionStatus
@@ -46,6 +48,7 @@ import us.docbee.docbeeapp.domain.usecases.LogoutUseCase
 import us.docbee.docbeeapp.domain.usecases.NotifyEmergencyUseCase
 import us.docbee.docbeeapp.domain.usecases.SaveUserContactUseCase
 import us.docbee.docbeeapp.domain.usecases.SendEmergencyUseCase
+import us.docbee.docbeeapp.domain.usecases.alerts.SaveAlertsUseCase
 import us.docbee.docbeeapp.domain.usecases.directory.DeleteUserContactUseCase
 import us.docbee.docbeeapp.presentation.alerts.AlertsViewModel
 import us.docbee.docbeeapp.presentation.dashboard.DashboardViewModel
@@ -67,6 +70,7 @@ val dataSourcesModule = module {
     factory<ResourcesLoader> { JsonResourceLoader() }
     factory<UserRemoteDataSource> { getUserDataSource() }
     factory<ContactRemoteDataSource> { getContactDataSource() }
+    factory<AlertsRemoteDataSource> { getAlertsDataSource() }
     factory<UserSessionDataSource> { UserSessionLocalDataSource(get()) }
     factory<LocationDataSource> { provideLocationDataSource() }
     factory { EmergencyNotificationApiService() }
@@ -80,7 +84,7 @@ val repositoryModule = module {
     factory<SessionRepository> { SessionDataRepository(get(), get()) }
     factory<LocationRepository> { LocationDataRepository(get()) }
     factory<EmergenciesRepository> { EmergencyDataRepository(get()) }
-    factory<AlertsRepository> { AlertsDataRepository(get()) }
+    factory<AlertsRepository> { AlertsDataRepository(get(), get()) }
 }
 
 val usesCasesModule = module {
@@ -96,6 +100,7 @@ val usesCasesModule = module {
     factory { SendEmergencyUseCase(get()) }
     factory { NotifyEmergencyUseCase(get(), get(), get()) }
     factory { GetAlertsUseCase(get(), get()) }
+    factory { SaveAlertsUseCase(get(), get()) }
 }
 
 
