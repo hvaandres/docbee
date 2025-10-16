@@ -1,4 +1,4 @@
-package us.docbee.docbeeapp.domain.usecases
+package us.docbee.docbeeapp.domain.usecases.alerts
 
 import us.docbee.docbeeapp.domain.models.alerts.FetchAlertsResult
 import us.docbee.docbeeapp.domain.models.directory.UserUidResult

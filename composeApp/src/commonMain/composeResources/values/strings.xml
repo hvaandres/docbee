@@ -78,6 +78,12 @@
     <string name="alerts_item_accident_title">Accident</string>
     <string name="alerts_item_accident_description">I’m driving and I hit someone</string>
 
+    <string name="alerts_add_alerts_title">Add New Alert</string>
+    <string name="alerts_add_alerts_description">Let’s add new alerts and let’s add a new message to this alert to ensure we can inform your love ones in case of an emergency</string>
+    <string name="alerts_add_alerts_name_alert">Name of the Alert</string>
+    <string name="alerts_add_alerts_description_alert">Description or Message</string>
+    <string name="alerts_add_alerts_save_button">Save</string>
+
     <string name="home_settings_app_bar_title">Settings</string>
     <string name="home_settings_app_bar_subtitle">Modify your perfil and settings</string>
 

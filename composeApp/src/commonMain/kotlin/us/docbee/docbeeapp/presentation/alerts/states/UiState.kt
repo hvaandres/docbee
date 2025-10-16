@@ -4,5 +4,6 @@ import us.docbee.docbeeapp.domain.models.alerts.AlertModel
 
 data class UiState(
     val isLoading: Boolean = false,
+    val isAddingAlert: Boolean = false,
     val alerts: List<AlertModel> = emptyList()
 )
