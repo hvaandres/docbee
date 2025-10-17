@@ -18,7 +18,7 @@ public class AlertRemoteStorage: NSObject {
         collectionAlert: String,
         uid: String,
         alert: NSDictionary,
-        completion: @escaping (NSError?) -> Void
+        completion: @escaping (_ result: [String: Any]?, _ error: NSError?) -> Void
     ) {
         let reference = db
             .collection(collection)
@@ -35,7 +35,11 @@ public class AlertRemoteStorage: NSObject {
         data["uid"] = reference.documentID
         
         reference.setData(data) { error in
-            completion(error as NSError?)
+            if (error as NSError? != nil) {
+                completion(nil, error as NSError?)
+            } else {
+                completion(data, nil)
+            }
         }
     }
     

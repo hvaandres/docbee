@@ -39,6 +39,7 @@ import docbee.composeapp.generated.resources.alerts_add_alerts_save_button
 import docbee.composeapp.generated.resources.alerts_add_alerts_title
 import kotlinx.coroutines.flow.collectLatest
 import org.jetbrains.compose.resources.stringResource
+import us.docbee.docbeeapp.presentation.alerts.effects.AlertsEffects
 import us.docbee.docbeeapp.presentation.alerts.events.AlertsEvents
 import us.docbee.docbeeapp.presentation.components.CardDescriptionItem
 import us.docbee.docbeeapp.presentation.components.FloatingButton
@@ -62,7 +63,9 @@ fun AlertsScreen(
 
     LaunchedEffect(Unit) {
         viewModel.effect.collectLatest { effect ->
-
+            when (effect) {
+                is AlertsEffects.NavigateEditAlert -> Unit // TODO: Navigate to Edit Alert
+            }
         }
     }
 
@@ -75,10 +78,16 @@ fun AlertsScreen(
             LazyColumn(verticalArrangement = Arrangement.spacedBy(12.dp)) {
                 items(uiState.alerts, key = { it.uid }) { alert ->
                     CardDescriptionItem(
-                        title = alert.name,
-                        description = alert.message,
-                        icon = alert.icon.getDrawable(),
-                        onClick = { viewModel.onEvent(AlertsEvents.OnClickAlert(alert.uid)) }
+                        title = alert.alert.name,
+                        description = alert.alert.message,
+                        icon = alert.alert.icon.getDrawable(),
+                        onClick = { viewModel.onEvent(AlertsEvents.OnClickAlert(alert.uid)) },
+                        onDeleteClick = { viewModel.onEvent(AlertsEvents.OnDeleteAlert(alert.uid)) },
+                        isSwipeable = alert.isSwipeable,
+                        swipeState = alert.swipeState,
+                        onSwipeChanged = {
+                            viewModel.onEvent(AlertsEvents.OnSwipeAlertEvent(alert.uid, it))
+                        }
                     )
                 }
             }

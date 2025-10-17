@@ -15,7 +15,7 @@ NS_ASSUME_NONNULL_BEGIN
                 collectionAlert:(NSString *)collectionAlert
                               uid:(NSString *)uid
                           alert:(NSDictionary *)alert
-                       completion:(void (^)(NSError * _Nullable error))completion;
+                       completion:(void (^)(NSDictionary * _Nullable result,  NSError * _Nullable error))completion;
 
 - (void)fetchAlertWithCollection:(NSString *)collection
                  collectionAlert:(NSString *)collectionAlert

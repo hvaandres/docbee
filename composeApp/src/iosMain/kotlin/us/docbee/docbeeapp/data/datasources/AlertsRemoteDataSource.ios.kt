@@ -3,7 +3,9 @@ package us.docbee.docbeeapp.data.datasources
 import kotlinx.cinterop.ExperimentalForeignApi
 import kotlinx.coroutines.suspendCancellableCoroutine
 import us.docbee.docbeeapp.data.entities.alerts.AlertFetchResponse
+import us.docbee.docbeeapp.data.entities.alerts.AlertSaveResponse
 import us.docbee.docbeeapp.data.entities.alerts.AlertsDeleteResponse
+import us.docbee.docbeeapp.domain.mappers.toAlertDomain
 import us.docbee.docbeeapp.domain.mappers.toMap
 import us.docbee.docbeeapp.domain.mappers.toMutableStringMap
 import us.docbee.docbeeapp.domain.models.alerts.AlertModel
@@ -16,15 +18,21 @@ class IosAlertsRemoteDataSource : AlertsRemoteDataSource {
 
     private val remote = AlertRemoteStorage()
 
-    override suspend fun saveAlert(uid: String, alert: AlertModel) {
-        suspendCancellableCoroutine<Unit> { thread ->
+    override suspend fun saveAlert(uid: String, alert: AlertModel): AlertSaveResponse {
+        return suspendCancellableCoroutine { thread ->
             remote.saveAlertWithCollection(
                 collection = FIRESTORE_COLLECTION_USER,
                 collectionAlert = FIRESTORE_COLLECTION_ALERTS,
                 uid = uid,
                 alert = alert.toMap()
-            ) { error ->
-                thread.resume(Unit, null)
+            ) { alert, error ->
+                val saveResponse = if (alert != null) {
+                    AlertSaveResponse(alert = alert.toMutableStringMap().toAlertDomain())
+                } else {
+                    val errorMessage = error?.userInfo?.get("NSLocalizedDescription") as? String
+                    AlertSaveResponse(errorCode = "UNKNOWN_ERROR", errorMessage = errorMessage)
+                }
+                thread.resume(saveResponse, null)
             }
         }
     }

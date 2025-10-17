@@ -77,6 +77,8 @@
     <string name="alerts_item_dizzy_description">I’m currently not feeling well and I have a lot of pain</string>
     <string name="alerts_item_accident_title">Accident</string>
     <string name="alerts_item_accident_description">I’m driving and I hit someone</string>
+    <string name="alerts_item_delete_alert">Delete</string>
+    <string name="alerts_item_edit_alert">Edit</string>
 
     <string name="alerts_add_alerts_title">Add New Alert</string>
     <string name="alerts_add_alerts_description">Let’s add new alerts and let’s add a new message to this alert to ensure we can inform your love ones in case of an emergency</string>
@@ -106,6 +108,7 @@
     <string name="settings_location_title">Location</string>
     <string name="settings_location_description">Allow others to visualize your current location</string>
     <string name="settings_logout_title">Logout</string>
+    <string name="settings_logout_description">User is requesting to sign-out from his/her session</string>
 
     <string name="emergency_toolbar_title">Sharing My Location</string>
     <string name="emergency_bottom_sheet_title">Emergency Calling</string>

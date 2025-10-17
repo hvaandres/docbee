@@ -48,6 +48,7 @@ import us.docbee.docbeeapp.domain.usecases.LogoutUseCase
 import us.docbee.docbeeapp.domain.usecases.NotifyEmergencyUseCase
 import us.docbee.docbeeapp.domain.usecases.SaveUserContactUseCase
 import us.docbee.docbeeapp.domain.usecases.SendEmergencyUseCase
+import us.docbee.docbeeapp.domain.usecases.alerts.DeleteAlertsUseCase
 import us.docbee.docbeeapp.domain.usecases.alerts.SaveAlertsUseCase
 import us.docbee.docbeeapp.domain.usecases.directory.DeleteUserContactUseCase
 import us.docbee.docbeeapp.presentation.alerts.AlertsViewModel
@@ -101,6 +102,7 @@ val usesCasesModule = module {
     factory { NotifyEmergencyUseCase(get(), get(), get()) }
     factory { GetAlertsUseCase(get(), get()) }
     factory { SaveAlertsUseCase(get(), get()) }
+    factory { DeleteAlertsUseCase(get(), get()) }
 }
 
 
