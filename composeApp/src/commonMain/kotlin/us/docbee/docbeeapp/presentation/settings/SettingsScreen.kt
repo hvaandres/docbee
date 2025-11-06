@@ -21,6 +21,7 @@ import docbee.composeapp.generated.resources.settings_emergency_notification_des
 import docbee.composeapp.generated.resources.settings_emergency_notification_title
 import docbee.composeapp.generated.resources.settings_location_description
 import docbee.composeapp.generated.resources.settings_location_title
+import docbee.composeapp.generated.resources.settings_logout_description
 import docbee.composeapp.generated.resources.settings_logout_title
 import docbee.composeapp.generated.resources.settings_update_profile_description
 import docbee.composeapp.generated.resources.settings_update_profile_title
@@ -80,6 +81,7 @@ fun SettingsScreen(
         )
         CardDescriptionItem(
             title = stringResource(Res.string.settings_logout_title),
+            description = stringResource(Res.string.settings_logout_description),
             icon = Res.drawable.ic_logout,
             onClick = { viewModel.onEvent(SettingsEvent.OnClickLogout) }
         )

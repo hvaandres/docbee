@@ -3,6 +3,7 @@ package us.docbee.docbeeapp.data.repositories
 import us.docbee.docbeeapp.data.datasources.AlertsRemoteDataSource
 import us.docbee.docbeeapp.domain.managers.AlertsStringsManager
 import us.docbee.docbeeapp.domain.mappers.toAlertDomain
+import us.docbee.docbeeapp.domain.models.alerts.AddAlertResult
 import us.docbee.docbeeapp.domain.models.alerts.AlertModel
 import us.docbee.docbeeapp.domain.models.alerts.DeleteAlertResult
 import us.docbee.docbeeapp.domain.models.alerts.FetchAlertsResult
@@ -24,8 +25,12 @@ class AlertsDataRepository(
         return FetchAlertsResult.Success(alertList)
     }
 
-    override suspend fun saveAlerts(uid: String, alert: AlertModel) {
-        alertDataSource.saveAlert(uid, alert)
+    override suspend fun saveAlerts(uid: String, alert: AlertModel): AddAlertResult {
+        val response = alertDataSource.saveAlert(uid, alert)
+        return when {
+            response.alert != null -> AddAlertResult.Success(response.alert)
+            else -> AddAlertResult.Error
+        }
     }
 
     override suspend fun deleteAlert(
@@ -34,7 +39,7 @@ class AlertsDataRepository(
     ): DeleteAlertResult {
         val response = alertDataSource.deleteAlert(uid, alertUid)
         return when {
-            response.errorCode != null -> DeleteAlertResult.Success
+            response.errorCode != null -> DeleteAlertResult.Error
             else -> DeleteAlertResult.Success
         }
     }
