@@ -86,6 +86,10 @@
     <string name="alerts_add_alerts_description_alert">Description or Message</string>
     <string name="alerts_add_alerts_save_button">Save</string>
 
+    <string name="alerts_sending_alerts_appbar_title">Sending Alert</string>
+    <string name="alerts_sending_alerts_appbar_subtitle">You clicked the alert, and we are trying to reach out to your family members. Please wait and you should received a call from them</string>
+    <string name="alerts_sending_alerts_description">We are trying to send the messages as quicker as we can to help you with your emergency, Please stay with us!</string>
+
     <string name="home_settings_app_bar_title">Settings</string>
     <string name="home_settings_app_bar_subtitle">Modify your perfil and settings</string>
 

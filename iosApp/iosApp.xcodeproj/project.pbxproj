@@ -10,6 +10,7 @@
 		3BAD4ED72E3C6592001EA1A8 /* FirebaseAuth in Frameworks */ = {isa = PBXBuildFile; productRef = 3BAD4ED62E3C6592001EA1A8 /* FirebaseAuth */; };
 		3BAD4ED92E3C6592001EA1A8 /* FirebaseFirestore in Frameworks */ = {isa = PBXBuildFile; productRef = 3BAD4ED82E3C6592001EA1A8 /* FirebaseFirestore */; };
 		3BAD4EDC2E3C65A3001EA1A8 /* FirebaseCore in Frameworks */ = {isa = PBXBuildFile; productRef = 3BAD4EDB2E3C65A3001EA1A8 /* FirebaseCore */; };
+		3BF417BD2EBD544300007747 /* DotLottie in Frameworks */ = {isa = PBXBuildFile; productRef = 3BF417BC2EBD544300007747 /* DotLottie */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -48,6 +49,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				3BAD4ED72E3C6592001EA1A8 /* FirebaseAuth in Frameworks */,
+				3BF417BD2EBD544300007747 /* DotLottie in Frameworks */,
 				3BAD4EDC2E3C65A3001EA1A8 /* FirebaseCore in Frameworks */,
 				3BAD4ED92E3C6592001EA1A8 /* FirebaseFirestore in Frameworks */,
 			);
@@ -131,6 +133,7 @@
 			minimizedProjectReferenceProxies = 1;
 			packageReferences = (
 				3BAD4ED52E3C6592001EA1A8 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */,
+				3BF417BB2EBD544300007747 /* XCRemoteSwiftPackageReference "dotlottie-ios" */,
 			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = B9DA97B22DC1472C00A4DA20 /* Products */;
@@ -412,6 +415,14 @@
 				minimumVersion = 12.0.0;
 			};
 		};
+		3BF417BB2EBD544300007747 /* XCRemoteSwiftPackageReference "dotlottie-ios" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/LottieFiles/dotlottie-ios";
+			requirement = {
+				kind = exactVersion;
+				version = 0.11.1;
+			};
+		};
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
@@ -429,6 +440,11 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 3BAD4ED52E3C6592001EA1A8 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
 			productName = FirebaseCore;
+		};
+		3BF417BC2EBD544300007747 /* DotLottie */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 3BF417BB2EBD544300007747 /* XCRemoteSwiftPackageReference "dotlottie-ios" */;
+			productName = DotLottie;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};

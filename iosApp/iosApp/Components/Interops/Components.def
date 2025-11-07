@@ -1,0 +1,3 @@
+language = Objective-C
+headers = AnimatedVectorComponent.h
+package = us.docbee.docbeeapp.components

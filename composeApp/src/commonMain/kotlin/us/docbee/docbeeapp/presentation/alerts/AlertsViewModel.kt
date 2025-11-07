@@ -70,6 +70,7 @@ class AlertsViewModel(
     }
 
     private fun onAlertClicked(uid: String) {
+        emitEffect(AlertsEffects.NavigateSendAlert(uid))
         updateState {
             copy(
                 alerts = alerts.map { item ->

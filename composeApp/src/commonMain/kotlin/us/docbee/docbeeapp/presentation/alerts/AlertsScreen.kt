@@ -45,6 +45,7 @@ import us.docbee.docbeeapp.presentation.components.CardDescriptionItem
 import us.docbee.docbeeapp.presentation.components.FloatingButton
 import us.docbee.docbeeapp.presentation.components.PrimaryButton
 import us.docbee.docbeeapp.presentation.components.inputs.InputFieldText
+import us.docbee.docbeeapp.presentation.navigation.AlertDetailRoute
 import us.docbee.docbeeapp.presentation.theme.Black
 import us.docbee.docbeeapp.presentation.theme.Green100
 import us.docbee.docbeeapp.presentation.theme.White
@@ -54,6 +55,7 @@ import us.docbee.docbeeapp.utils.ui.getDrawable
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun AlertsScreen(
+    parentNavController: NavHostController,
     navController: NavHostController,
     viewModel: AlertsViewModel
 ) {
@@ -65,6 +67,7 @@ fun AlertsScreen(
         viewModel.effect.collectLatest { effect ->
             when (effect) {
                 is AlertsEffects.NavigateEditAlert -> Unit // TODO: Navigate to Edit Alert
+                is AlertsEffects.NavigateSendAlert -> parentNavController.navigate(AlertDetailRoute(effect.uid))
             }
         }
     }
