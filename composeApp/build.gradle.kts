@@ -31,6 +31,11 @@ kotlin {
                 includeDirs.allHeaders("${rootDir.absolutePath}/iosApp/iosApp/Wrappers/Interops/")
             }
 
+            cinterops.create("Components") {
+                definitionFile.set(file("${rootDir.absolutePath}/iosApp/iosApp/Components/Interops/Components.def"))
+                includeDirs.allHeaders("${rootDir.absolutePath}/iosApp/iosApp/Components/Interops/")
+            }
+
         }
         iosTarget.binaries.framework {
             baseName = "ComposeApp"
@@ -49,6 +54,7 @@ kotlin {
             implementation(libs.firebase.firestore)
             implementation(libs.ktor.client.okhttp)
             implementation(libs.google.services.location)
+            implementation(libs.lottie)
         }
         commonMain.dependencies {
             implementation(compose.runtime)

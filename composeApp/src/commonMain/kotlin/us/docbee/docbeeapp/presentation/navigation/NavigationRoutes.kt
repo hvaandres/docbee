@@ -16,3 +16,6 @@ data object AddContactRoute
 
 @Serializable
 data object EmergencyRoute
+
+@Serializable
+data class AlertDetailRoute(val uid: String)
