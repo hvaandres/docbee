@@ -66,8 +66,11 @@ fun AlertsScreen(
     LaunchedEffect(Unit) {
         viewModel.effect.collectLatest { effect ->
             when (effect) {
-                is AlertsEffects.NavigateEditAlert -> Unit // TODO: Navigate to Edit Alert
-                is AlertsEffects.NavigateSendAlert -> parentNavController.navigate(AlertDetailRoute(effect.uid))
+                is AlertsEffects.NavigateSendAlert -> parentNavController.navigate(
+                    AlertDetailRoute(
+                        effect.uid
+                    )
+                )
             }
         }
     }
@@ -101,12 +104,24 @@ fun AlertsScreen(
             onClick = { viewModel.onEvent(AlertsEvents.OnClickAddAlert) }
         )
         AddAlertBottomSheet(
-            isSheetVisible = uiState.isAddingAlert,
+            isSheetVisible = uiState.isAddingAlert || uiState.isEditingAlert,
             bottomSheetState = bottomSheetState,
             onDismissRequest = { viewModel.onEvent(AlertsEvents.OnClickCloseAddAlert) },
             onClickSave = { name, message ->
-                viewModel.onEvent(AlertsEvents.OnSaveAlert(name, message))
-            }
+                if (!uiState.isEditingAlert) {
+                    viewModel.onEvent(AlertsEvents.OnSaveAlert(name, message))
+                } else {
+                    viewModel.onEvent(
+                        AlertsEvents.OnSaveEditedAlert(
+                            uid = uiState.editingAlert?.uid ?: "",
+                            name = name,
+                            message = message
+                        )
+                    )
+                }
+            },
+            defaultName = uiState.editingAlert?.name ?: "",
+            defaultDescription = uiState.editingAlert?.message ?: "",
         )
     }
 }
@@ -117,10 +132,12 @@ fun AddAlertBottomSheet(
     isSheetVisible: Boolean,
     bottomSheetState: SheetState,
     onDismissRequest: () -> Unit,
-    onClickSave: (String, String) -> Unit
+    onClickSave: (String, String) -> Unit,
+    defaultName: String = "",
+    defaultDescription: String = "",
 ) {
-    var alertName by remember(isSheetVisible) { mutableStateOf("") }
-    var alertMessage by remember(isSheetVisible) { mutableStateOf("") }
+    var alertName by remember(isSheetVisible) { mutableStateOf(defaultName) }
+    var alertMessage by remember(isSheetVisible) { mutableStateOf(defaultDescription) }
 
     if (isSheetVisible) {
         ModalBottomSheet(

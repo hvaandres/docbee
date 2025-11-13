@@ -11,4 +11,5 @@ sealed class AlertsEvents {
     data class OnDeleteAlert(val uid: String) : AlertsEvents()
     data class OnEditAlert(val uid: String): AlertsEvents()
     data class OnSwipeAlertEvent(val uid: String, val swipeState: HorizontalSwipeState) : AlertsEvents()
+    data class OnSaveEditedAlert(val uid: String, val name: String, val message: String): AlertsEvents()
 }

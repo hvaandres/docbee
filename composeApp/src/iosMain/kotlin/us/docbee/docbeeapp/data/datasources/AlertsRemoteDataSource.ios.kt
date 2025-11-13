@@ -73,6 +73,29 @@ class IosAlertsRemoteDataSource : AlertsRemoteDataSource {
             }
         }
     }
+
+    @Suppress("CAST_NEVER_SUCCEEDS")
+    override suspend fun editAlert(
+        uid: String,
+        alert: AlertModel
+    ): AlertSaveResponse {
+        return suspendCancellableCoroutine { thread ->
+            remote.modifyAlertWithCollection(
+                collection = FIRESTORE_COLLECTION_USER,
+                collectionAlert = FIRESTORE_COLLECTION_ALERTS,
+                uid = uid,
+                alert = alert.toMap()
+            ) { alert, error ->
+                val saveResponse = if (alert != null) {
+                    AlertSaveResponse(alert = alert as? AlertModel)
+                } else {
+                    val errorMessage = error?.userInfo?.get("NSLocalizedDescription") as? String
+                    AlertSaveResponse(errorCode = "UNKNOWN_ERROR", errorMessage = errorMessage)
+                }
+                thread.resume(saveResponse, null)
+            }
+        }
+    }
 }
 
 actual fun getAlertsDataSource(): AlertsRemoteDataSource = IosAlertsRemoteDataSource()

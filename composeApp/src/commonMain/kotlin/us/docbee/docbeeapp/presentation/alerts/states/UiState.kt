@@ -6,6 +6,8 @@ import us.docbee.docbeeapp.presentation.components.HorizontalSwipeState
 data class UiState(
     val isLoading: Boolean = false,
     val isAddingAlert: Boolean = false,
+    val isEditingAlert: Boolean = false,
+    val editingAlert: AlertModel? = null,
     val alerts: List<AlertState> = emptyList()
 )
 

@@ -9,6 +9,7 @@ interface AlertsRemoteDataSource {
     suspend fun saveAlert(uid: String, alert: AlertModel): AlertSaveResponse
     suspend fun fetchAlert(uid: String): AlertFetchResponse
     suspend fun deleteAlert(uid: String, alertUid: String): AlertsDeleteResponse
+    suspend fun editAlert(uid: String, alert: AlertModel): AlertSaveResponse
 }
 
 expect fun getAlertsDataSource(): AlertsRemoteDataSource

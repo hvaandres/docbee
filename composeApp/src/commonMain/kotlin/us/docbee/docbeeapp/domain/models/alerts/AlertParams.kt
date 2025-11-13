@@ -5,3 +5,10 @@ data class AlertParams(
     val message: String,
     val icon: String
 )
+
+data class AlertModifyParams(
+    val uid: String,
+    val name: String,
+    val message: String,
+    val icon: String
+)

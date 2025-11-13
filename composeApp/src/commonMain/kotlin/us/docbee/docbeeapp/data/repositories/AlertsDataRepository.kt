@@ -43,6 +43,17 @@ class AlertsDataRepository(
         }
     }
 
+    override suspend fun modifyAlert(
+        uid: String,
+        alert: AlertModel
+    ): AddAlertResult {
+        val response = alertDataSource.editAlert(uid, alert)
+        return when {
+            response.alert != null -> AddAlertResult.Success(response.alert)
+            else -> AddAlertResult.Error
+        }
+    }
+
     private suspend fun defaultList(): List<AlertModel> {
         return listOf(
             AlertModel(

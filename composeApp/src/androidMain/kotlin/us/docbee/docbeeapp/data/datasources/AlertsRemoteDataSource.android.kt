@@ -62,6 +62,24 @@ class AndroidAlertsRemoteDataSource : AlertsRemoteDataSource {
             AlertsDeleteResponse(errorCode = "UNKNOWN_ERROR", errorMessage = ex.localizedMessage)
         }
     }
+
+    override suspend fun editAlert(uid: String, alert: AlertModel): AlertSaveResponse {
+        return try {
+            db.collection(FIRESTORE_COLLECTION_USER)
+                .document(uid)
+                .collection(FIRESTORE_COLLECTION_ALERTS)
+                .document(alert.uid)
+                .update(
+                    "name", alert.name,
+                    "message", alert.message
+                )
+                .await()
+            AlertSaveResponse(alert = alert)
+        } catch (ex: Exception) {
+            AlertSaveResponse(errorCode = "UNKNOWN_ERROR", errorMessage = ex.localizedMessage)
+        }
+
+    }
 }
 
 actual fun getAlertsDataSource(): AlertsRemoteDataSource = AndroidAlertsRemoteDataSource()
