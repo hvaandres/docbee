@@ -1,6 +1,7 @@
 package us.docbee.docbeeapp.data.datasources
 
 import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.firestore.toObject
 import kotlinx.coroutines.tasks.await
 import us.docbee.docbeeapp.data.entities.ContactDeleteResponse
 import us.docbee.docbeeapp.data.entities.ContactFetchResponse
@@ -33,7 +34,7 @@ class AndroidContactRemoteDataSource : ContactRemoteDataSource {
                 .get()
                 .await()
 
-            ContactFetchResponse(data = query.documents.map { it.data })
+            ContactFetchResponse(data = query.documents.map { it.toObject<ContactModel>() as ContactModel })
 
         } catch (ex: Exception) {
             ContactFetchResponse(errorCode = "UNKNOWN_ERROR", errorMessage = ex.localizedMessage)

@@ -7,6 +7,7 @@
 
 import Foundation
 import FirebaseFirestore
+import ComposeApp
 
 @objc(AlertRemoteStorage)
 public class AlertRemoteStorage: NSObject {
@@ -18,7 +19,7 @@ public class AlertRemoteStorage: NSObject {
         collectionAlert: String,
         uid: String,
         alert: NSDictionary,
-        completion: @escaping (_ result: [String: Any]?, _ error: NSError?) -> Void
+        completion: @escaping (_ result: AlertModel?, _ error: NSError?) -> Void
     ) {
         let reference = db
             .collection(collection)
@@ -38,7 +39,12 @@ public class AlertRemoteStorage: NSObject {
             if (error as NSError? != nil) {
                 completion(nil, error as NSError?)
             } else {
-                completion(data, nil)
+                do {
+                    let alertDocument = try self.decode(dictionary: data, into: AlertDocument.self)
+                    completion(alertDocument.toObject(), nil)
+                } catch {
+                    completion(nil, error as NSError?)
+                }
             }
         }
     }
@@ -47,7 +53,7 @@ public class AlertRemoteStorage: NSObject {
         collection: String,
         collectionAlert: String,
         uid: String,
-        completion: @escaping (_ result: [[String: Any]]?, _ error: NSError?) -> Void
+        completion: @escaping (_ result: [AlertModel]?, _ error: NSError?) -> Void
     ) {
         Task {
             do {
@@ -56,7 +62,16 @@ public class AlertRemoteStorage: NSObject {
                     .collection(collectionAlert)
                     .getDocuments()
                 
-                completion(querySnapshot.documents.map { $0.data() }, nil)
+                var alertModel = [AlertModel]()
+                for document in querySnapshot.documents {
+                    do {
+                        let swiftDocument = try document.data(as: AlertDocument.self)
+                        alertModel.append(swiftDocument.toObject())
+                    } catch let decodingError as NSError {
+                        completion(nil, decodingError)
+                    }
+                }
+                completion(alertModel, nil)
             } catch {
                 completion(nil, error as NSError?)
             }
@@ -84,4 +99,34 @@ public class AlertRemoteStorage: NSObject {
         }
     }
     
+    func decode<T: Decodable>(dictionary: [String: Any], into type: T.Type) throws -> T {
+        let jsonData = try JSONSerialization.data(withJSONObject: dictionary, options: [])
+        let decoder = JSONDecoder()
+        return try decoder.decode(T.self, from: jsonData)
+    }
+}
+
+struct AlertDocument: Codable {
+    let name: String
+    let message: String
+    let icon: String
+    let uid: String
+   
+    enum CodingKeys: String, CodingKey {
+        case name
+        case message
+        case icon
+        case uid
+    }
+}
+
+extension AlertDocument {
+    func toObject() -> AlertModel {
+        return AlertModel(
+            uid: self.uid,
+            name: self.name,
+            message: self.message,
+            icon: self.icon
+        )
+    }
 }

@@ -1,7 +1,6 @@
 package us.docbee.docbeeapp.data.repositories
 
 import us.docbee.docbeeapp.data.datasources.ContactRemoteDataSource
-import us.docbee.docbeeapp.domain.mappers.toContactDomain
 import us.docbee.docbeeapp.domain.models.directory.ContactModel
 import us.docbee.docbeeapp.domain.models.directory.ContactResult
 import us.docbee.docbeeapp.domain.models.directory.DeleteContactResult
@@ -18,7 +17,7 @@ class ContactDataRepository(val contactDataSource: ContactRemoteDataSource): Con
         return when {
             response.errorCode != null -> ContactResult.Error
             response.data.isNullOrEmpty() -> ContactResult.Empty
-            else -> ContactResult.Success(list = response.data.mapNotNull { it?.toContactDomain() })
+            else -> ContactResult.Success(list = response.data.map { it })
         }
     }
 

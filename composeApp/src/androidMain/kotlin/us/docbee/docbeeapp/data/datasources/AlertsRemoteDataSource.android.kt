@@ -1,6 +1,7 @@
 package us.docbee.docbeeapp.data.datasources
 
 import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.firestore.toObject
 import kotlinx.coroutines.tasks.await
 import us.docbee.docbeeapp.data.entities.alerts.AlertFetchResponse
 import us.docbee.docbeeapp.data.entities.alerts.AlertSaveResponse
@@ -41,7 +42,7 @@ class AndroidAlertsRemoteDataSource : AlertsRemoteDataSource {
                 .get()
                 .await()
 
-            AlertFetchResponse(data = query.documents.map { it.data })
+            AlertFetchResponse(data = query.documents.map { it.toObject<AlertModel>() as AlertModel })
 
         } catch (ex: Exception) {
             AlertFetchResponse(errorCode = "UNKNOWN_ERROR", errorMessage = ex.localizedMessage)

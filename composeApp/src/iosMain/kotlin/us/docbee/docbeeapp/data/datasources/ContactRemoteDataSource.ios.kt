@@ -5,7 +5,6 @@ import kotlinx.coroutines.suspendCancellableCoroutine
 import us.docbee.docbeeapp.data.entities.ContactDeleteResponse
 import us.docbee.docbeeapp.data.entities.ContactFetchResponse
 import us.docbee.docbeeapp.domain.mappers.toMap
-import us.docbee.docbeeapp.domain.mappers.toMutableStringMap
 import us.docbee.docbeeapp.domain.models.directory.ContactModel
 import us.docbee.docbeeapp.utils.FIRESTORE_COLLECTION_CONTACTS
 import us.docbee.docbeeapp.utils.FIRESTORE_COLLECTION_USER
@@ -37,7 +36,7 @@ class IosContactRemoteDataSource: ContactRemoteDataSource {
                 uid = uid
             ) { contacts, error ->
                 val contactResponse = if (contacts != null) {
-                    ContactFetchResponse(data = contacts.map { it.toMutableStringMap() })
+                    ContactFetchResponse(data = contacts.map { it as ContactModel })
                 } else {
                     val errorCode = error?.userInfo?.get("FIRAuthErrorUserInfoNameKey") as? String
                     val errorMessage = error?.userInfo?.get("NSLocalizedDescription") as? String
