@@ -65,6 +65,8 @@
 
     <string name="home_directory_app_bar_title">Directory</string>
     <string name="home_directory_app_bar_subtitle">Please check and review your emergency contacts</string>
+    <string name="home_directory_contacts_empty_title">You don’t have any emergency contacts yet. Add at least one person to be alerted in case of an emergency.</string>
+    <string name="home_directory_contacts_error_title">We got a little boo-boo fetching your contacts. We’re trying to find out what did this!</string>
 
     <string name="home_alerts_app_bar_title">Alerts</string>
     <string name="home_alerts_app_bar_subtitle">Options to send alerts to my contacts</string>

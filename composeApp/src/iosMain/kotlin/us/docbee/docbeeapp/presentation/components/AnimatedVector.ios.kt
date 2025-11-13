@@ -9,7 +9,7 @@ import us.docbee.docbeeapp.components.AnimatedVectorUIViewControllerFactory
 
 @OptIn(ExperimentalForeignApi::class)
 @Composable
-actual fun AnimatedVector(
+actual fun AnimatedVectorNative(
     modifier: Modifier,
     path: String
 ) {
