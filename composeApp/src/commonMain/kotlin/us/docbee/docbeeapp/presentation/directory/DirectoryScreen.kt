@@ -1,14 +1,17 @@
 package us.docbee.docbeeapp.presentation.directory
 
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.itemsIndexed
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -16,12 +19,17 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import docbee.composeapp.generated.resources.Res
 import docbee.composeapp.generated.resources.general_label_search
+import docbee.composeapp.generated.resources.home_directory_contacts_empty_title
+import docbee.composeapp.generated.resources.home_directory_contacts_error_title
 import kotlinx.coroutines.flow.collectLatest
 import org.jetbrains.compose.resources.stringResource
+import us.docbee.docbeeapp.presentation.components.AnimatedVector
 import us.docbee.docbeeapp.presentation.components.ContactCard
 import us.docbee.docbeeapp.presentation.components.FloatingButton
 import us.docbee.docbeeapp.presentation.components.SwipeState
@@ -31,6 +39,8 @@ import us.docbee.docbeeapp.presentation.directory.events.DirectoryEvents
 import us.docbee.docbeeapp.presentation.directory.states.ContactState
 import us.docbee.docbeeapp.presentation.navigation.AddContactRoute
 import us.docbee.docbeeapp.presentation.theme.White
+import us.docbee.docbeeapp.utils.EMPTY_STATE_ANIMATED_VECTOR
+import us.docbee.docbeeapp.utils.GENERAL_ERROR_ANIMATED_VECTOR
 
 @Composable
 fun DirectoryScreen(
@@ -47,7 +57,9 @@ fun DirectoryScreen(
     LaunchedEffect(Unit) {
         viewModel.effect.collectLatest { effect ->
             when (effect) {
-                is DirectoryEffects.NavigateToAddContact -> parentNavController.navigate(AddContactRoute)
+                is DirectoryEffects.NavigateToAddContact -> parentNavController.navigate(
+                    AddContactRoute
+                )
             }
         }
     }
@@ -55,26 +67,69 @@ fun DirectoryScreen(
     Box(modifier = Modifier.fillMaxSize()) {
         Column(
             modifier = Modifier.fillMaxSize()
-                .padding(vertical = 24.dp, horizontal = 48.dp)
+                .padding(horizontal = 48.dp)
         ) {
-            InputSearchField(
-                modifier = Modifier.fillMaxWidth(),
-                placeholder = stringResource(Res.string.general_label_search),
-                value = state.contactSearch,
-                onValueChange = { search -> viewModel.onEvent(DirectoryEvents.OnSearchEvent(search)) }
-            )
-            Spacer(modifier = Modifier.height(24.dp))
             when {
-                state.isError -> Text("Error", color = White) // TODO -> It will change in further PRs
-                state.contacts.isEmpty() -> Text("Empty State", color = White) // TODO -> It will change in further PRs
-                else -> {
-                    ContactList(
-                        contacts = state.contacts,
-                        onArchive = { uid -> viewModel.onEvent(DirectoryEvents.OnArchiveContactEvent(uid)) },
-                        onDelete = { uid -> viewModel.onEvent(DirectoryEvents.OnDeleteContactEvent(uid)) },
-                        onClick = { uid -> viewModel.onEvent(DirectoryEvents.OnClickContactEvent(uid)) },
-                        onSwipeChange = { uid, swipe -> viewModel.onEvent(DirectoryEvents.OnSwipeContactEvent(uid, swipe)) }
+                state.isError -> {
+                    ContactListMessage(
+                        animation = GENERAL_ERROR_ANIMATED_VECTOR,
+                        message = stringResource(Res.string.home_directory_contacts_error_title)
                     )
+                }
+                state.contacts.isEmpty() -> {
+                    ContactListMessage(
+                        animation = EMPTY_STATE_ANIMATED_VECTOR,
+                        message = stringResource(Res.string.home_directory_contacts_empty_title)
+                    )
+                }
+                else -> {
+                    Column(modifier = Modifier.padding(vertical = 24.dp)) {
+                        InputSearchField(
+                            modifier = Modifier.fillMaxWidth(),
+                            placeholder = stringResource(Res.string.general_label_search),
+                            value = state.contactSearch,
+                            onValueChange = { search ->
+                                viewModel.onEvent(
+                                    DirectoryEvents.OnSearchEvent(
+                                        search
+                                    )
+                                )
+                            }
+                        )
+                        Spacer(modifier = Modifier.height(24.dp))
+                        ContactList(
+                            contacts = state.contacts,
+                            onArchive = { uid ->
+                                viewModel.onEvent(
+                                    DirectoryEvents.OnArchiveContactEvent(
+                                        uid
+                                    )
+                                )
+                            },
+                            onDelete = { uid ->
+                                viewModel.onEvent(
+                                    DirectoryEvents.OnDeleteContactEvent(
+                                        uid
+                                    )
+                                )
+                            },
+                            onClick = { uid ->
+                                viewModel.onEvent(
+                                    DirectoryEvents.OnClickContactEvent(
+                                        uid
+                                    )
+                                )
+                            },
+                            onSwipeChange = { uid, swipe ->
+                                viewModel.onEvent(
+                                    DirectoryEvents.OnSwipeContactEvent(
+                                        uid,
+                                        swipe
+                                    )
+                                )
+                            }
+                        )
+                    }
                 }
             }
         }
@@ -84,6 +139,29 @@ fun DirectoryScreen(
                 onClick = { viewModel.onEvent(DirectoryEvents.OnAddContactEvent) }
             )
         }
+    }
+}
+
+@Composable
+fun ContactListMessage(
+    animation: String,
+    message: String
+) {
+    Column(
+        modifier = Modifier.fillMaxSize()
+            .padding(horizontal = 24.dp)
+            .offset(y = -(48.dp)),
+        horizontalAlignment = Alignment.CenterHorizontally,
+        verticalArrangement = Arrangement.Center
+    ) {
+        AnimatedVector(location = animation)
+        Text(
+            text = message,
+            style = MaterialTheme.typography.bodySmall,
+            fontWeight = FontWeight.Normal,
+            color = White,
+            textAlign = TextAlign.Center
+        )
     }
 }
 

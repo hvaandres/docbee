@@ -15,9 +15,6 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
@@ -38,12 +35,6 @@ import us.docbee.docbeeapp.utils.ui.SetStatusBar
 
 @Composable
 fun AlertsDetailScreen(navController: NavHostController) {
-
-    val animatedVector = remember { mutableStateOf<String?>(null) }
-    LaunchedEffect(Unit) {
-        animatedVector.value = Res.readBytes(ALERT_ANIMATED_VECTOR).decodeToString()
-    }
-
     SetStatusBar(isDarkMode = true)
     Scaffold(
         modifier = Modifier
@@ -67,12 +58,10 @@ fun AlertsDetailScreen(navController: NavHostController) {
                 modifier = Modifier.fillMaxWidth().align(Alignment.Center),
                 verticalArrangement = Arrangement.spacedBy(24.dp)
             ) {
-                animatedVector.value?.let {
-                    AnimatedVector(
-                        modifier = Modifier.fillMaxWidth(),
-                        path = it
-                    )
-                }
+                AnimatedVector(
+                    modifier = Modifier.fillMaxWidth(),
+                    location = ALERT_ANIMATED_VECTOR
+                )
                 Text(
                     text = stringResource(Res.string.alerts_sending_alerts_description),
                     style = MaterialTheme.typography.bodySmall,

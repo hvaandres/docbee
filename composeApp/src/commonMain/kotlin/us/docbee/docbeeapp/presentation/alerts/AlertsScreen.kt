@@ -86,6 +86,7 @@ fun AlertsScreen(
                         icon = alert.alert.icon.getDrawable(),
                         onClick = { viewModel.onEvent(AlertsEvents.OnClickAlert(alert.uid)) },
                         onDeleteClick = { viewModel.onEvent(AlertsEvents.OnDeleteAlert(alert.uid)) },
+                        onEditClick = { viewModel.onEvent(AlertsEvents.OnEditAlert(alert.uid)) },
                         isSwipeable = alert.isSwipeable,
                         swipeState = alert.swipeState,
                         onSwipeChanged = {

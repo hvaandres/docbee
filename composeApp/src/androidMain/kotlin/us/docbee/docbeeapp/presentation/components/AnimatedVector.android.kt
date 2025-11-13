@@ -7,7 +7,7 @@ import com.lottiefiles.dotlottie.core.compose.ui.DotLottieAnimation
 import com.lottiefiles.dotlottie.core.util.DotLottieSource
 
 @Composable
-actual fun AnimatedVector(
+actual fun AnimatedVectorNative(
     modifier: Modifier,
     path: String
 ) {
