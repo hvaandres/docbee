@@ -7,6 +7,7 @@
 
 import Foundation
 import FirebaseFirestore
+import ComposeApp
 
 @objc(ContactRemoteStorage)
 public class ContactRemoteStorage: NSObject {
@@ -44,7 +45,7 @@ public class ContactRemoteStorage: NSObject {
         collection: String,
         collectionContact: String,
         uid: String,
-        completion: @escaping (_ result: [[String: Any]]?, _ error: NSError?) -> Void
+        completion: @escaping (_ result: [ContactModel]?, _ error: NSError?) -> Void
     ) {
         Task {
             do {
@@ -52,8 +53,17 @@ public class ContactRemoteStorage: NSObject {
                     .document(uid)
                     .collection(collectionContact)
                     .getDocuments()
+                var contactModel = [ContactModel]()
+                for document in querySnapshot.documents {
+                    do {
+                        let swiftDocument = try document.data(as: ContactDocument.self)
+                        contactModel.append(swiftDocument.toObject())
+                    } catch let decodingError as NSError {
+                        completion(nil, decodingError)
+                    }
+                }
                 
-                completion(querySnapshot.documents.map { $0.data() }, nil)
+                completion(contactModel, nil)
             } catch {
                 completion(nil, error as NSError?)
             }
@@ -79,5 +89,42 @@ public class ContactRemoteStorage: NSObject {
                 completion(false, error as NSError?)
             }
         }
+    }
+}
+
+struct ContactDocument: Codable {
+    let firstName: String
+    let lastName: String
+    let email: String
+    let phoneNumber: String
+    let dateOfBirth: String
+    let address: String
+    let gender: String
+    let uid: String
+    
+    enum CodingKeys: String, CodingKey {
+        case firstName
+        case lastName
+        case email
+        case phoneNumber
+        case dateOfBirth
+        case address
+        case gender
+        case uid
+    }
+}
+
+extension ContactDocument {
+    func toObject() -> ContactModel {
+        return ContactModel(
+            uid: self.uid,
+            firstName: self.firstName,
+            lastName: self.lastName,
+            email: self.email,
+            phoneNumber: self.phoneNumber,
+            dateOfBirth: self.dateOfBirth,
+            address: self.address,
+            gender: self.gender
+        )
     }
 }

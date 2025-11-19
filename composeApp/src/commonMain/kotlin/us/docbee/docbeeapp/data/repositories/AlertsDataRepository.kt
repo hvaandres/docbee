@@ -2,7 +2,6 @@ package us.docbee.docbeeapp.data.repositories
 
 import us.docbee.docbeeapp.data.datasources.AlertsRemoteDataSource
 import us.docbee.docbeeapp.domain.managers.AlertsStringsManager
-import us.docbee.docbeeapp.domain.mappers.toAlertDomain
 import us.docbee.docbeeapp.domain.models.alerts.AddAlertResult
 import us.docbee.docbeeapp.domain.models.alerts.AlertModel
 import us.docbee.docbeeapp.domain.models.alerts.DeleteAlertResult
@@ -18,7 +17,7 @@ class AlertsDataRepository(
         var alertList = mutableListOf<AlertModel>().apply { addAll(defaultList()) }
 
         val response = alertDataSource.fetchAlert(uid)
-        response.data?.mapNotNull { it?.toAlertDomain() }?.let {
+        response.data?.mapNotNull { it }?.let {
             alertList.addAll(it)
         }
 

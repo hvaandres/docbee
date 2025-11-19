@@ -5,9 +5,7 @@ import kotlinx.coroutines.suspendCancellableCoroutine
 import us.docbee.docbeeapp.data.entities.alerts.AlertFetchResponse
 import us.docbee.docbeeapp.data.entities.alerts.AlertSaveResponse
 import us.docbee.docbeeapp.data.entities.alerts.AlertsDeleteResponse
-import us.docbee.docbeeapp.domain.mappers.toAlertDomain
 import us.docbee.docbeeapp.domain.mappers.toMap
-import us.docbee.docbeeapp.domain.mappers.toMutableStringMap
 import us.docbee.docbeeapp.domain.models.alerts.AlertModel
 import us.docbee.docbeeapp.utils.FIRESTORE_COLLECTION_ALERTS
 import us.docbee.docbeeapp.utils.FIRESTORE_COLLECTION_USER
@@ -18,6 +16,7 @@ class IosAlertsRemoteDataSource : AlertsRemoteDataSource {
 
     private val remote = AlertRemoteStorage()
 
+    @Suppress("CAST_NEVER_SUCCEEDS")
     override suspend fun saveAlert(uid: String, alert: AlertModel): AlertSaveResponse {
         return suspendCancellableCoroutine { thread ->
             remote.saveAlertWithCollection(
@@ -27,7 +26,7 @@ class IosAlertsRemoteDataSource : AlertsRemoteDataSource {
                 alert = alert.toMap()
             ) { alert, error ->
                 val saveResponse = if (alert != null) {
-                    AlertSaveResponse(alert = alert.toMutableStringMap().toAlertDomain())
+                    AlertSaveResponse(alert = alert as? AlertModel)
                 } else {
                     val errorMessage = error?.userInfo?.get("NSLocalizedDescription") as? String
                     AlertSaveResponse(errorCode = "UNKNOWN_ERROR", errorMessage = errorMessage)
@@ -45,7 +44,7 @@ class IosAlertsRemoteDataSource : AlertsRemoteDataSource {
                 uid = uid
             ) { alerts, error ->
                 val alertResponse = if (alerts != null) {
-                    AlertFetchResponse(data = alerts.map { it.toMutableStringMap() })
+                    AlertFetchResponse(data = alerts.map { it as AlertModel })
                 } else {
                     val errorCode = error?.userInfo?.get("FIRAuthErrorUserInfoNameKey") as? String
                     val errorMessage = error?.userInfo?.get("NSLocalizedDescription") as? String

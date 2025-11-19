@@ -10,13 +10,6 @@ fun AlertModel.toMap(): Map<Any?, *> = mapOf(
     "uid" to uid
 )
 
-fun MutableMap<String, Any>.toAlertDomain() = AlertModel(
-    uid = this["uid"] as String,
-    name = this["name"] as String,
-    message = this["message"] as String,
-    icon = this["icon"] as String
-)
-
 fun AlertParams.toAlertModel(): AlertModel = AlertModel(
     name = name,
     message = message,

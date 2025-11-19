@@ -15,12 +15,12 @@ NS_ASSUME_NONNULL_BEGIN
                 collectionAlert:(NSString *)collectionAlert
                               uid:(NSString *)uid
                           alert:(NSDictionary *)alert
-                       completion:(void (^)(NSDictionary * _Nullable result,  NSError * _Nullable error))completion;
+                       completion:(void (^)(NSObject * _Nullable result,  NSError * _Nullable error))completion;
 
 - (void)fetchAlertWithCollection:(NSString *)collection
                  collectionAlert:(NSString *)collectionAlert
                                uid:(NSString *)uid
-                        completion:(void (^)(NSArray<NSDictionary *> * _Nullable result, NSError * _Nullable error))completion;
+                        completion:(void (^)(NSArray<NSObject *> * _Nullable result, NSError * _Nullable error))completion;
 
 - (void)deleteAlertWithCollection:(NSString *)collection
                   collectionAlert:(NSString *)collectionAlert

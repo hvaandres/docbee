@@ -20,7 +20,7 @@ NS_ASSUME_NONNULL_BEGIN
 - (void)fetchContactWithCollection:(NSString *)collection
                  collectionContact:(NSString *)collectionContact
                                uid:(NSString *)uid
-                        completion:(void (^)(NSArray<NSDictionary *> * _Nullable result, NSError * _Nullable error))completion;
+                        completion:(void (^)(NSArray<NSObject *> * _Nullable result, NSError * _Nullable error))completion;
 
 - (void)deleteContactWithCollection:(NSString *)collection
                  collectionContact:(NSString *)collectionContact
