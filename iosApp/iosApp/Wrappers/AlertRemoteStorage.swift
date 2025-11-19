@@ -99,6 +99,40 @@ public class AlertRemoteStorage: NSObject {
         }
     }
     
+    @objc public func modifyAlert(
+        collection: String,
+        collectionAlert: String,
+        uid: String,
+        alert: NSDictionary,
+        completion: @escaping (_ result: AlertModel?, _ error: NSError?) -> Void
+    ) {
+        Task {
+            var data: [String: Any] = [:]
+            for (key, value) in alert {
+                if let keyString = key as? String {
+                    data[keyString] = value
+                }
+            }
+            
+            let reference = db
+                .collection(collection)
+                .document(uid)
+                .collection(collectionAlert)
+                .document(data["uid"] as? String ?? "")
+            
+            do {
+                try await reference.updateData([
+                    "name": (data["name"] ?? "") as Any,
+                    "message": (data["message"] ?? "") as Any
+                ])
+                let alertDocument = try self.decode(dictionary: data, into: AlertDocument.self)
+                completion(alertDocument.toObject(), nil)
+            } catch {
+                completion(nil, error as NSError?)
+            }
+        }
+    }
+    
     func decode<T: Decodable>(dictionary: [String: Any], into type: T.Type) throws -> T {
         let jsonData = try JSONSerialization.data(withJSONObject: dictionary, options: [])
         let decoder = JSONDecoder()

@@ -28,6 +28,12 @@ NS_ASSUME_NONNULL_BEGIN
                          alertUid:(NSString *)alertUid
                          completion:(void (^)(BOOL success, NSError * _Nullable error))completion;
 
+- (void)modifyAlertWithCollection:(NSString *)collection
+                collectionAlert:(NSString *)collectionAlert
+                              uid:(NSString *)uid
+                          alert:(NSDictionary *)alert
+                       completion:(void (^)(NSObject * _Nullable result,  NSError * _Nullable error))completion;
+
 @end
 
 NS_ASSUME_NONNULL_END

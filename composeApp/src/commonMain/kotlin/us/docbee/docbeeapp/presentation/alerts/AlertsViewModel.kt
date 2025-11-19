@@ -3,11 +3,13 @@ package us.docbee.docbeeapp.presentation.alerts
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.launch
 import us.docbee.docbeeapp.domain.models.alerts.AddAlertResult
+import us.docbee.docbeeapp.domain.models.alerts.AlertModifyParams
 import us.docbee.docbeeapp.domain.models.alerts.AlertParams
 import us.docbee.docbeeapp.domain.models.alerts.DeleteAlertResult
 import us.docbee.docbeeapp.domain.models.alerts.FetchAlertsResult
 import us.docbee.docbeeapp.domain.usecases.alerts.DeleteAlertsUseCase
 import us.docbee.docbeeapp.domain.usecases.alerts.GetAlertsUseCase
+import us.docbee.docbeeapp.domain.usecases.alerts.ModifyAlertsUseCase
 import us.docbee.docbeeapp.domain.usecases.alerts.SaveAlertsUseCase
 import us.docbee.docbeeapp.presentation.alerts.effects.AlertsEffects
 import us.docbee.docbeeapp.presentation.alerts.events.AlertsEvents
@@ -19,7 +21,8 @@ import us.docbee.docbeeapp.presentation.core.BaseViewModel
 class AlertsViewModel(
     private val getAlertsUseCase: GetAlertsUseCase,
     private val saveAlertsUseCase: SaveAlertsUseCase,
-    private val deleteAlertsUseCase: DeleteAlertsUseCase
+    private val deleteAlertsUseCase: DeleteAlertsUseCase,
+    private val modifyAlertsUseCase: ModifyAlertsUseCase
 ) : BaseViewModel<UiState, AlertsEvents, AlertsEffects>(UiState()) {
 
     init {
@@ -36,6 +39,7 @@ class AlertsViewModel(
             is AlertsEvents.OnDeleteAlert -> onDeleteAlertClicked(event.uid)
             is AlertsEvents.OnEditAlert -> onEditAlertClicked(event.uid)
             is AlertsEvents.OnSwipeAlertEvent -> onSwipeAlertEvent(event.uid, event.swipeState)
+            is AlertsEvents.OnSaveEditedAlert -> onSaveEditedAlert(event.uid, event.name, event.message)
         }
     }
 
@@ -66,7 +70,7 @@ class AlertsViewModel(
     }
 
     private fun onClickCloseAddAlert() {
-        updateState { copy(isAddingAlert = false) }
+        updateState { copy(isAddingAlert = false, isEditingAlert = false, editingAlert = null) }
     }
 
     private fun onAlertClicked(uid: String) {
@@ -117,7 +121,19 @@ class AlertsViewModel(
     }
 
     private fun onEditAlertClicked(uid: String) {
-        emitEffect(AlertsEffects.NavigateEditAlert(uid))
+        updateState {
+            copy(
+                isEditingAlert = true,
+                editingAlert = alerts.find { it.uid == uid }?.alert,
+                alerts = alerts.map { item ->
+                    if (item.uid == uid) {
+                        item.copy(swipeState = HorizontalSwipeState.Closed)
+                    } else {
+                        item
+                    }
+                }
+            )
+        }
     }
 
     private fun onSwipeAlertEvent(uid: String, state: HorizontalSwipeState) {
@@ -132,6 +148,31 @@ class AlertsViewModel(
                     }
                 }
             )
+        }
+    }
+
+    private fun onSaveEditedAlert(uid: String, name: String, message: String) {
+        viewModelScope.launch {
+            val params = AlertModifyParams(uid = uid, name = name, message = message, icon = "DEFAULT")
+            when (val alertsResult = modifyAlertsUseCase.modifyAlert(params)) {
+                is AddAlertResult.Success -> {
+                    updateState {
+                        copy(
+                            isEditingAlert = false,
+                            editingAlert = null,
+                            alerts = alerts.map { item ->
+                                if (item.uid == uid) {
+                                    item.copy(alert = alertsResult.alert)
+                                } else {
+                                    item
+                                }
+                            }
+                        )
+                    }
+                }
+
+                is AddAlertResult.Error, is AddAlertResult.Unauthorized -> Unit
+            }
         }
     }
 }
