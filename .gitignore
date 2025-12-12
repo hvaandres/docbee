@@ -20,3 +20,10 @@ captures
 # Firebase configuration files (contain sensitive API keys)
 google-services.json
 GoogleService-Info.plist
+
+# Environment files with secrets
+.env
+.env.local
+.env.*.local
+**/.env
+**/.env.local
