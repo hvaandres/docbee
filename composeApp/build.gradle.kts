@@ -7,6 +7,8 @@ plugins {
     alias(libs.plugins.androidApplication)
     alias(libs.plugins.composeMultiplatform)
     alias(libs.plugins.composeCompiler)
+    alias(libs.plugins.googleServices)
+    kotlin("plugin.serialization") version "2.2.0"
 }
 
 kotlin {
@@ -33,6 +35,15 @@ kotlin {
         androidMain.dependencies {
             implementation(compose.preview)
             implementation(libs.androidx.activity.compose)
+            
+            // Firebase Android
+            implementation(platform(libs.firebase.bom))
+            implementation(libs.firebase.auth.android)
+            implementation(libs.firebase.firestore.android)
+            implementation(libs.firebase.functions.android)
+            
+            // Location services
+            implementation(libs.play.services.location)
         }
         commonMain.dependencies {
             implementation(compose.runtime)
@@ -43,6 +54,14 @@ kotlin {
             implementation(compose.components.uiToolingPreview)
             implementation(libs.androidx.lifecycle.viewmodel)
             implementation(libs.androidx.lifecycle.runtimeCompose)
+            
+            // Kotlinx Serialization
+            implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.7.3")
+            
+            // Firebase Multiplatform (GitLive)
+            implementation(libs.gitlive.firebase.auth)
+            implementation(libs.gitlive.firebase.firestore)
+            implementation(libs.gitlive.firebase.functions)
         }
         commonTest.dependencies {
             implementation(libs.kotlin.test)
