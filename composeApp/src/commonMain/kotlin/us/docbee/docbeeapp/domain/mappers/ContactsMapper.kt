@@ -8,6 +8,7 @@ fun ContactModel.toMap(): Map<Any?, *> = mapOf(
     "lastName" to lastName,
     "email" to email,
     "phoneNumber" to phoneNumber,
+    "dateOfBirth" to dateOfBirth,
     "gender" to gender,
     "address" to address,
     "uid" to uid
