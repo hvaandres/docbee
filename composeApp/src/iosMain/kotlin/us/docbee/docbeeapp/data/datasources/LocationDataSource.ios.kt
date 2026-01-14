@@ -3,7 +3,6 @@ package us.docbee.docbeeapp.data.datasources
 import kotlinx.cinterop.ExperimentalForeignApi
 import kotlinx.cinterop.useContents
 import kotlinx.coroutines.suspendCancellableCoroutine
-import kotlinx.datetime.Clock
 import platform.CoreLocation.CLLocation
 import platform.CoreLocation.CLLocationManager
 import platform.CoreLocation.CLLocationManagerDelegateProtocol
@@ -12,15 +11,17 @@ import platform.Foundation.NSError
 import platform.darwin.NSObject
 import us.docbee.docbeeapp.data.entities.Location
 import us.docbee.docbeeapp.data.entities.LocationResponse
+import kotlin.time.Clock
 import kotlin.time.Duration
 import kotlin.time.Duration.Companion.milliseconds
+import kotlin.time.ExperimentalTime
 
 class IosLocationDataSource : LocationDataSource {
 
     val maxAccuracyMeters: Float = 20f
     val timeout: Duration = 10000.milliseconds
 
-    @OptIn(ExperimentalForeignApi::class)
+    @OptIn(ExperimentalForeignApi::class, ExperimentalTime::class)
     override suspend fun fetchCurrentLocation(): LocationResponse {
         return suspendCancellableCoroutine { continuation ->
             val manager = CLLocationManager()

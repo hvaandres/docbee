@@ -1,6 +1,5 @@
 package us.docbee.docbeeapp.domain.usecases
 
-import kotlinx.datetime.Clock
 import us.docbee.docbeeapp.domain.mappers.toUserProfile
 import us.docbee.docbeeapp.domain.models.DateOfBirthValidation
 import us.docbee.docbeeapp.domain.models.EmailTextValidation
@@ -15,11 +14,14 @@ import us.docbee.docbeeapp.utils.PHONE_MAXIMUM_LENGTH
 import us.docbee.docbeeapp.utils.PHONE_MINIMUM_LENGTH
 import us.docbee.docbeeapp.utils.hasSpecialChars
 import us.docbee.docbeeapp.utils.isValidEmail
+import kotlin.time.Clock
+import kotlin.time.ExperimentalTime
 
 class EmailSignupUseCase(
     private val emailAuthRepository: EmailAuthRepository,
     private val userDataRepository: UserRepository
 ) {
+    @OptIn(ExperimentalTime::class)
     suspend fun createUser(userInformation: SignUpParams): UserSignupResult {
         val nameValidation = validateNames(userInformation.name)
         val lastNameValidation = validateNames(userInformation.lastName)

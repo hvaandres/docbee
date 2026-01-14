@@ -8,12 +8,12 @@ import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 
-abstract class BaseViewModel<STATE, EVENT, EFFECT>(initialState: STATE) : ViewModel() {
+abstract class BaseViewModel<STATE, EVENT, EFFECT>(initialState: STATE, replay: Int = 0) : ViewModel() {
 
     private val _uiState = MutableStateFlow(initialState)
     val uiState: StateFlow<STATE> = _uiState
 
-    private val _effect = MutableSharedFlow<EFFECT>()
+    private val _effect = MutableSharedFlow<EFFECT>(replay = replay)
     val effect: SharedFlow<EFFECT> = _effect
 
     protected fun updateState(reducer: STATE.() -> STATE) {
