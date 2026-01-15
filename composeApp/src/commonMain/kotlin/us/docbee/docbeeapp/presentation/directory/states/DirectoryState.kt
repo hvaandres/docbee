@@ -7,11 +7,13 @@ data class DirectoryState(
     val contacts: List<ContactState> = emptyList<ContactState>(),
     val contactSearch: String = "",
     val isMaxContactsReached: Boolean = false,
-    val isError: Boolean = false
+    val isError: Boolean = false,
+    val isLoading: Boolean = false
 )
 
 data class ContactState(
     val uid: String,
     val contact: ContactModel,
-    val swipeState: SwipeState = SwipeState.Closed
+    val swipeState: SwipeState = SwipeState.Closed,
+    val position: Int
 )

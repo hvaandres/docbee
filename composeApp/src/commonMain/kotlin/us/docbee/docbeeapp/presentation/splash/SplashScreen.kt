@@ -28,9 +28,13 @@ fun SplashScreen(
 ) {
     LaunchedEffect(Unit) {
         viewModel.effect.collectLatest { effect ->
-            when (effect) {
-                is SplashEffects.NavigateToAuthenticate -> navController.navigate(AuthenticationRoute)
-                is SplashEffects.NavigateToDashboard -> navController.navigate(DashboardRoute)
+            val route = when (effect) {
+                is SplashEffects.NavigateToAuthenticate -> AuthenticationRoute
+                is SplashEffects.NavigateToDashboard -> DashboardRoute
+            }
+            navController.navigate(route) {
+                popUpTo(0) { inclusive = true }
+                launchSingleTop = true
             }
         }
     }

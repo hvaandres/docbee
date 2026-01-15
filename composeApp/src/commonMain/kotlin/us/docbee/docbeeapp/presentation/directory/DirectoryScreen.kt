@@ -10,7 +10,7 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.itemsIndexed
+import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -133,7 +133,7 @@ fun DirectoryScreen(
                 }
             }
         }
-        if (!state.isMaxContactsReached && !state.isError) {
+        if (!state.isMaxContactsReached && !state.isError && !state.isLoading) {
             FloatingButton(
                 modifier = Modifier.align(Alignment.BottomEnd),
                 onClick = { viewModel.onEvent(DirectoryEvents.OnAddContactEvent) }
@@ -174,12 +174,12 @@ fun ContactList(
     onSwipeChange: (uid: String, event: SwipeState) -> Unit
 ) {
     LazyColumn {
-        itemsIndexed(items = contacts, key = { _, contact -> contact.uid }) { index, item ->
+        items(items = contacts, key = { contact -> contact.uid + contact.position }) { item ->
             ContactCard(
                 gender = item.contact.gender,
                 fullName = "${item.contact.firstName} ${item.contact.lastName}",
                 address = item.contact.address,
-                position = index + 1,
+                position = item.position,
                 swipeState = item.swipeState,
                 onArchive = { onArchive(item.uid) },
                 onDelete = { onDelete(item.uid) },
