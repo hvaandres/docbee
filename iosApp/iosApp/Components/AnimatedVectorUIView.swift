@@ -13,7 +13,7 @@ struct AnimatedVectorUIView: View {
     var body: some View {
         DotLottieAnimation(
             animationData: content,
-            config: AnimationConfig(autoplay: true, loop: true, backgroundColor: .black)
+            config: AnimationConfig(autoplay: true, loop: true, backgroundColor: .clear)
         ).view()
     }
 }

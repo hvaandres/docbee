@@ -2,12 +2,14 @@ package us.docbee.docbeeapp.presentation.components
 
 import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.viewinterop.UIKitInteropProperties
 import androidx.compose.ui.viewinterop.UIKitViewController
 import kotlinx.cinterop.ExperimentalForeignApi
 import us.docbee.docbeeapp.components.AnimatedVectorUIViewControllerFactory
 
-@OptIn(ExperimentalForeignApi::class)
+@OptIn(ExperimentalForeignApi::class, ExperimentalComposeUiApi::class)
 @Composable
 actual fun AnimatedVectorNative(
     modifier: Modifier,
@@ -18,6 +20,7 @@ actual fun AnimatedVectorNative(
         factory = { AnimatedVectorUIViewControllerFactory.createWithContent(path) },
         update = { controller ->
             AnimatedVectorUIViewControllerFactory.updateWithController(controller, path)
-        }
+        },
+        properties = UIKitInteropProperties(placedAsOverlay = true)
     )
 }

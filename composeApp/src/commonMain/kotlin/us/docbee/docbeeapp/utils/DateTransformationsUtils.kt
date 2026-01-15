@@ -3,7 +3,9 @@ package us.docbee.docbeeapp.utils
 import kotlinx.datetime.Instant
 import kotlinx.datetime.TimeZone
 import kotlinx.datetime.toLocalDateTime
+import kotlin.time.ExperimentalTime
 
+@OptIn(ExperimentalTime::class)
 fun convertMillisWithoutTimeZone(millis: Long): String {
     val instant = Instant.fromEpochMilliseconds(millis)
     val localDate = instant.toLocalDateTime(TimeZone.UTC).date

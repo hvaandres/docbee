@@ -10,7 +10,7 @@ import us.docbee.docbeeapp.presentation.splash.events.SplashEvents
 
 class SplashViewModel(
     private val sessionStatus: GetUserSessionStatus
-) : BaseViewModel<Unit, SplashEvents, SplashEffects>(initialState = Unit) {
+) : BaseViewModel<Unit, SplashEvents, SplashEffects>(initialState = Unit, replay = 1) {
 
     init {
         onEvent(SplashEvents.OnInit)
