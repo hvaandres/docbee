@@ -101,6 +101,8 @@ fun AlertsScreen(
         }
         FloatingButton(
             modifier = Modifier.align(Alignment.BottomEnd),
+            tintColor = White,
+            background = Black,
             onClick = { viewModel.onEvent(AlertsEvents.OnClickAddAlert) }
         )
         AddAlertBottomSheet(
