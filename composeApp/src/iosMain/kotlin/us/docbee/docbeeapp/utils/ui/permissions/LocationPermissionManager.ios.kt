@@ -14,37 +14,41 @@ import platform.darwin.NSObject
 class IosLocationPermissionManager : LocationPermissionManager {
 
     private val locationManager = CLLocationManager()
-    private var _callback: ((PermissionResult) -> Unit)? = null
+    private var callback: ((PermissionResult) -> Unit)? = null
+
+    private val delegate = LocationDelegate { status -> handleAuthorizationStatus(status) }
 
     init {
         locationManager.desiredAccuracy = kCLLocationAccuracyBest
-        locationManager.delegate = LocationDelegate { status ->
-            handleAuthorizationStatus(status)
-        }
+        locationManager.delegate = delegate
     }
 
     override fun isPermissionGranted(): Boolean {
-        return CLLocationManager.authorizationStatus() == kCLAuthorizationStatusAuthorizedWhenInUse
-                || CLLocationManager.authorizationStatus() == kCLAuthorizationStatusAuthorizedAlways
+        return when (locationManager.authorizationStatus()) {
+            kCLAuthorizationStatusAuthorizedWhenInUse, kCLAuthorizationStatusAuthorizedAlways -> true
+            else -> false
+        }
     }
 
     override fun requestPermission(callback: (PermissionResult) -> Unit) {
-        when (CLLocationManager.authorizationStatus()) {
+        this.callback = callback
+        when (locationManager.authorizationStatus()) {
             kCLAuthorizationStatusNotDetermined -> {
-                _callback = callback
                 locationManager.requestWhenInUseAuthorization()
             }
 
-            kCLAuthorizationStatusRestricted, kCLAuthorizationStatusDenied -> {
-                callback.invoke(PermissionResult.Denied)
+            kCLAuthorizationStatusAuthorizedWhenInUse,
+            kCLAuthorizationStatusAuthorizedAlways -> {
+                dispatchResult(PermissionResult.Granted)
             }
 
-            kCLAuthorizationStatusAuthorizedWhenInUse, kCLAuthorizationStatusAuthorizedAlways -> {
-                callback.invoke(PermissionResult.Granted)
+            kCLAuthorizationStatusDenied,
+            kCLAuthorizationStatusRestricted -> {
+                dispatchResult(PermissionResult.Denied)
             }
 
             else -> {
-                callback.invoke(PermissionResult.Denied)
+                dispatchResult(PermissionResult.Denied)
             }
         }
     }
@@ -52,16 +56,31 @@ class IosLocationPermissionManager : LocationPermissionManager {
     private fun handleAuthorizationStatus(status: CLAuthorizationStatus) {
         when (status) {
             kCLAuthorizationStatusAuthorizedWhenInUse,
-            kCLAuthorizationStatusAuthorizedAlways -> _callback?.invoke(PermissionResult.Granted)
+            kCLAuthorizationStatusAuthorizedAlways -> {
+                dispatchResult(PermissionResult.Granted)
+            }
 
             kCLAuthorizationStatusDenied,
-            kCLAuthorizationStatusRestricted -> _callback?.invoke(PermissionResult.Denied)
+            kCLAuthorizationStatusRestricted -> {
+                dispatchResult(PermissionResult.Denied)
+            }
+
+            else -> Unit
         }
+    }
+
+    private fun dispatchResult(result: PermissionResult) {
+        callback?.invoke(result)
+        callback = null
     }
 
     private class LocationDelegate(
         private val onStatusChanged: (CLAuthorizationStatus) -> Unit
     ) : NSObject(), CLLocationManagerDelegateProtocol {
+
+        override fun locationManagerDidChangeAuthorization(manager: CLLocationManager) {
+            onStatusChanged(manager.authorizationStatus())
+        }
 
         override fun locationManager(
             manager: CLLocationManager,

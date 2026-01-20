@@ -15,3 +15,4 @@ const val MAX_CONTACTS_ALLOWED = 5
 const val ALERT_ANIMATED_VECTOR: String = "files/animations/messages-loading.json"
 const val EMPTY_STATE_ANIMATED_VECTOR: String = "files/animations/empty-state.json"
 const val GENERAL_ERROR_ANIMATED_VECTOR: String = "files/animations/general-error.json"
+const val LOCATION_PERMISSION_VECTOR: String = "files/animations/location.json"
