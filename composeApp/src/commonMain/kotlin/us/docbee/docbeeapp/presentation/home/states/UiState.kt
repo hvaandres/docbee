@@ -1,6 +1,7 @@
 package us.docbee.docbeeapp.presentation.home.states
 
 data class UiState(
-    val shouldShowPermissionRequestModal: Boolean = false,
-    val showContactMissing: Boolean = false
+    val isPermissionNotGranted: Boolean = true,
+    val showContactMissing: Boolean = true,
+    val emergencyRemainingClicks: Int = 3
 )
