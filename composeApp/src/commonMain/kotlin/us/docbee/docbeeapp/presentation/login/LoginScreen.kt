@@ -120,7 +120,8 @@ fun LoginContainer(
             onValueChange = onChangePassword,
             imeAction = ImeAction.Done,
             isError = isPasswordError,
-            errorLabel = stringResource(Res.string.login_form_password_field_error)
+            errorLabel = stringResource(Res.string.login_form_password_field_error),
+            onImeActionClick = onLoginClick,
         )
         Spacer(modifier = Modifier.height(16.dp))
         Row(

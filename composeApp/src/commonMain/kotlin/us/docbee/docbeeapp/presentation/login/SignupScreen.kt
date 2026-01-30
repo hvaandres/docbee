@@ -137,7 +137,7 @@ fun SignupContainer(
         InputFieldText(
             inputLabel = stringResource(Res.string.signup_form_name_field),
             keyboardCapitalization = KeyboardCapitalization.Words,
-            focusDirection = FocusDirection.Right,
+            focusDirection = FocusDirection.Down,
             imeAction = ImeAction.Next,
             value = uiState.name,
             isError = uiState.nameError.isNotEmpty(),
@@ -192,7 +192,8 @@ fun SignupContainer(
             isError = uiState.passwordError.isNotEmpty(),
             errorLabel = uiState.passwordError,
             onValueChange = onChangePassword,
-            imeAction = ImeAction.Done
+            imeAction = ImeAction.Done,
+            onImeActionClick = onSignupClick,
         )
         Spacer(modifier = Modifier.height(24.dp))
         PrimaryButton(
