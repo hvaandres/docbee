@@ -26,7 +26,8 @@ fun InputPasswordFieldText(
     imeAction: ImeAction = ImeAction.Next,
     focusDirection: FocusDirection = FocusDirection.Down,
     isError: Boolean = false,
-    errorLabel: String = ""
+    errorLabel: String = "",
+    onImeActionClick: (() -> Unit)? = null,
 ) {
     var isPasswordVisible by remember { mutableStateOf(false) }
     InputFieldText(
@@ -50,6 +51,7 @@ fun InputPasswordFieldText(
         keyboardCapitalization = KeyboardCapitalization.None,
         keyboardType = KeyboardType.Password,
         isError = isError,
-        errorLabel = errorLabel
+        errorLabel = errorLabel,
+        onImeActionClick = onImeActionClick,
     )
 }

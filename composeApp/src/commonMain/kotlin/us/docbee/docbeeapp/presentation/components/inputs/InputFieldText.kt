@@ -45,7 +45,8 @@ fun InputFieldText(
     isError: Boolean = false,
     errorLabel: String = "",
     onValueChange: (String) -> Unit,
-    onTrailingIconClick: () -> Unit = { }
+    onTrailingIconClick: () -> Unit = { },
+    onImeActionClick: (() -> Unit)? = null,
 ) {
     val focusManager = LocalFocusManager.current
 
@@ -80,7 +81,13 @@ fun InputFieldText(
                 imeAction = imeAction
             ),
             keyboardActions = KeyboardActions(
-                onNext = { focusManager.moveFocus(focusDirection) }
+                onNext = { focusManager.moveFocus(focusDirection) },
+                onDone = onImeActionClick?.let {
+                    {
+                        focusManager.clearFocus()
+                        it.invoke()
+                    }
+                }
             ),
             trailingIcon = {
                 if (trailingIcon != null) {
