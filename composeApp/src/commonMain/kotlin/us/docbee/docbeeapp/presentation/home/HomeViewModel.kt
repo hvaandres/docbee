@@ -9,12 +9,14 @@ import us.docbee.docbeeapp.presentation.home.effects.HomeEffects
 import us.docbee.docbeeapp.presentation.home.events.HomeEvents
 import us.docbee.docbeeapp.presentation.home.states.UiState
 import us.docbee.docbeeapp.utils.ui.managers.ClickCounterManager
+import us.docbee.docbeeapp.utils.ui.network.NetworkUtils
 import us.docbee.docbeeapp.utils.ui.permissions.LocationPermissionManager
 import us.docbee.docbeeapp.utils.ui.permissions.PermissionResult
 
 class HomeViewModel(
     private val permissionManager: LocationPermissionManager,
-    private val fetchContactsUseCase: GetUserContactsUseCase
+    private val fetchContactsUseCase: GetUserContactsUseCase,
+    private val networkUtils: NetworkUtils,
 ) : BaseViewModel<UiState, HomeEvents, HomeEffects>(UiState()) {
 
     private val requiredClicks = 3
@@ -63,10 +65,29 @@ class HomeViewModel(
 
     private fun validateUserContacts() {
         viewModelScope.launch {
+            updateState { copy(isLoading = true) }
+
+            val hasNetwork = networkUtils.checkAvailableNetwork()
+            if (!hasNetwork) {
+                updateState { copy(isLoading = false, hasNoConnection = true) }
+                return@launch
+            }
+
             val contacts = fetchContactsUseCase.fetchUserContacts()
             when (contacts) {
-                is ContactResult.Success -> updateState { copy(showContactMissing = false) }
-                is ContactResult.Empty -> updateState { copy(showContactMissing = true) }
+                is ContactResult.Success -> updateState {
+                    copy(
+                        isLoading = false,
+                        showContactMissing = false
+                    )
+                }
+
+                is ContactResult.Empty -> updateState {
+                    copy(
+                        isLoading = false,
+                        showContactMissing = true
+                    )
+                }
                 else -> Unit // TODO: Add Error State
             }
         }

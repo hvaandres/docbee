@@ -13,6 +13,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -47,7 +48,9 @@ import us.docbee.docbeeapp.presentation.components.PrimaryButton
 import us.docbee.docbeeapp.presentation.dashboard.navigation.DashboardRoutes
 import us.docbee.docbeeapp.presentation.home.effects.HomeEffects
 import us.docbee.docbeeapp.presentation.home.events.HomeEvents
+import us.docbee.docbeeapp.presentation.home.states.UiState
 import us.docbee.docbeeapp.presentation.navigation.EmergencyRoute
+import us.docbee.docbeeapp.presentation.screen.NoInternetConnectionScreen
 import us.docbee.docbeeapp.presentation.theme.Green100
 import us.docbee.docbeeapp.presentation.theme.White
 import us.docbee.docbeeapp.presentation.theme.white100
@@ -101,6 +104,12 @@ fun HomeScreen(
 
     Box(modifier = Modifier.fillMaxSize()) {
         when {
+            uiState.isLoading -> {
+                LoadingScreen()
+            }
+            uiState.hasNoConnection -> {
+                NoInternetConnectionScreen()
+            }
             uiState.isPermissionNotGranted -> {
                 HomeScreenNoPermission(
                     onSettingsClick = { viewModel.onEvent(HomeEvents.OnOpenSettings) }
@@ -240,5 +249,15 @@ fun HomeScreenContent(
             color = White,
             textAlign = TextAlign.Center
         )
+    }
+}
+
+@Composable
+fun LoadingScreen() {
+    Box(
+        modifier = Modifier.fillMaxSize(),
+        contentAlignment = Alignment.Center,
+    ) {
+        CircularProgressIndicator()
     }
 }

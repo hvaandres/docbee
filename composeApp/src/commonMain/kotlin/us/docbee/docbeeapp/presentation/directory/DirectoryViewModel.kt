@@ -66,6 +66,10 @@ class DirectoryViewModel(
                 is ContactResult.Error, ContactResult.Unauthorized -> {
                     updateState { copy(isError = true) }
                 }
+                is ContactResult.NoInternetConnection -> {
+                    // WIP add hasNotInternet parameter
+                    updateState { copy(isError = true) }
+                }
             }
             updateState { copy(isLoading = false) }
         }

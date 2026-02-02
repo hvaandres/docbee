@@ -128,4 +128,8 @@
     <string name="general_unknown_error_label">An unexpected error occurred. Please try again.</string>
     <string name="general_label_delete">Delete</string>
     <string name="general_label_archive">Archive</string>
+
+    <!-- screens-->
+    <string name="no_internet_connection_title">No Internet Connection</string>
+    <string name="no_internet_connection_paragraph">Please use internet connection*</string>
 </resources>

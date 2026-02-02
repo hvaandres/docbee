@@ -5,4 +5,5 @@ sealed class ContactResult {
     data object Empty: ContactResult()
     data object Error: ContactResult()
     data object Unauthorized: ContactResult()
+    data object NoInternetConnection: ContactResult()
 }
