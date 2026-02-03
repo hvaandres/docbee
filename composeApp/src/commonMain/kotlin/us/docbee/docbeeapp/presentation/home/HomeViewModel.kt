@@ -54,7 +54,7 @@ class HomeViewModel(
             else -> {
                 permissionManager.requestPermission { permissionResult ->
                     updateState {
-                        copy(isPermissionNotGranted = permissionResult !is PermissionResult.Granted)
+                        copy(isPermissionNotGranted = permissionResult !is PermissionResult.Granted, isLoading = false)
                     }
                     if (permissionResult is PermissionResult.Granted) {
                         validateUserContacts()
