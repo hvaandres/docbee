@@ -9,12 +9,13 @@ import platform.Network.nw_path_monitor_set_update_handler
 import platform.Network.nw_path_monitor_start
 import platform.Network.nw_path_status_satisfied
 import platform.darwin.dispatch_queue_create
+import us.docbee.docbeeapp.utils.LABEL_DISPATCH_QUEUE_CREATE
 
 class IosNetworkUtils: NetworkUtils {
 
     private val _isNetworkAvailable = MutableStateFlow(NetState.Unknown)
     private val monitor = nw_path_monitor_create()
-    private val queue = dispatch_queue_create("us.docbee.network.monitor", null)
+    private val queue = dispatch_queue_create(LABEL_DISPATCH_QUEUE_CREATE, null)
 
     override val isNetworkAvailable: StateFlow<NetState>
         get() = _isNetworkAvailable
