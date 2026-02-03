@@ -2,9 +2,10 @@ package us.docbee.docbeeapp.utils.ui.network
 
 import kotlinx.coroutines.flow.StateFlow
 
-expect class NetworkUtils(context: Any?) {
+interface NetworkUtils {
 
-    val netState: StateFlow<NetState>
+    val isNetworkAvailable: StateFlow<NetState>
     fun start()
-    suspend fun checkAvailableNetwork(timeout: Long = 1200): Boolean
 }
+
+expect fun getNetworkUtils(): NetworkUtils

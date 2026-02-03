@@ -4,54 +4,46 @@ import android.content.Context
 import android.net.ConnectivityManager
 import android.net.Network
 import android.net.NetworkCapabilities
-import kotlinx.coroutines.delay
+import android.net.NetworkRequest
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.asStateFlow
+import org.koin.core.context.GlobalContext
 
-actual class NetworkUtils actual constructor(context: Any?) {
-
-    private val appContext = context as? Context
+class AndroidNetworkUtils(context: Context): NetworkUtils {
     private val connectivityManager =
-        appContext?.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
-    private val _netState = MutableStateFlow(NetState.Unknown)
+        context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
+    private val _isNetworkAvailable = MutableStateFlow(NetState.Unknown)
 
     private val callback = object : ConnectivityManager.NetworkCallback() {
-        override fun onAvailable(network: Network) = update()
-        override fun onLost(network: Network) = update()
+        override fun onAvailable(network: Network) {
+            super.onAvailable(network)
+            _isNetworkAvailable.value = NetState.Connected
+        }
+        override fun onLost(network: Network) {
+            super.onLost(network)
+            _isNetworkAvailable.value = NetState.Disconnected
+        }
         override fun onCapabilitiesChanged(
             network: Network,
             networkCapabilities: NetworkCapabilities
-        ) = update()
-    }
-
-    // wip
-    actual val netState: StateFlow<NetState>
-        get() = _netState.asStateFlow()
-
-    actual fun start() {
-        connectivityManager.registerDefaultNetworkCallback(callback)
-        update()
-    }
-
-    actual suspend fun checkAvailableNetwork(timeout: Long): Boolean {
-        val step = 50L
-        var waited = 0L
-        while(_netState.value == NetState.Unknown && waited < timeout) {
-            delay(step)
-            waited += step
+        ) {
+            super.onCapabilitiesChanged(network, networkCapabilities)
         }
-        return _netState.value == NetState.Connected
     }
 
-    private fun update() {
-        val network = connectivityManager.activeNetwork
-        val caps = network?.let { connectivityManager.getNetworkCapabilities(network) }
+    override val isNetworkAvailable: StateFlow<NetState>
+        get() = _isNetworkAvailable
 
-        val validated =
-            caps?.hasCapability(NetworkCapabilities.NET_CAPABILITY_INTERNET) == true &&
-                    caps.hasCapability(NetworkCapabilities.NET_CAPABILITY_VALIDATED)
-
-        _netState.value = if (validated) NetState.Connected else NetState.Disconnected
+    override fun start() {
+        val networkRequest = NetworkRequest.Builder()
+            .addCapability(NetworkCapabilities.NET_CAPABILITY_INTERNET)
+            .addCapability(NetworkCapabilities.NET_CAPABILITY_VALIDATED)
+            .addTransportType(NetworkCapabilities.TRANSPORT_ETHERNET)
+            .addTransportType(NetworkCapabilities.TRANSPORT_WIFI)
+            .addTransportType(NetworkCapabilities.TRANSPORT_CELLULAR)
+            .build()
+        connectivityManager.registerNetworkCallback(networkRequest, callback)
     }
 }
+
+actual fun getNetworkUtils(): NetworkUtils = AndroidNetworkUtils(GlobalContext.get().get())
