@@ -63,7 +63,6 @@ import us.docbee.docbeeapp.presentation.login.SignupViewModel
 import us.docbee.docbeeapp.presentation.settings.SettingsViewModel
 import us.docbee.docbeeapp.presentation.splash.SplashViewModel
 import us.docbee.docbeeapp.utils.ui.managers.AlertsStringDataManager
-import us.docbee.docbeeapp.utils.ui.network.NetworkUtils
 import us.docbee.docbeeapp.utils.ui.network.getNetworkUtils
 import us.docbee.docbeeapp.utils.ui.permissions.provideLocationPermissionManager
 
