@@ -1,6 +1,6 @@
 package us.docbee.docbeeapp.data.repositories
 
-import us.docbee.docbeeapp.data.EmailAuth
+import us.docbee.docbeeapp.data.datasources.AuthenticationDataSource
 import us.docbee.docbeeapp.data.strategy.LoginStrategyFactory
 import us.docbee.docbeeapp.domain.mappers.CreateErrorCodesMapper
 import us.docbee.docbeeapp.domain.models.UserSignupResult
@@ -9,7 +9,7 @@ import us.docbee.docbeeapp.domain.models.login.LoginResult
 import us.docbee.docbeeapp.domain.repositories.AuthenticationRepository
 
 class AuthenticationDataRepository(
-    private val emailAuth: EmailAuth, //this will remove when signup be split to a new class
+    private val authenticationDataSource: AuthenticationDataSource, //this will remove when signup be split to a new class
     private val loginStrategyFactory: LoginStrategyFactory
 ) : AuthenticationRepository {
 
@@ -19,7 +19,7 @@ class AuthenticationDataRepository(
     }
 
     override suspend fun signup(email: String, password: String): UserSignupResult {
-        val response = emailAuth.signup(email, password)
+        val response = authenticationDataSource.signup(email, password)
 
         return if (response.uid != null) {
             UserSignupResult.Success(response.uid)

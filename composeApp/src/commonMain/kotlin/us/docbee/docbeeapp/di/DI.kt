@@ -5,7 +5,7 @@ import org.koin.core.module.Module
 import org.koin.core.module.dsl.viewModelOf
 import org.koin.dsl.KoinAppDeclaration
 import org.koin.dsl.module
-import us.docbee.docbeeapp.data.EmailAuth
+import us.docbee.docbeeapp.data.datasources.AuthenticationDataSource
 import us.docbee.docbeeapp.data.datasources.AlertsRemoteDataSource
 import us.docbee.docbeeapp.data.datasources.ContactRemoteDataSource
 import us.docbee.docbeeapp.data.datasources.JsonResourceLoader
@@ -18,7 +18,7 @@ import us.docbee.docbeeapp.data.datasources.getUserDataSource
 import us.docbee.docbeeapp.data.datasources.interfaces.ResourcesLoader
 import us.docbee.docbeeapp.data.datasources.interfaces.UserSessionDataSource
 import us.docbee.docbeeapp.data.datasources.provideLocationDataSource
-import us.docbee.docbeeapp.data.getEmailAuth
+import us.docbee.docbeeapp.data.datasources.getEmailAuth
 import us.docbee.docbeeapp.data.repositories.AlertsDataRepository
 import us.docbee.docbeeapp.data.repositories.ContactDataRepository
 import us.docbee.docbeeapp.data.repositories.AuthenticationDataRepository
@@ -65,6 +65,7 @@ import us.docbee.docbeeapp.presentation.home.HomeViewModel
 import us.docbee.docbeeapp.presentation.login.AuthViewModel
 import us.docbee.docbeeapp.presentation.login.LoginViewModel
 import us.docbee.docbeeapp.presentation.login.SignupViewModel
+import us.docbee.docbeeapp.presentation.login.providers.getGoogleAuthProvider
 import us.docbee.docbeeapp.presentation.settings.SettingsViewModel
 import us.docbee.docbeeapp.presentation.splash.SplashViewModel
 import us.docbee.docbeeapp.utils.ui.managers.AlertsStringDataManager
@@ -74,7 +75,7 @@ import us.docbee.docbeeapp.utils.ui.permissions.provideLocationPermissionManager
 expect val nativeModules: Module
 
 val dataSourcesModule = module {
-    factory<EmailAuth> { getEmailAuth() }
+    factory<AuthenticationDataSource> { getEmailAuth() }
     factory<ResourcesLoader> { JsonResourceLoader() }
     factory<UserRemoteDataSource> { getUserDataSource() }
     factory<ContactRemoteDataSource> { getContactDataSource() }
@@ -86,7 +87,7 @@ val dataSourcesModule = module {
 
 val strategiesModule = module {
     factory { EmailLoginStrategy(get()) }
-    factory { GoogleLoginStrategy() }
+    factory { GoogleLoginStrategy(get(), get()) }
     factory { AppleLoginStrategy() }
     factory { LoginStrategyFactory(get(), get(), get()) }
 }
@@ -125,6 +126,7 @@ val managersModule = module {
     single { provideLocationPermissionManager() }
     single<AlertsStringsManager> { AlertsStringDataManager() }
     single { getNetworkUtils().also { it.start() } }
+    single { getGoogleAuthProvider() }
 }
 
 val viewModelsModule = module {

@@ -23,6 +23,8 @@ navigation = "2.9.1"
 datastore = "1.1.7"
 play-services-location = "21.3.0"
 lottie = "6.7.1"
+credentials = "1.3.0"
+google-identity = "1.1.1"
 
 
 [libraries]
@@ -56,6 +58,9 @@ androidx-datastore = { module = "androidx.datastore:datastore", version.ref = "d
 androidx-datastore-preferences = { module = "androidx.datastore:datastore-preferences", version.ref = "datastore" }
 google-services-location = { module = "com.google.android.gms:play-services-location", version.ref = "play-services-location" }
 lottie = { module = "com.airbnb.android:lottie-compose", version.ref = "lottie" }
+credentials = { module = "androidx.credentials:credentials", version.ref = "credentials" }
+credentials-play-auth = { module = "androidx.credentials:credentials-play-services-auth", version.ref = "credentials" }
+google-identity = { module = "com.google.android.libraries.identity.googleid:googleid", version.ref = "google-identity" }
 
 [plugins]
 androidApplication = { id = "com.android.application", version.ref = "agp" }

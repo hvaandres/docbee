@@ -7,4 +7,6 @@ sealed class LoginResult {
     data object InvalidEmail: LoginResult()
     data object InvalidPassword: LoginResult()
     data object InvalidEmailAndPassword: LoginResult()
+
+    data object CancelOperation: LoginResult()
 }

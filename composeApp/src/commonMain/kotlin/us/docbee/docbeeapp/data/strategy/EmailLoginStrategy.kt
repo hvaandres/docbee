@@ -1,6 +1,6 @@
 package us.docbee.docbeeapp.data.strategy
 
-import us.docbee.docbeeapp.data.EmailAuth
+import us.docbee.docbeeapp.data.datasources.AuthenticationDataSource
 import us.docbee.docbeeapp.domain.mappers.AuthErrorCodesMapper
 import us.docbee.docbeeapp.domain.models.login.LoginParams
 import us.docbee.docbeeapp.domain.models.login.LoginResult
@@ -8,7 +8,7 @@ import us.docbee.docbeeapp.domain.strategy.LoginStrategy
 import us.docbee.docbeeapp.utils.isValidEmail
 
 class EmailLoginStrategy(
-    private val emailAuth: EmailAuth
+    private val authenticationDataSource: AuthenticationDataSource
 ): LoginStrategy {
     override suspend fun login(credentials: LoginParams): LoginResult {
         val isInvalidEmail = !isValidEmail(credentials.email)
@@ -18,7 +18,7 @@ class EmailLoginStrategy(
         if (isInvalidEmail) return LoginResult.InvalidEmail
         if (isInValidPassword) return LoginResult.InvalidPassword
 
-        val response = emailAuth.authenticate(credentials.email, credentials.password)
+        val response = authenticationDataSource.authenticate(credentials.email, credentials.password)
         return if (response.uid != null) {
             LoginResult.Success(response.uid)
         } else {

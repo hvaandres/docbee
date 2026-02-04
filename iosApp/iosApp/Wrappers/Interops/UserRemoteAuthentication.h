@@ -15,6 +15,9 @@ NS_ASSUME_NONNULL_BEGIN
                password:(NSString *)password
              completion:(void (^)(NSDictionary * _Nullable userInfo, NSError * _Nullable error))completion;
 
+- (void)signInWithIdToken:(NSString *)idToken
+             completion:(void (^)(NSDictionary * _Nullable userInfo, NSError * _Nullable error))completion;
+
 - (void)signupWithEmail:(NSString *)email
                password:(NSString *)password
              completion:(void (^)(NSDictionary * _Nullable userInfo, NSError * _Nullable error))completion;

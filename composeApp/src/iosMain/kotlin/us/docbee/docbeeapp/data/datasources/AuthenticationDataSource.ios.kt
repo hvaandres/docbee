@@ -1,4 +1,4 @@
-package us.docbee.docbeeapp.data
+package us.docbee.docbeeapp.data.datasources
 
 import kotlinx.cinterop.ExperimentalForeignApi
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -9,13 +9,28 @@ import us.docbee.docbeeapp.data.entities.UserCreateResponse
 import us.docbee.docbeeapp.wrappers.UserRemoteAuthentication
 
 @OptIn(ExperimentalForeignApi::class, ExperimentalCoroutinesApi::class)
-class IosEmailAuth() : EmailAuth {
+class IosAuthenticationDataSource() : AuthenticationDataSource {
 
     private val userAuthentication = UserRemoteAuthentication()
 
     override suspend fun authenticate(email: String, password: String): UserAuthResponse {
         return suspendCancellableCoroutine<UserAuthResponse> { thread ->
             userAuthentication.signInWithEmail(email = email, password = password) { result, error ->
+                val authResponse = if (result != null) {
+                    UserAuthResponse(uid = result["uid"].toString())
+                } else {
+                    val errorCode = error?.userInfo?.get("FIRAuthErrorUserInfoNameKey") as? String
+                    val errorMessage = error?.userInfo?.get("NSLocalizedDescription") as? String
+                    UserAuthResponse(errorCode = errorCode, errorMessage = errorMessage)
+                }
+                thread.resume(authResponse, null)
+            }
+        }
+    }
+
+    override suspend fun authenticate(idToken: String): UserAuthResponse {
+        return suspendCancellableCoroutine<UserAuthResponse> { thread ->
+            userAuthentication.signInWithIdToken(idToken = idToken) { result, error ->
                 val authResponse = if (result != null) {
                     UserAuthResponse(uid = result["uid"].toString())
                 } else {
@@ -62,4 +77,4 @@ class IosEmailAuth() : EmailAuth {
 }
 
 
-actual fun getEmailAuth(): EmailAuth = IosEmailAuth()
+actual fun getEmailAuth(): AuthenticationDataSource = IosAuthenticationDataSource()

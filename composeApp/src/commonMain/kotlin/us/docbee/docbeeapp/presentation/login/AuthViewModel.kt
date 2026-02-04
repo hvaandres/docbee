@@ -16,6 +16,7 @@ import us.docbee.docbeeapp.presentation.login.events.AuthEvents
 class AuthViewModel(
     private val loginAuthUseCase: LoginUseCase
 ): BaseViewModel<Unit, AuthEvents, AuthEffects>(Unit) {
+
     override fun onEvent(event: AuthEvents) {
         when(event) {
             is AuthEvents.OnGoogleLogin -> performLogin(LoginType.GOOGLE)
@@ -23,12 +24,14 @@ class AuthViewModel(
             is AuthEvents.OnSuccessNavigation -> emitEffect(AuthEffects.NavigateToDashboard)
         }
     }
-
     private fun performLogin(type: LoginType) {
         viewModelScope.launch {
-            val response = loginAuthUseCase.login(LoginParams(type = type))
+            val response = loginAuthUseCase.login(
+                LoginParams(type = type, rememberMeCheck = true)
+            )
             when (response) {
                 is LoginResult.Success -> emitEffect(AuthEffects.NavigateToDashboard)
+                is LoginResult.CancelOperation -> Unit
                 else -> emitEffect(AuthEffects.ShowErrorMessage(getString(Res.string.login_form_invalid_credentials_error)))
             }
         }
