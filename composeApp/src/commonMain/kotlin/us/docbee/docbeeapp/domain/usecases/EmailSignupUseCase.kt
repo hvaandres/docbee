@@ -7,7 +7,7 @@ import us.docbee.docbeeapp.domain.models.PasswordValidation
 import us.docbee.docbeeapp.domain.models.SimpleTextValidation
 import us.docbee.docbeeapp.domain.models.UserSignupResult
 import us.docbee.docbeeapp.domain.models.signup.SignUpParams
-import us.docbee.docbeeapp.domain.repositories.EmailAuthRepository
+import us.docbee.docbeeapp.domain.repositories.AuthenticationRepository
 import us.docbee.docbeeapp.domain.repositories.UserRepository
 import us.docbee.docbeeapp.utils.PASSWORD_MINIMUM_LENGTH
 import us.docbee.docbeeapp.utils.PHONE_MAXIMUM_LENGTH
@@ -18,7 +18,7 @@ import kotlin.time.Clock
 import kotlin.time.ExperimentalTime
 
 class EmailSignupUseCase(
-    private val emailAuthRepository: EmailAuthRepository,
+    private val authenticationRepository: AuthenticationRepository,
     private val userDataRepository: UserRepository
 ) {
     @OptIn(ExperimentalTime::class)
@@ -45,7 +45,7 @@ class EmailSignupUseCase(
         }
 
         val signupResult =
-            emailAuthRepository.signup(userInformation.email, userInformation.password)
+            authenticationRepository.signup(userInformation.email, userInformation.password)
 
         if (signupResult is UserSignupResult.Success) {
             userDataRepository.saveUserProfile(

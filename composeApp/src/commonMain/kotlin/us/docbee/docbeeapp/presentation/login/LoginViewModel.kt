@@ -11,14 +11,16 @@ import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 import org.jetbrains.compose.resources.getString
-import us.docbee.docbeeapp.domain.models.UserAuthResult
-import us.docbee.docbeeapp.domain.usecases.EmailAuthUseCase
+import us.docbee.docbeeapp.domain.models.login.LoginParams
+import us.docbee.docbeeapp.domain.models.login.LoginResult
+import us.docbee.docbeeapp.domain.models.login.LoginType
+import us.docbee.docbeeapp.domain.usecases.login.LoginUseCase
 import us.docbee.docbeeapp.presentation.login.effects.LoginEffect
 import us.docbee.docbeeapp.presentation.login.events.LoginEvents
 import us.docbee.docbeeapp.presentation.login.states.LoginState
 
 class LoginViewModel(
-    private val loginAuthUseCase: EmailAuthUseCase
+    private val loginAuthUseCase: LoginUseCase
 ) : ViewModel() {
 
     private var _state: MutableStateFlow<LoginState> = MutableStateFlow(LoginState())
@@ -32,7 +34,7 @@ class LoginViewModel(
             is LoginEvents.OnChangeEmailField -> onChangeEmail(event.email)
             is LoginEvents.OnChangePasswordField -> onChangePassword(event.password)
             is LoginEvents.OnRememberCheckBox -> onChangeRememberMeCheck(event.isChecked)
-            is LoginEvents.OnLoginClickButton -> performLogin()
+            is LoginEvents.OnEmailLogin -> performLogin()
             is LoginEvents.OnResetEvent -> onResetData()
             is LoginEvents.OnForgotPasswordClick -> Unit
         }
@@ -58,30 +60,33 @@ class LoginViewModel(
 
     private fun performLogin() {
         viewModelScope.launch {
-            val response = loginAuthUseCase.authenticate(
-                email = _state.value.email,
-                password = _state.value.password,
-                rememberMeCheck = _state.value.rememberMe
+            val response = loginAuthUseCase.login(
+                LoginParams(
+                    type = LoginType.EMAIL,
+                    email = _state.value.email,
+                    password = _state.value.password,
+                    rememberMeCheck = _state.value.rememberMe
+                )
             )
             when (response) {
-                is UserAuthResult.InvalidEmail -> _state.value =
+                is LoginResult.InvalidEmail -> _state.value =
                     _state.value.copy(isEmailInvalid = true)
 
-                is UserAuthResult.InvalidPassword -> _state.value =
+                is LoginResult.InvalidPassword -> _state.value =
                     _state.value.copy(isPasswordInvalid = true)
 
-                is UserAuthResult.InvalidEmailAndPassword -> _state.value =
+                is LoginResult.InvalidEmailAndPassword -> _state.value =
                     _state.value.copy(isEmailInvalid = true, isPasswordInvalid = true)
 
-                is UserAuthResult.InvalidCredentials -> sendEffect(
+                is LoginResult.InvalidCredentials -> sendEffect(
                     LoginEffect.ShowErrorMessage(getString(Res.string.login_form_invalid_credentials))
                 )
 
-                is UserAuthResult.Error -> sendEffect(
+                is LoginResult.Error -> sendEffect(
                     LoginEffect.ShowErrorMessage(getString(Res.string.login_form_invalid_credentials_error))
                 )
 
-                is UserAuthResult.Success -> sendEffect(LoginEffect.NavigateToDashboard)
+                is LoginResult.Success -> sendEffect(LoginEffect.NavigateToDashboard)
             }
         }
     }

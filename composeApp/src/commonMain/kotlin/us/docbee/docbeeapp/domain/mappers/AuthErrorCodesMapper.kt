@@ -1,15 +1,15 @@
 package us.docbee.docbeeapp.domain.mappers
 
-import us.docbee.docbeeapp.domain.models.UserAuthResult
+import us.docbee.docbeeapp.domain.models.login.LoginResult
 import us.docbee.docbeeapp.domain.models.UserSignupResult
 
 object AuthErrorCodesMapper {
-    fun eval(error: String?): UserAuthResult {
+    fun eval(error: String?): LoginResult {
         val errorMap = mapOf(
-            "ERROR_INVALID_CREDENTIAL" to UserAuthResult.InvalidCredentials,
-            "ERROR_TOO_MANY_REQUESTS" to UserAuthResult.Error
+            "ERROR_INVALID_CREDENTIAL" to LoginResult.InvalidCredentials,
+            "ERROR_TOO_MANY_REQUESTS" to LoginResult.Error
         )
-        return errorMap.getOrElse(error.orEmpty()) { UserAuthResult.Error }
+        return errorMap.getOrElse(error.orEmpty()) { LoginResult.Error }
     }
 }
 
