@@ -21,23 +21,27 @@ import us.docbee.docbeeapp.data.datasources.provideLocationDataSource
 import us.docbee.docbeeapp.data.getEmailAuth
 import us.docbee.docbeeapp.data.repositories.AlertsDataRepository
 import us.docbee.docbeeapp.data.repositories.ContactDataRepository
-import us.docbee.docbeeapp.data.repositories.EmailAuthDataRepository
+import us.docbee.docbeeapp.data.repositories.AuthenticationDataRepository
 import us.docbee.docbeeapp.data.repositories.EmergencyDataRepository
 import us.docbee.docbeeapp.data.repositories.JsonCountryRepository
 import us.docbee.docbeeapp.data.repositories.LocationDataRepository
 import us.docbee.docbeeapp.data.repositories.SessionDataRepository
 import us.docbee.docbeeapp.data.repositories.UserDataRepository
 import us.docbee.docbeeapp.data.services.EmergencyNotificationApiService
+import us.docbee.docbeeapp.data.strategy.AppleLoginStrategy
+import us.docbee.docbeeapp.data.strategy.EmailLoginStrategy
+import us.docbee.docbeeapp.data.strategy.GoogleLoginStrategy
+import us.docbee.docbeeapp.data.strategy.LoginStrategyFactory
 import us.docbee.docbeeapp.domain.managers.AlertsStringsManager
 import us.docbee.docbeeapp.domain.repositories.AlertsRepository
 import us.docbee.docbeeapp.domain.repositories.ContactsRepository
 import us.docbee.docbeeapp.domain.repositories.CountryRepository
-import us.docbee.docbeeapp.domain.repositories.EmailAuthRepository
+import us.docbee.docbeeapp.domain.repositories.AuthenticationRepository
 import us.docbee.docbeeapp.domain.repositories.EmergenciesRepository
 import us.docbee.docbeeapp.domain.repositories.LocationRepository
 import us.docbee.docbeeapp.domain.repositories.SessionRepository
 import us.docbee.docbeeapp.domain.repositories.UserRepository
-import us.docbee.docbeeapp.domain.usecases.EmailAuthUseCase
+import us.docbee.docbeeapp.domain.usecases.login.LoginUseCase
 import us.docbee.docbeeapp.domain.usecases.EmailSignupUseCase
 import us.docbee.docbeeapp.domain.usecases.FetchLocationUseCase
 import us.docbee.docbeeapp.domain.usecases.alerts.GetAlertsUseCase
@@ -58,6 +62,7 @@ import us.docbee.docbeeapp.presentation.directory.AddContactViewModel
 import us.docbee.docbeeapp.presentation.directory.DirectoryViewModel
 import us.docbee.docbeeapp.presentation.emergency.EmergencyViewModel
 import us.docbee.docbeeapp.presentation.home.HomeViewModel
+import us.docbee.docbeeapp.presentation.login.AuthViewModel
 import us.docbee.docbeeapp.presentation.login.LoginViewModel
 import us.docbee.docbeeapp.presentation.login.SignupViewModel
 import us.docbee.docbeeapp.presentation.settings.SettingsViewModel
@@ -79,8 +84,15 @@ val dataSourcesModule = module {
     factory { EmergencyNotificationApiService() }
 }
 
+val strategiesModule = module {
+    factory { EmailLoginStrategy(get()) }
+    factory { GoogleLoginStrategy() }
+    factory { AppleLoginStrategy() }
+    factory { LoginStrategyFactory(get(), get(), get()) }
+}
+
 val repositoryModule = module {
-    factory<EmailAuthRepository> { EmailAuthDataRepository(get()) }
+    factory<AuthenticationRepository> { AuthenticationDataRepository(get(), get()) }
     factory<CountryRepository> { JsonCountryRepository(get()) }
     factory<UserRepository> { UserDataRepository(get()) }
     factory<ContactsRepository> { ContactDataRepository(get()) }
@@ -91,7 +103,7 @@ val repositoryModule = module {
 }
 
 val usesCasesModule = module {
-    factory { EmailAuthUseCase(get(), get()) }
+    factory { LoginUseCase(get(), get()) }
     factory { EmailSignupUseCase(get(), get()) }
     factory { GetCountriesUseCase(get()) }
     factory { GetUserContactsUseCase(get(), get()) }
@@ -126,6 +138,7 @@ val viewModelsModule = module {
     viewModelOf(::HomeViewModel)
     viewModelOf(::EmergencyViewModel)
     viewModelOf(::AlertsViewModel)
+    viewModelOf(::AuthViewModel)
 }
 
 fun initKoin(config: KoinAppDeclaration? = null) {
@@ -135,6 +148,7 @@ fun initKoin(config: KoinAppDeclaration? = null) {
             managersModule,
             nativeModules,
             dataSourcesModule,
+            strategiesModule,
             repositoryModule,
             usesCasesModule,
             viewModelsModule

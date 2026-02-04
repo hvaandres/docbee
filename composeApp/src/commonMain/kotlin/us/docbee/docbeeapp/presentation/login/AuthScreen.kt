@@ -21,6 +21,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.SnackbarDuration
 import androidx.compose.material3.SnackbarHost
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Text
@@ -49,10 +50,13 @@ import docbee.composeapp.generated.resources.login_header_label
 import docbee.composeapp.generated.resources.login_tabs_login_label
 import docbee.composeapp.generated.resources.login_tabs_signup_label
 import docbee.composeapp.generated.resources.login_title_label
+import kotlinx.coroutines.flow.collectLatest
 import org.jetbrains.compose.resources.painterResource
 import org.jetbrains.compose.resources.stringResource
 import org.jetbrains.compose.resources.vectorResource
 import us.docbee.docbeeapp.presentation.components.PrimaryButton
+import us.docbee.docbeeapp.presentation.login.effects.AuthEffects
+import us.docbee.docbeeapp.presentation.login.events.AuthEvents
 import us.docbee.docbeeapp.presentation.navigation.DashboardRoute
 import us.docbee.docbeeapp.presentation.theme.Black
 import us.docbee.docbeeapp.presentation.theme.Black100
@@ -64,21 +68,40 @@ import us.docbee.docbeeapp.presentation.theme.White
 import us.docbee.docbeeapp.utils.ui.SetStatusBar
 
 @Composable
-fun AuthScreen(navController: NavController) {
+fun AuthScreen(
+    navController: NavController,
+    viewModel: AuthViewModel
+) {
     var isLoginTabSelected by remember { mutableStateOf(true) }
     var snackbarHostState = remember { SnackbarHostState() }
+
+    LaunchedEffect(Unit) {
+        viewModel.effect.collectLatest { effect ->
+            when (effect) {
+                is AuthEffects.ShowErrorMessage -> {
+                    snackbarHostState.showSnackbar(
+                        message = effect.error,
+                        duration = SnackbarDuration.Short
+                    )
+                }
+                is AuthEffects.NavigateToDashboard -> {
+                    navController.navigate(DashboardRoute) {
+                        popUpTo(0) { inclusive = true }
+                        launchSingleTop = true
+                    }
+                }
+            }
+        }
+    }
 
     Box {
         AuthScreenContent(
             isLoginTab = isLoginTabSelected,
             onTabClicked = { isLoginTab -> isLoginTabSelected = isLoginTab },
             snackbarState = snackbarHostState,
-            onAuthenticationSuccess = {
-                navController.navigate(DashboardRoute) {
-                    popUpTo(0) { inclusive = true }
-                    launchSingleTop = true
-                }
-            }
+            onAuthenticationSuccess = { viewModel.onEvent(AuthEvents.OnSuccessNavigation) },
+            onGoogleClick = { viewModel.onEvent(AuthEvents.OnGoogleLogin) },
+            onAppleClick = { viewModel.onEvent(AuthEvents.OnAppleLogin) }
         )
         SnackbarHost(
             hostState = snackbarHostState,
@@ -94,7 +117,9 @@ fun AuthScreenContent(
     isLoginTab: Boolean,
     onTabClicked: (isLoginSelected: Boolean) -> Unit,
     snackbarState: SnackbarHostState,
-    onAuthenticationSuccess: () -> Unit
+    onAuthenticationSuccess: () -> Unit,
+    onGoogleClick: () -> Unit,
+    onAppleClick: () -> Unit
 ) {
     val scrollState = rememberScrollState()
     val headerHeight by remember { mutableStateOf(364.dp) }
@@ -160,7 +185,11 @@ fun AuthScreenContent(
                 isSignupTabbed = !isLoginTab,
                 onAuthenticationSuccess = onAuthenticationSuccess
             )
-            LoginSocialButtons(modifier = Modifier.fillMaxWidth().padding(horizontal = 42.dp))
+            LoginSocialButtons(
+                modifier = Modifier.fillMaxWidth().padding(horizontal = 42.dp),
+                onGoogleClick = onGoogleClick,
+                onAppleClick = onAppleClick
+            )
         }
     }
 }
@@ -207,7 +236,11 @@ fun LoginTabs(modifier: Modifier = Modifier, isLoginTab: Boolean, onTabClicked: 
 }
 
 @Composable
-fun LoginSocialButtons(modifier: Modifier = Modifier) {
+fun LoginSocialButtons(
+    modifier: Modifier = Modifier,
+    onGoogleClick: () -> Unit,
+    onAppleClick: () -> Unit
+) {
     Column(modifier = modifier) {
         Spacer(modifier = Modifier.height(24.dp))
         Row(
@@ -226,12 +259,14 @@ fun LoginSocialButtons(modifier: Modifier = Modifier) {
         Spacer(modifier = Modifier.height(16.dp))
         PrimaryButton(
             text = stringResource(Res.string.login_form_apple_login),
-            icon = vectorResource(Res.drawable.ic_apple)
+            icon = vectorResource(Res.drawable.ic_apple),
+            onClick = onAppleClick
         )
         Spacer(modifier = Modifier.height(12.dp))
         PrimaryButton(
             text = stringResource(Res.string.login_form_google_login),
-            icon = vectorResource(Res.drawable.ic_google)
+            icon = vectorResource(Res.drawable.ic_google),
+            onClick = onGoogleClick
         )
         Spacer(modifier = Modifier.height(30.dp))
     }

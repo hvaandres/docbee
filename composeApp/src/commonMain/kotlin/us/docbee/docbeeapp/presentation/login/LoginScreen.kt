@@ -85,7 +85,7 @@ fun LoginScreen(
             onChangeRememberCheck = { isChecked ->
                 viewModel.onEvent(LoginEvents.OnRememberCheckBox(isChecked))
             },
-            onLoginClick = { viewModel.onEvent(LoginEvents.OnLoginClickButton) },
+            onLoginClick = { viewModel.onEvent(LoginEvents.OnEmailLogin) },
             onForgotPassword = { viewModel.onEvent(LoginEvents.OnForgotPasswordClick) }
         )
     }
