@@ -32,10 +32,7 @@ class AndroidAuthRemoteDataSource(val context: Context) : AuthenticationDataSour
                 UserAuthResponse(uid = user.uid)
             } ?: UserAuthResponse(errorCode = "UNKNOWN_ERROR", errorMessage = "User is null.")
         } catch (ex: FirebaseAuthInvalidCredentialsException) {
-            UserAuthResponse(
-                errorCode = "ERROR_INVALID_CREDENTIAL",
-                errorMessage = ex.localizedMessage
-            )
+            UserAuthResponse(errorCode = "ERROR_INVALID_CREDENTIAL", errorMessage = ex.localizedMessage)
         } catch (ex: Exception) {
             UserAuthResponse(errorCode = "UNKNOWN_ERROR", errorMessage = ex.localizedMessage)
         }
@@ -65,15 +62,9 @@ class AndroidAuthRemoteDataSource(val context: Context) : AuthenticationDataSour
                 UserCreateResponse(uid = user.uid)
             } ?: UserCreateResponse(errorCode = "UNKNOWN_ERROR", errorMessage = "User is null.")
         } catch (ex: FirebaseAuthUserCollisionException) {
-            UserCreateResponse(
-                errorCode = "ERROR_EMAIL_ALREADY_IN_USE",
-                errorMessage = ex.localizedMessage
-            )
+            UserCreateResponse(errorCode = "ERROR_EMAIL_ALREADY_IN_USE", errorMessage = ex.localizedMessage)
         } catch (ex: FirebaseAuthWeakPasswordException) {
-            UserCreateResponse(
-                errorCode = "ERROR_WEAK_PASSWORD",
-                errorMessage = ex.localizedMessage
-            )
+            UserCreateResponse(errorCode = "ERROR_WEAK_PASSWORD", errorMessage = ex.localizedMessage)
         } catch (ex: FirebaseException) {
             UserCreateResponse(errorCode = "UNKNOWN_ERROR", errorMessage = ex.localizedMessage)
         } catch (ex: Exception) {
