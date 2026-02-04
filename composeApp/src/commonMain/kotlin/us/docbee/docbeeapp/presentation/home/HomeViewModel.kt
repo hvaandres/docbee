@@ -9,23 +9,39 @@ import us.docbee.docbeeapp.presentation.home.effects.HomeEffects
 import us.docbee.docbeeapp.presentation.home.events.HomeEvents
 import us.docbee.docbeeapp.presentation.home.states.UiState
 import us.docbee.docbeeapp.utils.ui.managers.ClickCounterManager
+import us.docbee.docbeeapp.utils.ui.network.NetState
+import us.docbee.docbeeapp.utils.ui.network.NetworkUtils
 import us.docbee.docbeeapp.utils.ui.permissions.LocationPermissionManager
 import us.docbee.docbeeapp.utils.ui.permissions.PermissionResult
 
 class HomeViewModel(
     private val permissionManager: LocationPermissionManager,
-    private val fetchContactsUseCase: GetUserContactsUseCase
+    private val fetchContactsUseCase: GetUserContactsUseCase,
+    private val networkUtils: NetworkUtils,
 ) : BaseViewModel<UiState, HomeEvents, HomeEffects>(UiState()) {
+
+    init {
+        onEvent(HomeEvents.OnRegisterNetworkMonitor)
+    }
 
     private val requiredClicks = 3
     private val clickEmergencyCounterManager = ClickCounterManager(requiredClicks = requiredClicks)
 
     override fun onEvent(event: HomeEvents) {
         when (event) {
+            HomeEvents.OnRegisterNetworkMonitor -> observeNetworkStatus()
             HomeEvents.OnValidateRequirements -> onInitHome()
             HomeEvents.OnClickEmergency -> onClickEmergency()
             HomeEvents.OnOpenSettings -> onOpenSettings()
             HomeEvents.OnClickContacts -> onClickContacts()
+        }
+    }
+
+    private fun observeNetworkStatus() {
+        viewModelScope.launch {
+            networkUtils.isNetworkAvailable.collect { hasNetwork ->
+                updateState { copy(hasNoConnection = hasNetwork != NetState.Connected) }
+            }
         }
     }
 
@@ -38,7 +54,7 @@ class HomeViewModel(
             else -> {
                 permissionManager.requestPermission { permissionResult ->
                     updateState {
-                        copy(isPermissionNotGranted = permissionResult !is PermissionResult.Granted)
+                        copy(isPermissionNotGranted = permissionResult !is PermissionResult.Granted, isLoading = false)
                     }
                     if (permissionResult is PermissionResult.Granted) {
                         validateUserContacts()
@@ -63,10 +79,22 @@ class HomeViewModel(
 
     private fun validateUserContacts() {
         viewModelScope.launch {
+            updateState { copy(isLoading = true) }
             val contacts = fetchContactsUseCase.fetchUserContacts()
             when (contacts) {
-                is ContactResult.Success -> updateState { copy(showContactMissing = false) }
-                is ContactResult.Empty -> updateState { copy(showContactMissing = true) }
+                is ContactResult.Success -> updateState {
+                    copy(
+                        isLoading = false,
+                        showContactMissing = false
+                    )
+                }
+
+                is ContactResult.Empty -> updateState {
+                    copy(
+                        isLoading = false,
+                        showContactMissing = true
+                    )
+                }
                 else -> Unit // TODO: Add Error State
             }
         }
