@@ -82,7 +82,7 @@ class LoginViewModel(
                     LoginEffect.ShowErrorMessage(getString(Res.string.login_form_invalid_credentials))
                 )
 
-                is LoginResult.Error -> sendEffect(
+                is LoginResult.Error, LoginResult.CancelOperation -> sendEffect(
                     LoginEffect.ShowErrorMessage(getString(Res.string.login_form_invalid_credentials_error))
                 )
 

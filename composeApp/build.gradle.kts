@@ -55,6 +55,9 @@ kotlin {
             implementation(libs.ktor.client.okhttp)
             implementation(libs.google.services.location)
             implementation(libs.lottie)
+            implementation(libs.credentials)
+            implementation(libs.credentials.play.auth)
+            implementation(libs.google.identity)
         }
         commonMain.dependencies {
             implementation(compose.runtime)

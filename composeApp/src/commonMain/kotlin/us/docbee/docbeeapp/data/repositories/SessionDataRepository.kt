@@ -1,7 +1,7 @@
 package us.docbee.docbeeapp.data.repositories
 
 import kotlinx.coroutines.flow.first
-import us.docbee.docbeeapp.data.EmailAuth
+import us.docbee.docbeeapp.data.datasources.AuthenticationDataSource
 import us.docbee.docbeeapp.data.datasources.interfaces.UserSessionDataSource
 import us.docbee.docbeeapp.data.entities.LogoutResponse
 import us.docbee.docbeeapp.domain.models.session.LogoutSessionResult
@@ -9,7 +9,7 @@ import us.docbee.docbeeapp.domain.repositories.SessionRepository
 
 class SessionDataRepository(
     private val sessionDataSource: UserSessionDataSource,
-    private val userAuthentication: EmailAuth
+    private val userAuthentication: AuthenticationDataSource
 ) : SessionRepository {
     override suspend fun saveSessionFlag(value: Boolean) {
         sessionDataSource.saveSessionFlag(value)
