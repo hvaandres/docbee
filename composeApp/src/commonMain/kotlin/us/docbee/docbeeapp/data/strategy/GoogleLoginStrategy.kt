@@ -6,15 +6,22 @@ import us.docbee.docbeeapp.domain.models.login.LoginParams
 import us.docbee.docbeeapp.domain.models.login.LoginResult
 import us.docbee.docbeeapp.domain.strategy.LoginStrategy
 import us.docbee.docbeeapp.presentation.login.providers.GoogleAuthProvider
+import us.docbee.docbeeapp.presentation.login.providers.GoogleAuthResult
 
 class GoogleLoginStrategy(
     private val googleAuthProvider: GoogleAuthProvider,
     private val authenticationDataSource: AuthenticationDataSource
 ): LoginStrategy {
     override suspend fun login(credentials: LoginParams): LoginResult {
-        val idToken = googleAuthProvider.getGoogleIdToken()
-        if (idToken.isEmpty()) return LoginResult.CancelOperation
-        val response = authenticationDataSource.authenticate(idToken)
+        return when (val tokenResult = googleAuthProvider.getGoogleIdToken()) {
+            is GoogleAuthResult.Cancelled -> LoginResult.CancelOperation
+            is GoogleAuthResult.Error -> LoginResult.Error
+            is GoogleAuthResult.Success -> authenticate(tokenResult.idToken)
+        }
+    }
+
+    private suspend fun authenticate(token: String): LoginResult {
+        val response = authenticationDataSource.authenticate(token)
         return if (response.uid != null) {
             LoginResult.Success(response.uid)
         } else {
