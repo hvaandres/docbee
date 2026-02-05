@@ -21,3 +21,6 @@ iosApp/Pods
 
 **/GoogleService-Info.plist
 **/google-services.json
+
+**/secrets.properties
+**/Secrets.xcconfig
