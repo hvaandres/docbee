@@ -7,15 +7,14 @@ import androidx.credentials.GetCredentialRequest
 import com.google.android.libraries.identity.googleid.GetSignInWithGoogleOption
 import com.google.android.libraries.identity.googleid.GoogleIdTokenCredential
 import org.koin.core.context.GlobalContext
+import us.docbee.docbeeapp.BuildConfig
 import us.docbee.docbeeapp.domain.mappers.GoogleAuthErrorCodesMapper
 
-class AndroidGoogleAuthProvider(
-    private val context: Context
-) : GoogleAuthProvider {
+class AndroidGoogleAuthProvider(private val context: Context) : GoogleAuthProvider {
     override suspend fun getGoogleIdToken(): GoogleAuthResult {
         return try {
             val googleIdOption = GetSignInWithGoogleOption
-                .Builder("add_server_client_id")
+                .Builder(BuildConfig.SERVER_CLIENT_ID)
                 .build()
 
             val request = GetCredentialRequest.Builder()
@@ -37,4 +36,5 @@ class AndroidGoogleAuthProvider(
     }
 }
 
-actual fun getGoogleAuthProvider(): GoogleAuthProvider = AndroidGoogleAuthProvider(GlobalContext.get().get())
+actual fun getGoogleAuthProvider(): GoogleAuthProvider =
+    AndroidGoogleAuthProvider(GlobalContext.get().get())
