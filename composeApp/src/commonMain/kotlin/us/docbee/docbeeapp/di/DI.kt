@@ -87,7 +87,7 @@ val dataSourcesModule = module {
 
 val strategiesModule = module {
     factory { EmailLoginStrategy(get()) }
-    factory { GoogleLoginStrategy(get(), get()) }
+    factory { GoogleLoginStrategy(get(), get(), get()) }
     factory { AppleLoginStrategy() }
     factory { LoginStrategyFactory(get(), get(), get()) }
 }

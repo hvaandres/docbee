@@ -8,12 +8,13 @@
 import Foundation
 import UIKit
 import GoogleSignIn
+import ComposeApp
 
 
 @objc(GoogleAuthRemoteProvider)
 class GoogleAuthRemoteProvider: NSObject {
     
-    @objc func getGoogleIdToken(completion: @escaping (String?, Error?) -> Void) {
+    @objc func getGoogleAuthData(completion: @escaping (_ result: AuthenticationModel?, _ error: Error?) -> Void) {
         Task {
             do {
                 let token = try await getGoogleIdToken()
@@ -31,9 +32,9 @@ class GoogleAuthRemoteProvider: NSObject {
         return scene?.windows.first { $0.isKeyWindow }?.rootViewController
     }
     
-    private func getGoogleIdToken() async throws -> String {
+    private func getGoogleIdToken() async throws -> AuthenticationModel {
         guard let topViewController = await activeViewController else {
-            return ""
+            throw NSError(domain: "UI not configured", code: 0, userInfo: nil)
         }
 
         return try await withCheckedThrowingContinuation { continuation in
@@ -42,9 +43,16 @@ class GoogleAuthRemoteProvider: NSObject {
                     continuation.resume(throwing: error)
                     return
                 }
-                
-                let idToken = result?.user.idToken?.tokenString ?? ""
-                continuation.resume(returning: idToken)
+                let user = result?.user
+                let profile = user?.profile
+                let userModel = AuthenticationModel(
+                    idToken: user?.idToken?.tokenString ?? "",
+                    name: profile?.givenName ?? "",
+                    lastname: profile?.familyName ?? "",
+                    email: profile?.email ?? "",
+                    phoneNumber: ""
+                )
+                continuation.resume(returning: userModel)
             }
         }
     }

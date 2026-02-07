@@ -32,7 +32,10 @@ class IosAuthenticationDataSource() : AuthenticationDataSource {
         return suspendCancellableCoroutine<UserAuthResponse> { thread ->
             userAuthentication.signInWithIdToken(idToken = idToken) { result, error ->
                 val authResponse = if (result != null) {
-                    UserAuthResponse(uid = result["uid"].toString())
+                    UserAuthResponse(
+                        uid = result["uid"].toString(),
+                        isNewUser = result["isNewUser"].toString().toBoolean()
+                    )
                 } else {
                     val errorCode = error?.userInfo?.get("FIRAuthErrorUserInfoNameKey") as? String
                     val errorMessage = error?.userInfo?.get("NSLocalizedDescription") as? String

@@ -10,7 +10,7 @@
 NS_ASSUME_NONNULL_BEGIN
 
 @interface GoogleAuthRemoteProvider : NSObject
-- (void)getGoogleIdTokenWithCompletion:(void (^)(NSString * _Nullable, NSError * _Nullable))completion;
+- (void)getGoogleAuthDataWithCompletion:(void (^)(NSObject * _Nullable, NSError * _Nullable))completion;
 @end
 
 NS_ASSUME_NONNULL_END
