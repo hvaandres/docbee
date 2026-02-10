@@ -9,9 +9,10 @@ import com.google.android.libraries.identity.googleid.GoogleIdTokenCredential
 import org.koin.core.context.GlobalContext
 import us.docbee.docbeeapp.BuildConfig
 import us.docbee.docbeeapp.domain.mappers.GoogleAuthErrorCodesMapper
+import us.docbee.docbeeapp.domain.models.login.AuthenticationModel
 
 class AndroidGoogleAuthProvider(private val context: Context) : GoogleAuthProvider {
-    override suspend fun getGoogleIdToken(): GoogleAuthResult {
+    override suspend fun getGoogleAuthData(): GoogleAuthResult {
         return try {
             val googleIdOption = GetSignInWithGoogleOption
                 .Builder(BuildConfig.SERVER_CLIENT_ID)
@@ -26,7 +27,15 @@ class AndroidGoogleAuthProvider(private val context: Context) : GoogleAuthProvid
 
             val credential = result.credential
             if (credential is CustomCredential && credential.type == GoogleIdTokenCredential.TYPE_GOOGLE_ID_TOKEN_CREDENTIAL) {
-                GoogleAuthResult.Success(GoogleIdTokenCredential.createFrom(credential.data).idToken)
+                val googleData = GoogleIdTokenCredential.createFrom(credential.data)
+                GoogleAuthResult.Success(
+                    user = AuthenticationModel(
+                        idToken = googleData.idToken,
+                        name = googleData.givenName ?: "",
+                        lastname = googleData.familyName ?: "",
+                        email = googleData.id
+                    )
+                )
             } else {
                 GoogleAuthResult.Error
             }

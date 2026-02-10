@@ -32,7 +32,8 @@ public class UserRemoteAuthentication: NSObject {
             guard self != nil else { return }
             if let user = authResult?.user {
                 let userInfo: [String: Any] = [
-                    "uid": user.uid
+                    "uid": user.uid,
+                    "isNewUser": authResult?.additionalUserInfo?.isNewUser ?? false,
                 ]
                 completion(userInfo as NSDictionary, nil)
             } else {

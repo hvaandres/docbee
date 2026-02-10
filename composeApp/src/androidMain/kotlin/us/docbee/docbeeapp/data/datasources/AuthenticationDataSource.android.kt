@@ -45,7 +45,10 @@ class AndroidAuthRemoteDataSource(val context: Context) : AuthenticationDataSour
                 .await()
 
             authResult.user?.let { user ->
-                UserAuthResponse(uid = user.uid)
+                UserAuthResponse(
+                    uid = user.uid,
+                    isNewUser = authResult.additionalUserInfo?.isNewUser ?: false
+                )
             } ?: UserAuthResponse(errorCode = "UNKNOWN_ERROR", errorMessage = "User is null.")
         } catch (ex: Exception) {
             UserAuthResponse(errorCode = "UNKNOWN_ERROR", errorMessage = ex.localizedMessage)
