@@ -6,5 +6,6 @@ import us.docbee.docbeeapp.presentation.dashboard.navigation.MenuBarItem
 
 data class StateUi(
     val tabItemSelected: MenuBarItem = MenuBarItem.HOME,
-    val toolbarSelected: ToolbarContent = fetchToolbarContent(MenuBarItem.HOME)
+    val toolbarSelected: ToolbarContent = fetchToolbarContent(MenuBarItem.HOME),
+    val hasNoConnection: Boolean = false,
 )

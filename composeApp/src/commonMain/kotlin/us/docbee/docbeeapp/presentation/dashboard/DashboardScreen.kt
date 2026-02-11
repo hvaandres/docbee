@@ -24,6 +24,7 @@ import us.docbee.docbeeapp.presentation.dashboard.events.DashboardEvents
 import us.docbee.docbeeapp.presentation.dashboard.navigation.DashboardNavigation
 import us.docbee.docbeeapp.presentation.dashboard.navigation.DashboardRoutes
 import us.docbee.docbeeapp.presentation.dashboard.navigation.MenuBarItem
+import us.docbee.docbeeapp.presentation.screen.NoInternetConnectionScreen
 import us.docbee.docbeeapp.presentation.theme.Black
 import us.docbee.docbeeapp.utils.ui.SetStatusBar
 
@@ -72,32 +73,36 @@ fun DashboardScreen(
         }
     }
     SetStatusBar(isDarkMode = true)
-    Scaffold(
-        modifier = Modifier
-            .windowInsetsPadding(WindowInsets.navigationBars),
-        containerColor = Black,
-        topBar = {
-            Toolbar(
-                title = uiState.toolbarSelected.title,
-                subtitle = uiState.toolbarSelected.description,
-                isBackVisible = uiState.tabItemSelected != MenuBarItem.HOME,
-                onBackClicked = { dashboardViewModel.onEvent(DashboardEvents.OnBackClicked) }
-            )
-        },
-        bottomBar = {
-            BottomMenuBar(
-                selectedItem = uiState.tabItemSelected,
-                onItemClick = { item ->
-                    dashboardViewModel.onEvent(DashboardEvents.OnTabSelected(item))
-                },
-                modifier = Modifier.padding(horizontal = 16.dp, vertical = 8.dp)
+    if (uiState.hasNoConnection) {
+        NoInternetConnectionScreen()
+    } else {
+        Scaffold(
+            modifier = Modifier
+                .windowInsetsPadding(WindowInsets.navigationBars),
+            containerColor = Black,
+            topBar = {
+                Toolbar(
+                    title = uiState.toolbarSelected.title,
+                    subtitle = uiState.toolbarSelected.description,
+                    isBackVisible = uiState.tabItemSelected != MenuBarItem.HOME,
+                    onBackClicked = { dashboardViewModel.onEvent(DashboardEvents.OnBackClicked) }
+                )
+            },
+            bottomBar = {
+                BottomMenuBar(
+                    selectedItem = uiState.tabItemSelected,
+                    onItemClick = { item ->
+                        dashboardViewModel.onEvent(DashboardEvents.OnTabSelected(item))
+                    },
+                    modifier = Modifier.padding(horizontal = 16.dp, vertical = 8.dp)
+                )
+            }
+        ) { parentPadding ->
+            DashboardNavigation(
+                modifier = Modifier.padding(parentPadding),
+                navController = dashboardNavController,
+                parentNavController = parentNavController
             )
         }
-    ) { parentPadding ->
-        DashboardNavigation(
-            modifier = Modifier.padding(parentPadding),
-            navController = dashboardNavController,
-            parentNavController = parentNavController
-        )
     }
 }
