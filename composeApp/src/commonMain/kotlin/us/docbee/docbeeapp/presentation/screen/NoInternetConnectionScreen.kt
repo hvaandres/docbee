@@ -17,8 +17,8 @@ import docbee.composeapp.generated.resources.Res
 import docbee.composeapp.generated.resources.no_connection
 import docbee.composeapp.generated.resources.no_internet_connection_paragraph
 import docbee.composeapp.generated.resources.no_internet_connection_title
-import org.jetbrains.compose.resources.painterResource
 import org.jetbrains.compose.resources.stringResource
+import org.jetbrains.compose.resources.vectorResource
 import us.docbee.docbeeapp.presentation.theme.Black
 import us.docbee.docbeeapp.presentation.theme.White
 
@@ -27,11 +27,11 @@ fun NoInternetConnectionScreen() {
     Column(
         modifier = Modifier.fillMaxSize().background(Black),
         horizontalAlignment = Alignment.CenterHorizontally,
-        verticalArrangement =  Arrangement.Center,
+        verticalArrangement = Arrangement.Center,
     ) {
         Image(
             modifier = Modifier.fillMaxWidth().padding(bottom = 12.dp),
-            painter = painterResource(Res.drawable.no_connection),
+            imageVector = vectorResource(Res.drawable.no_connection),
             contentDescription = null
         )
         Text(

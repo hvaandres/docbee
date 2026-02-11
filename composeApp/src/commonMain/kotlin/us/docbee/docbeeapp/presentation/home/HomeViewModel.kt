@@ -9,39 +9,23 @@ import us.docbee.docbeeapp.presentation.home.effects.HomeEffects
 import us.docbee.docbeeapp.presentation.home.events.HomeEvents
 import us.docbee.docbeeapp.presentation.home.states.UiState
 import us.docbee.docbeeapp.utils.ui.managers.ClickCounterManager
-import us.docbee.docbeeapp.utils.ui.network.NetState
-import us.docbee.docbeeapp.utils.ui.network.NetworkUtils
 import us.docbee.docbeeapp.utils.ui.permissions.LocationPermissionManager
 import us.docbee.docbeeapp.utils.ui.permissions.PermissionResult
 
 class HomeViewModel(
     private val permissionManager: LocationPermissionManager,
     private val fetchContactsUseCase: GetUserContactsUseCase,
-    private val networkUtils: NetworkUtils,
 ) : BaseViewModel<UiState, HomeEvents, HomeEffects>(UiState()) {
-
-    init {
-        onEvent(HomeEvents.OnRegisterNetworkMonitor)
-    }
 
     private val requiredClicks = 3
     private val clickEmergencyCounterManager = ClickCounterManager(requiredClicks = requiredClicks)
 
     override fun onEvent(event: HomeEvents) {
         when (event) {
-            HomeEvents.OnRegisterNetworkMonitor -> observeNetworkStatus()
             HomeEvents.OnValidateRequirements -> onInitHome()
             HomeEvents.OnClickEmergency -> onClickEmergency()
             HomeEvents.OnOpenSettings -> onOpenSettings()
             HomeEvents.OnClickContacts -> onClickContacts()
-        }
-    }
-
-    private fun observeNetworkStatus() {
-        viewModelScope.launch {
-            networkUtils.isNetworkAvailable.collect { hasNetwork ->
-                updateState { copy(hasNoConnection = hasNetwork != NetState.Connected) }
-            }
         }
     }
 
